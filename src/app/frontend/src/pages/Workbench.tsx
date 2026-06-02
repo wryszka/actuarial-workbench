@@ -80,6 +80,20 @@ export default function Workbench() {
   );
 }
 
+function TileDescription({ description, tone = 'default' }: { description: string | string[]; tone?: 'default' | 'muted' }) {
+  const color = tone === 'muted' ? 'text-slate-600' : 'text-gray-700';
+  if (Array.isArray(description)) {
+    return (
+      <ul className="space-y-1.5 flex-1">
+        {description.map((line, i) => (
+          <li key={i} className={`text-sm ${color} leading-snug border-l-2 border-blue-300 pl-2.5`}>{line}</li>
+        ))}
+      </ul>
+    );
+  }
+  return <p className={`text-sm ${color} leading-relaxed flex-1`}>{description}</p>;
+}
+
 function TileCard({ tile }: { tile: Tile }) {
   const isLive = tile.status === 'live';
   const isInProgress = tile.status === 'in_progress';
@@ -108,7 +122,7 @@ function TileCard({ tile }: { tile: Tile }) {
             <p className="text-[11px] text-gray-500 mt-0.5 font-mono">{periodNote}</p>
           </div>
         </div>
-        <p className="text-sm text-gray-700 leading-relaxed flex-1">{tile.description}</p>
+        <TileDescription description={tile.description} />
         <div className={`mt-3 inline-flex items-center gap-1 text-sm font-bold ${cls.arrow}`}>
           Open <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
         </div>
@@ -139,7 +153,7 @@ function TileCard({ tile }: { tile: Tile }) {
             <p className="text-[11px] text-amber-700/80 mt-0.5">Worked example · being built</p>
           </div>
         </div>
-        <p className="text-sm text-gray-700 leading-relaxed flex-1">{tile.description}</p>
+        <TileDescription description={tile.description} />
         <div className="mt-3 inline-flex items-center gap-1 text-sm font-bold text-amber-700">
           Read more <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
         </div>
@@ -165,7 +179,7 @@ function TileCard({ tile }: { tile: Tile }) {
           <p className="text-[11px] text-slate-400 mt-0.5">Roadmap</p>
         </div>
       </div>
-      <p className="text-sm text-slate-600 leading-relaxed flex-1">{tile.description}</p>
+      <TileDescription description={tile.description} tone="muted" />
       <div className="mt-3 inline-flex items-center gap-1 text-xs text-slate-500">
         Read more <ArrowRight className="w-3 h-3" />
       </div>

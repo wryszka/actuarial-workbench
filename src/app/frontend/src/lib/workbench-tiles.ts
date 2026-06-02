@@ -21,7 +21,7 @@ export type TileStatus = 'live' | 'in_progress' | 'roadmap';
 export interface Tile {
   slug: string;                    // URL slug + key
   label: string;
-  description: string;             // 1 line
+  description: string | string[];  // a paragraph, or a list of bullet lines
   status: TileStatus;
   icon: React.ComponentType<{ className?: string }>;
   to: string;                      // navigate target (external URL for live tiles)
@@ -52,12 +52,16 @@ export const TILES: Tile[] = [
   },
   {
     slug: 'pricing',
-    label: 'Pricing',
-    description: 'Rate-making, GBM models, bias monitoring. Same model registry pattern as the Solvency II Lab.',
+    label: 'Pricing workbench',
+    description: [
+      'Frequency · severity · demand · fraud models behind a millisecond live quote.',
+      'Ingestion-to-governance lifecycle on one set of policy and telematics data.',
+    ],
     status: 'live',
     icon: TrendingUp,
     to: DEFAULT_PRICING_APP_URL,
     accent: 'blue',
+    subtitle: 'Commercial motor',
   },
   {
     slug: 'ifrs-17',
