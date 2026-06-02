@@ -1,0 +1,90 @@
+bundle:
+  name: actuarial_workbench_hub
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Variables — single source of truth.
+#
+# This bundle deploys ONE Databricks App: a launcher ("Actuarial Workbench")
+# whose tiles open the apps that own each workflow. It holds no data — no
+# catalog, schema, or warehouse. The only configuration is the URL each live
+# tile opens, read from env by the app (see src/app/server/config.py).
+#
+# To target a different workspace, override per-target below or pass --var on
+# `databricks bundle` commands.
+# ──────────────────────────────────────────────────────────────────────────────
+
+variables:
+  # — App identity —
+  app_name:
+    description: Databricks Apps resource name (URL slug — hyphens, not underscores)
+    default: actuarial-workbench
+  app_display_name:
+    description: User-visible app display name
+    default: Actuarial Workbench
+  entity_name:
+    description: Reporting undertaking shown in the landing header (synthetic)
+    default: "Bricksurance SE"
+
+  # — Live-tile targets —
+  # The deployed app URL each live tile opens. Per-workspace; override per
+  # target. Empty falls back to the static default baked into the tile registry.
+  solvency_app_url:
+    description: Deployed Solvency II workbench Databricks App URL
+    default: "https://solvency2-workbench-7474659673789953.aws.databricksapps.com"
+  pricing_app_url:
+    description: Deployed pricing workbench Databricks App URL
+    default: "https://pricing-workbench-7474656169654171.aws.databricksapps.com/"
+
+  # — Workspace / auth —
+  workspace_host:
+    description: Databricks workspace URL — override per target
+    default: "https://fevm-lr-dev-aws-us.cloud.databricks.com"
+  databricks_profile:
+    description: Databricks CLI profile to use for deploys
+    default: "DEV"
+
+workspace:
+  host: ${var.workspace_host}
+  profile: ${var.databricks_profile}
+
+sync:
+  exclude:
+    - src/app/.venv/
+    - src/app/frontend/node_modules/
+    - "*.bak"
+
+targets:
+  # ─ dev ─ FE dev workspace (sits alongside the Solvency II + Pricing apps).
+  dev:
+    mode: development
+    default: true
+    workspace:
+      host: https://fevm-lr-dev-aws-us.cloud.databricks.com
+      profile: DEV
+    variables:
+      app_name: actuarial-workbench
+      app_display_name: Actuarial Workbench
+      entity_name: "Bricksurance SE"
+      solvency_app_url: https://solvency2-workbench-7474659673789953.aws.databricksapps.com
+      pricing_app_url: https://pricing-workbench-7474656169654171.aws.databricksapps.com/
+      workspace_host: https://fevm-lr-dev-aws-us.cloud.databricks.com
+      databricks_profile: DEV
+
+  # ─ serverless ─ FEVM serverless workspace. Set the URLs to the apps as
+  # deployed there (defaults left blank → tiles use the static fallback).
+  serverless:
+    mode: development
+    workspace:
+      host: https://fevm-lr-serverless-aws-us.cloud.databricks.com
+      profile: sfevm
+    variables:
+      app_name: actuarial-workbench
+      app_display_name: Actuarial Workbench
+      entity_name: "Bricksurance SE"
+      solvency_app_url: ""
+      pricing_app_url: ""
+      workspace_host: https://fevm-lr-serverless-aws-us.cloud.databricks.com
+      databricks_profile: sfevm
+
+  prod:
+    mode: production

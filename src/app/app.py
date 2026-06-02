@@ -1,0 +1,83 @@
+"""Actuarial Workbench — hub / launcher app.
+
+A deliberately tiny FastAPI app whose only job is to serve the tile landing
+page and tell the frontend which URL each live tile should open. No SQL, no
+MLflow, no AI — every live workflow (Solvency II, Pricing, …) is its own
+deployed Databricks App, and this hub is the one place you launch them from.
+
+Configuration is entirely env-driven (see server/config.py) so the same code
+deploys to any workspace by overriding the URL variables in databricks.yml.
+"""
+import logging
+from pathlib import Path
+
+from fastapi import FastAPI, Request
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
+
+from server.config import (
+    get_app_display_name,
+    get_entity_name,
+    get_pricing_app_url,
+    get_solvency_app_url,
+)
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+)
+logger = logging.getLogger(__name__)
+
+FRONTEND_DIR = Path(__file__).parent / "frontend" / "dist"
+
+app = FastAPI(title="Actuarial Workbench Hub", version="1.0.0")
+
+
+@app.get("/api/health")
+async def health():
+    return {"status": "ok"}
+
+
+def _request_user(request: Request) -> str:
+    for header in (
+        "X-Forwarded-Email",
+        "X-Forwarded-Preferred-Username",
+        "X-Forwarded-User",
+    ):
+        value = request.headers.get(header)
+        if value:
+            return value
+    import os
+
+    return os.getenv("USER", "local-dev")
+
+
+@app.get("/api/me")
+async def me(request: Request):
+    return {"user": _request_user(request)}
+
+
+@app.get("/api/config")
+async def config():
+    """Per-workspace launcher config — the URL each live tile opens.
+
+    Empty strings mean "not configured"; the frontend falls back to the
+    static default baked into the tile registry.
+    """
+    return {
+        "app_display_name": get_app_display_name(),
+        "entity_name": get_entity_name(),
+        "solvency_app_url": get_solvency_app_url(),
+        "pricing_app_url": get_pricing_app_url(),
+    }
+
+
+if FRONTEND_DIR.is_dir():
+    app.mount("/assets", StaticFiles(directory=FRONTEND_DIR / "assets"), name="assets")
+
+    @app.get("/{full_path:path}")
+    async def serve_spa(full_path: str):
+        file_path = FRONTEND_DIR / full_path
+        if file_path.is_file():
+            return FileResponse(file_path)
+        return FileResponse(FRONTEND_DIR / "index.html")

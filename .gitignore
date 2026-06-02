@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+src/app/.venv/
+
+# Node / Vite
+node_modules/
+src/app/frontend/dist/
+*.tsbuildinfo
+
+# Databricks
+.databricks/
+.bundle/
+
+# OS / editor
+.DS_Store
+*.bak

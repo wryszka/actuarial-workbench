@@ -1,0 +1,106 @@
+/**
+ * Workbench tile registry — single source of truth for the hub launcher.
+ *
+ * Each tile is one of:
+ *   - live      → opens a deployed Databricks App (external URL). The URL has a
+ *                 sensible default here, overridden per-workspace by /api/config.
+ *   - in_progress / roadmap → opens a stub at /roadmap/{slug} describing the
+ *                 workflow and how it would plug into the platform.
+ *
+ * To plumb a new live workflow: set status 'live', point `to` at its deployed
+ * app URL, and (optionally) wire a config var so the URL is env-driven. See
+ * README.md → "Adding / plumbing a tile".
+ */
+import {
+  Shield, TrendingUp, FileSpreadsheet, Network, AlertOctagon, BarChart3,
+  Code2, Table2,
+} from 'lucide-react';
+
+export type TileStatus = 'live' | 'in_progress' | 'roadmap';
+
+export interface Tile {
+  slug: string;                    // URL slug + key
+  label: string;
+  description: string;             // 1 line
+  status: TileStatus;
+  icon: React.ComponentType<{ className?: string }>;
+  to: string;                      // navigate target (external URL for live tiles)
+  accent?: 'blue';                 // live tile colour palette
+}
+
+// Static fallback URLs for the live tiles. These are overridden at runtime by
+// /api/config (SOLVENCY_APP_URL / PRICING_APP_URL) so the hub stays portable;
+// they exist only so the tiles still open if config is unavailable.
+export const DEFAULT_SOLVENCY_APP_URL =
+  'https://solvency2-workbench-7474659673789953.aws.databricksapps.com';
+export const DEFAULT_PRICING_APP_URL =
+  'https://pricing-workbench-7474656169654171.aws.databricksapps.com/';
+
+export const TILES: Tile[] = [
+  {
+    slug: 'solvency-2',
+    label: 'Solvency II',
+    description: 'Capital, governance, disclosure, ORSA — full cycle with native model development and end-to-end audit trail.',
+    status: 'live',
+    icon: Shield,
+    to: DEFAULT_SOLVENCY_APP_URL,
+    accent: 'blue',
+  },
+  {
+    slug: 'pricing',
+    label: 'Pricing',
+    description: 'Rate-making, GBM models, bias monitoring. Same model registry pattern as the Solvency II Lab.',
+    status: 'live',
+    icon: TrendingUp,
+    to: DEFAULT_PRICING_APP_URL,
+    accent: 'blue',
+  },
+  {
+    slug: 'ifrs-17',
+    label: 'IFRS 17',
+    description: 'Contract groups, CSM, financial disclosure. Heavy data overlap with Solvency II technical provisions.',
+    status: 'roadmap',
+    icon: FileSpreadsheet,
+    to: '/roadmap/ifrs-17',
+  },
+  {
+    slug: 'reinsurance',
+    label: 'Reinsurance',
+    description: 'Treaty performance, retrocession optimisation, capital relief. Same exposures fed into Solvency II cat models.',
+    status: 'roadmap',
+    icon: Network,
+    to: '/roadmap/reinsurance',
+  },
+  {
+    slug: 'claims-analytics',
+    label: 'Claims analytics',
+    description: 'Fraud signals, experience monitoring, reserving feedback loop. Same claim data the reserving model already reads.',
+    status: 'roadmap',
+    icon: AlertOctagon,
+    to: '/roadmap/claims-analytics',
+  },
+  {
+    slug: 'reserving-deep-dive',
+    label: 'Reserving deep dive',
+    description: 'Triangle methods, model validation, methodology library. Extends the chain-ladder + BF examples already in the Lab.',
+    status: 'roadmap',
+    icon: BarChart3,
+    to: '/roadmap/reserving-deep-dive',
+  },
+  {
+    slug: 'sas-migration',
+    label: 'SAS migration',
+    description: 'Worked example — moving an actuarial SAS code-base to PySpark / Spark SQL on the lakehouse. Reserving, capital, valuation procedures translated step by step.',
+    status: 'in_progress',
+    icon: Code2,
+    to: '/roadmap/sas-migration',
+  },
+  {
+    slug: 'excel-migration',
+    label: 'Excel migration',
+    description: 'Worked example — lifting an actuarial Excel model (reserve roll-forward, capital model, valuation chain) into governed Delta tables + notebooks with the audit trail intact.',
+    status: 'in_progress',
+    icon: Table2,
+    to: '/roadmap/excel-migration',
+  },
+];

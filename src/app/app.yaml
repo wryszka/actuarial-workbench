@@ -1,0 +1,10 @@
+command: ["python", "-m", "uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
+env:
+  - name: APP_DISPLAY_NAME
+    value: ${var.app_display_name}
+  - name: ENTITY_NAME
+    value: ${var.entity_name}
+  - name: SOLVENCY_APP_URL
+    value: ${var.solvency_app_url}
+  - name: PRICING_APP_URL
+    value: ${var.pricing_app_url}
