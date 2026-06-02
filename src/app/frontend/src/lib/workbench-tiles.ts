@@ -29,10 +29,11 @@ export interface Tile {
 }
 
 // Static fallback URLs for the live tiles. These are overridden at runtime by
-// /api/config (SOLVENCY_APP_URL / PRICING_APP_URL) so the hub stays portable;
-// they exist only so the tiles still open if config is unavailable.
+// /api/config (derived per-workspace from apps_domain_number) so the hub stays
+// portable; they exist only so the tiles still open if config is unavailable.
+// Default to the dev workspace (apps domain number ...654171).
 export const DEFAULT_SOLVENCY_APP_URL =
-  'https://solvency2-workbench-7474659673789953.aws.databricksapps.com';
+  'https://solvency2-workbench-7474656169654171.aws.databricksapps.com';
 export const DEFAULT_PRICING_APP_URL =
   'https://pricing-workbench-7474656169654171.aws.databricksapps.com/';
 

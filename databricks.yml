@@ -26,14 +26,19 @@ variables:
     default: "Bricksurance SE"
 
   # — Live-tile targets —
-  # The deployed app URL each live tile opens. Per-workspace; override per
-  # target. Empty falls back to the static default baked into the tile registry.
+  # Databricks Apps live at <app-name>-<number>.aws.databricksapps.com. The app
+  # NAMES are identical across workspaces; only <number> changes per workspace.
+  # So switching workspaces is a one-line change: set apps_domain_number for the
+  # target and every live-tile URL re-derives. (dev=...654171, serverless=...789953)
+  apps_domain_number:
+    description: Per-workspace Databricks Apps domain number — the only part of the app URLs that changes between workspaces
+    default: "7474656169654171"
   solvency_app_url:
-    description: Deployed Solvency II workbench Databricks App URL
-    default: "https://solvency2-workbench-7474659673789953.aws.databricksapps.com"
+    description: Deployed Solvency II workbench Databricks App URL (derived from apps_domain_number)
+    default: "https://solvency2-workbench-${var.apps_domain_number}.aws.databricksapps.com"
   pricing_app_url:
-    description: Deployed pricing workbench Databricks App URL
-    default: "https://pricing-workbench-7474656169654171.aws.databricksapps.com/"
+    description: Deployed pricing workbench Databricks App URL (derived from apps_domain_number)
+    default: "https://pricing-workbench-${var.apps_domain_number}.aws.databricksapps.com/"
 
   # — Accelerator deep links —
   # The SAS migration + Excel accelerator tiles open in-hub detail pages that
@@ -105,8 +110,7 @@ targets:
       app_name: actuarial-workbench
       app_display_name: Actuarial Workbench
       entity_name: "Bricksurance SE"
-      solvency_app_url: https://solvency2-workbench-7474659673789953.aws.databricksapps.com
-      pricing_app_url: https://pricing-workbench-7474656169654171.aws.databricksapps.com/
+      apps_domain_number: "7474656169654171"   # dev workspace — solvency + pricing URLs derive from this
       workspace_host: https://fevm-lr-dev-aws-us.cloud.databricks.com
       databricks_profile: DEV
       # Accelerator deep links (dev workspace) — captured after install.
@@ -121,8 +125,9 @@ targets:
       sas_notebook_path: /Workspace/Users/laurence.ryszka@databricks.com/sas_migration/files/sas_migration_demo
       sas_job_id: "120511278698684"
 
-  # ─ serverless ─ FEVM serverless workspace. Set the URLs to the apps as
-  # deployed there (defaults left blank → tiles use the static fallback).
+  # ─ serverless ─ FEVM serverless workspace. Same app names; only the domain
+  # number changes. Accelerator deep-link IDs would need re-capturing if the
+  # accelerators are installed there too.
   serverless:
     mode: development
     workspace:
@@ -132,8 +137,7 @@ targets:
       app_name: actuarial-workbench
       app_display_name: Actuarial Workbench
       entity_name: "Bricksurance SE"
-      solvency_app_url: ""
-      pricing_app_url: ""
+      apps_domain_number: "7474659673789953"   # serverless workspace
       workspace_host: https://fevm-lr-serverless-aws-us.cloud.databricks.com
       databricks_profile: sfevm
 
