@@ -53,10 +53,7 @@ export const TILES: Tile[] = [
   {
     slug: 'pricing',
     label: 'Pricing workbench',
-    description: [
-      'Frequency · severity · demand · fraud models behind a millisecond live quote.',
-      'Ingestion-to-governance lifecycle on one set of policy and telematics data.',
-    ],
+    description: 'The full pricing loop on Databricks — ingest, build, price, investigate, govern. AI agents across it: data-quality checks, factor-lift explainers, model selection, and "why this price?" quote investigation via Genie + Mosaic AI.',
     status: 'live',
     icon: TrendingUp,
     to: DEFAULT_PRICING_APP_URL,
