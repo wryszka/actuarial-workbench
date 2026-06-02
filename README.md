@@ -60,6 +60,10 @@ make deploy-serverless     # same, serverless workspace
 make app-start / app-stop  # start / stop the app (no DBU while stopped)
 ```
 
+**Deployed (dev):** https://actuarial-workbench-7474656169654171.aws.databricksapps.com
+(FE dev workspace, app name `actuarial-workbench`). The Solvency II and Pricing
+tiles point at the deployed apps in the same workspace.
+
 The deploy substitutes `${var.X}` in `app.yaml` before `apps deploy` because
 Databricks Apps does not interpolate bundle variables in `app.yaml`.
 

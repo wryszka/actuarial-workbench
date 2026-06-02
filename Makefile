@@ -17,9 +17,10 @@ dev:
 	@echo "  (cd src/app && uvicorn app:app --reload --port 8000)"
 	@echo "  (cd src/app/frontend && npm run dev)"
 
-# ── Build the SPA (uv-friendly: uses npm via the shell; no network egress here) ─
+# ── Build the SPA. Installs deps only if node_modules is missing (npm install
+#    needs registry egress; on a restricted network, pre-populate node_modules). ─
 build:
-	cd src/app/frontend && npm install && npm run build
+	cd src/app/frontend && { [ -d node_modules ] || npm install; } && npm run build
 
 # ── Deploy: dev ────────────────────────────────────────────────────────────────
 deploy-dev: build
