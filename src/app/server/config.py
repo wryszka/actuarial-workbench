@@ -1,29 +1,56 @@
 """Runtime configuration for the Actuarial Workbench hub.
 
 The hub is a pure launcher — it holds no data and talks to no warehouse. Its
-only configuration is the set of URLs for the apps each tile links out to.
-Every URL is read from an environment variable (set by app.yaml from the
+configuration is the set of URLs for the apps each tile links out to, plus a
+handful of pointers (paths / job IDs) used to build deep links into the
+workspace for the accelerator tiles.
+
+Everything is read from environment variables (set by app.yaml from the
 bundle's databricks.yml variables) so the hub is portable across workspaces
 with no code changes.
 """
 import os
 
 
+def _env(name: str, default: str = "") -> str:
+    return os.getenv(name, default).strip()
+
+
 def get_app_display_name() -> str:
-    return os.getenv("APP_DISPLAY_NAME", "Actuarial Workbench").strip()
+    return _env("APP_DISPLAY_NAME", "Actuarial Workbench")
 
 
 def get_entity_name() -> str:
-    return os.getenv("ENTITY_NAME", "Bricksurance SE").strip()
+    return _env("ENTITY_NAME", "Bricksurance SE")
 
 
 def get_solvency_app_url() -> str:
-    """External Solvency II workbench app URL. Empty falls back to the tile's
-    static default (so the hub still renders if the env var is unset)."""
-    return os.getenv("SOLVENCY_APP_URL", "").strip()
+    return _env("SOLVENCY_APP_URL")
 
 
 def get_pricing_app_url() -> str:
-    """External pricing workbench app URL. Empty falls back to the tile's
-    static default."""
-    return os.getenv("PRICING_APP_URL", "").strip()
+    return _env("PRICING_APP_URL")
+
+
+def hub_config() -> dict:
+    """Everything the frontend needs at /api/config."""
+    return {
+        "app_display_name": get_app_display_name(),
+        "entity_name": get_entity_name(),
+        "solvency_app_url": get_solvency_app_url(),
+        "pricing_app_url": get_pricing_app_url(),
+        # Workspace base + catalog for accelerator deep links.
+        "workspace_host": _env("WORKSPACE_HOST"),
+        "catalog_name": _env("CATALOG_NAME"),
+        # Excel accelerator pieces.
+        "excel_schema": _env("EXCEL_SCHEMA"),
+        "excel_folder_path": _env("EXCEL_FOLDER_PATH"),
+        "excel_rfr_job_id": _env("EXCEL_RFR_JOB_ID"),
+        "excel_pipeline_id": _env("EXCEL_PIPELINE_ID"),
+        "excel_scr_job_id": _env("EXCEL_SCR_JOB_ID"),
+        "excel_dashboard_id": _env("EXCEL_DASHBOARD_ID"),
+        # SAS migration pieces.
+        "sas_schema": _env("SAS_SCHEMA"),
+        "sas_notebook_path": _env("SAS_NOTEBOOK_PATH"),
+        "sas_job_id": _env("SAS_JOB_ID"),
+    }

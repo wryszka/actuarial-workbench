@@ -15,12 +15,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-from server.config import (
-    get_app_display_name,
-    get_entity_name,
-    get_pricing_app_url,
-    get_solvency_app_url,
-)
+from server.config import hub_config
 
 logging.basicConfig(
     level=logging.INFO,
@@ -59,17 +54,13 @@ async def me(request: Request):
 
 @app.get("/api/config")
 async def config():
-    """Per-workspace launcher config — the URL each live tile opens.
+    """Per-workspace launcher config — the URL each live tile opens, plus the
+    workspace pointers used to deep-link the accelerator tiles.
 
-    Empty strings mean "not configured"; the frontend falls back to the
-    static default baked into the tile registry.
+    Empty strings mean "not configured"; the frontend falls back to a static
+    default (live-tile URLs) or hides the link (accelerator deep links).
     """
-    return {
-        "app_display_name": get_app_display_name(),
-        "entity_name": get_entity_name(),
-        "solvency_app_url": get_solvency_app_url(),
-        "pricing_app_url": get_pricing_app_url(),
-    }
+    return hub_config()
 
 
 if FRONTEND_DIR.is_dir():

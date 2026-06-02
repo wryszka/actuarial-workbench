@@ -1,15 +1,34 @@
 /**
- * Hub config — the per-workspace URLs each live tile opens.
+ * Hub config — per-workspace URLs and workspace-resource pointers.
  *
  * Served by the FastAPI backend at /api/config, sourced from env vars set by
  * the bundle (databricks.yml). Empty strings mean "not configured", and the
- * caller falls back to the static default baked into the tile registry.
+ * caller falls back to a static default (live-tile URLs) or hides the link
+ * (accelerator deep links).
  */
 export interface HubConfig {
   app_display_name: string;
   entity_name: string;
   solvency_app_url: string;
   pricing_app_url: string;
+
+  // Workspace base URL used to build deep links into notebooks / jobs /
+  // pipelines / dashboards / Catalog Explorer for the accelerator tiles.
+  workspace_host: string;
+  catalog_name: string;
+
+  // Excel accelerator (actuarial-excel-accelerator) deployed pieces.
+  excel_schema: string;
+  excel_folder_path: string;   // workspace folder holding the demo notebooks
+  excel_rfr_job_id: string;    // demo 1 — EIOPA RFR ETL
+  excel_pipeline_id: string;   // demo 1 — silver_rfr DLT pipeline
+  excel_scr_job_id: string;    // demo 2A — SCR full run
+  excel_dashboard_id: string;  // demo 2A — Lakeview SCR dashboard
+
+  // SAS migration (sas_migration) deployed pieces.
+  sas_schema: string;
+  sas_notebook_path: string;   // workspace path of the demo notebook
+  sas_job_id: string;          // run job
 }
 
 export async function fetchConfig(): Promise<HubConfig> {
@@ -17,3 +36,15 @@ export async function fetchConfig(): Promise<HubConfig> {
   if (!res.ok) throw new Error(`config fetch failed: ${res.status}`);
   return res.json();
 }
+
+/** Build a deep link into the Databricks workspace from the configured host. */
+export const dbx = {
+  job: (host: string, id: string) => `${host.replace(/\/$/, '')}/jobs/${id}`,
+  pipeline: (host: string, id: string) => `${host.replace(/\/$/, '')}/pipelines/${id}`,
+  dashboard: (host: string, id: string) =>
+    `${host.replace(/\/$/, '')}/dashboardsv3/${id}/published`,
+  workspacePath: (host: string, path: string) =>
+    `${host.replace(/\/$/, '')}/#workspace${path}`,
+  table: (host: string, catalog: string, schema: string, table: string) =>
+    `${host.replace(/\/$/, '')}/explore/data/${catalog}/${schema}/${table}`,
+};

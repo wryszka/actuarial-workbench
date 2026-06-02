@@ -83,7 +83,7 @@ function TileCard({ tile }: { tile: Tile }) {
 
   if (isLive) {
     const cls = LIVE_TILE_PALETTE[tile.accent ?? 'blue'];
-    const periodNote = isExternal ? 'External app · opens in new tab' : 'Live';
+    const periodNote = isExternal ? 'External app · opens in new tab' : 'Worked example · live in this workspace';
     const containerCls = `block bg-white border-2 ${cls.border} rounded-2xl p-5 transition-all hover:shadow-lg ${cls.hover} group flex flex-col`;
     const inner = (
       <>
