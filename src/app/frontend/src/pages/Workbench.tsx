@@ -20,13 +20,17 @@ import { fetchConfig } from '../lib/config';
 export default function Workbench() {
   // Live-tile target URLs are per-workspace; source them from /api/config and
   // fall back to the static tile defaults if the call fails.
-  const [urls, setUrls] = useState<{ solvency?: string; pricing?: string }>({});
+  const [urls, setUrls] = useState<{ solvency?: string; pricing?: string; claims?: string }>({});
   const [entity, setEntity] = useState<string>('Bricksurance SE');
 
   useEffect(() => {
     fetchConfig()
       .then((c) => {
-        setUrls({ solvency: c.solvency_app_url || undefined, pricing: c.pricing_app_url || undefined });
+        setUrls({
+          solvency: c.solvency_app_url || undefined,
+          pricing: c.pricing_app_url || undefined,
+          claims: c.claims_app_url || undefined,
+        });
         if (c.entity_name) setEntity(c.entity_name);
       })
       .catch(() => undefined);
@@ -35,6 +39,7 @@ export default function Workbench() {
   const tiles: Tile[] = TILES.map((t) => {
     if (t.slug === 'solvency-2' && urls.solvency) return { ...t, to: urls.solvency };
     if (t.slug === 'pricing' && urls.pricing) return { ...t, to: urls.pricing };
+    if (t.slug === 'claims-workbench' && urls.claims) return { ...t, to: urls.claims };
     return t;
   });
 
@@ -83,7 +88,9 @@ function TileCard({ tile }: { tile: Tile }) {
 
   if (isLive) {
     const cls = LIVE_TILE_PALETTE[tile.accent ?? 'blue'];
-    const periodNote = isExternal ? 'External app · opens in new tab' : 'Worked example · live in this workspace';
+    const periodNote = tile.subtitle
+      ? (isExternal ? `${tile.subtitle} · opens in new tab` : tile.subtitle)
+      : (isExternal ? 'External app · opens in new tab' : 'Worked example · live in this workspace');
     const containerCls = `block bg-white border-2 ${cls.border} rounded-2xl p-5 transition-all hover:shadow-lg ${cls.hover} group flex flex-col`;
     const inner = (
       <>

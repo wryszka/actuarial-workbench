@@ -39,6 +39,9 @@ variables:
   pricing_app_url:
     description: Deployed pricing workbench Databricks App URL (derived from apps_domain_number)
     default: "https://pricing-workbench-${var.apps_domain_number}.aws.databricksapps.com/"
+  claims_app_url:
+    description: Deployed claims workbench Databricks App URL (derived from apps_domain_number)
+    default: "https://claims-workbench-${var.apps_domain_number}.aws.databricksapps.com"
 
   # — Accelerator deep links —
   # The SAS migration + Excel accelerator tiles open in-hub detail pages that
@@ -47,32 +50,14 @@ variables:
   catalog_name:
     description: Unity Catalog holding the accelerator schemas/tables
     default: ""
-  excel_schema:
-    description: Schema for the Excel accelerator (actuarial_excel_demo)
-    default: ""
   excel_folder_path:
     description: Workspace folder holding the Excel accelerator demo notebooks
-    default: ""
-  excel_rfr_job_id:
-    description: Job ID — EIOPA RFR ETL (demo 1)
-    default: ""
-  excel_pipeline_id:
-    description: DLT pipeline ID — silver_rfr (demo 1)
-    default: ""
-  excel_scr_job_id:
-    description: Job ID — SCR Standard Formula full run (demo 2A)
-    default: ""
-  excel_dashboard_id:
-    description: Lakeview dashboard ID — SCR Standard Formula (demo 2A)
     default: ""
   sas_schema:
     description: Schema for the SAS migration demo (sas_migration)
     default: ""
   sas_notebook_path:
     description: Workspace path of the SAS migration demo notebook
-    default: ""
-  sas_job_id:
-    description: Job ID — SAS migration demo run
     default: ""
 
   # — Workspace / auth —
@@ -115,15 +100,9 @@ targets:
       databricks_profile: DEV
       # Accelerator deep links (dev workspace) — captured after install.
       catalog_name: lr_dev_aws_us_catalog
-      excel_schema: actuarial_excel_demo
       excel_folder_path: /Workspace/Users/laurence.ryszka@databricks.com/actuarial-excel-accelerator/files
-      excel_rfr_job_id: "969701202189574"
-      excel_pipeline_id: "ae34d594-04e4-4cc3-a8bc-bb6eb02cff35"
-      excel_scr_job_id: "556927127597290"
-      excel_dashboard_id: "01f14ea722b81bc89379a7285dd464a3"
       sas_schema: sas_migration
       sas_notebook_path: /Workspace/Users/laurence.ryszka@databricks.com/sas_migration/files/sas_migration_demo
-      sas_job_id: "120511278698684"
 
   # ─ serverless ─ FEVM serverless workspace. Same app names; only the domain
   # number changes. Accelerator deep-link IDs would need re-capturing if the

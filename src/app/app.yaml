@@ -8,28 +8,18 @@ env:
     value: ${var.solvency_app_url}
   - name: PRICING_APP_URL
     value: ${var.pricing_app_url}
+  - name: CLAIMS_APP_URL
+    value: ${var.claims_app_url}
   # — Workspace + catalog for accelerator deep links —
   - name: WORKSPACE_HOST
     value: ${var.workspace_host}
   - name: CATALOG_NAME
     value: ${var.catalog_name}
-  # — Excel accelerator (actuarial-excel-accelerator) —
-  - name: EXCEL_SCHEMA
-    value: ${var.excel_schema}
+  # — Excel accelerator (actuarial-excel-accelerator) — notebooks only —
   - name: EXCEL_FOLDER_PATH
     value: ${var.excel_folder_path}
-  - name: EXCEL_RFR_JOB_ID
-    value: ${var.excel_rfr_job_id}
-  - name: EXCEL_PIPELINE_ID
-    value: ${var.excel_pipeline_id}
-  - name: EXCEL_SCR_JOB_ID
-    value: ${var.excel_scr_job_id}
-  - name: EXCEL_DASHBOARD_ID
-    value: ${var.excel_dashboard_id}
   # — SAS migration (sas_migration) —
   - name: SAS_SCHEMA
     value: ${var.sas_schema}
   - name: SAS_NOTEBOOK_PATH
     value: ${var.sas_notebook_path}
-  - name: SAS_JOB_ID
-    value: ${var.sas_job_id}

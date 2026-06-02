@@ -32,6 +32,10 @@ def get_pricing_app_url() -> str:
     return _env("PRICING_APP_URL")
 
 
+def get_claims_app_url() -> str:
+    return _env("CLAIMS_APP_URL")
+
+
 def hub_config() -> dict:
     """Everything the frontend needs at /api/config."""
     return {
@@ -39,18 +43,14 @@ def hub_config() -> dict:
         "entity_name": get_entity_name(),
         "solvency_app_url": get_solvency_app_url(),
         "pricing_app_url": get_pricing_app_url(),
+        "claims_app_url": get_claims_app_url(),
         # Workspace base + catalog for accelerator deep links.
         "workspace_host": _env("WORKSPACE_HOST"),
         "catalog_name": _env("CATALOG_NAME"),
-        # Excel accelerator pieces.
-        "excel_schema": _env("EXCEL_SCHEMA"),
+        # Excel accelerator pieces. Notebooks only for now — the jobs + DLT
+        # pipeline were removed and the notebooks aren't validated yet.
         "excel_folder_path": _env("EXCEL_FOLDER_PATH"),
-        "excel_rfr_job_id": _env("EXCEL_RFR_JOB_ID"),
-        "excel_pipeline_id": _env("EXCEL_PIPELINE_ID"),
-        "excel_scr_job_id": _env("EXCEL_SCR_JOB_ID"),
-        "excel_dashboard_id": _env("EXCEL_DASHBOARD_ID"),
         # SAS migration pieces.
         "sas_schema": _env("SAS_SCHEMA"),
         "sas_notebook_path": _env("SAS_NOTEBOOK_PATH"),
-        "sas_job_id": _env("SAS_JOB_ID"),
     }

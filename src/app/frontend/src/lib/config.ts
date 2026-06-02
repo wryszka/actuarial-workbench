@@ -11,24 +11,19 @@ export interface HubConfig {
   entity_name: string;
   solvency_app_url: string;
   pricing_app_url: string;
+  claims_app_url: string;
 
   // Workspace base URL used to build deep links into notebooks / jobs /
   // pipelines / dashboards / Catalog Explorer for the accelerator tiles.
   workspace_host: string;
   catalog_name: string;
 
-  // Excel accelerator (actuarial-excel-accelerator) deployed pieces.
-  excel_schema: string;
+  // Excel accelerator (actuarial-excel-accelerator) — notebooks only for now.
   excel_folder_path: string;   // workspace folder holding the demo notebooks
-  excel_rfr_job_id: string;    // demo 1 — EIOPA RFR ETL
-  excel_pipeline_id: string;   // demo 1 — silver_rfr DLT pipeline
-  excel_scr_job_id: string;    // demo 2A — SCR full run
-  excel_dashboard_id: string;  // demo 2A — Lakeview SCR dashboard
 
   // SAS migration (sas_migration) deployed pieces.
   sas_schema: string;
   sas_notebook_path: string;   // workspace path of the demo notebook
-  sas_job_id: string;          // run job
 }
 
 export async function fetchConfig(): Promise<HubConfig> {

@@ -10,8 +10,8 @@
  */
 import { Link } from 'react-router-dom';
 import {
-  ArrowLeft, Compass, ExternalLink, ChevronRight, FolderOpen, PlayCircle,
-  Workflow, LayoutDashboard, Table2, Github, NotebookPen,
+  ArrowLeft, Compass, ExternalLink, ChevronRight, FolderOpen,
+  Table2, Github, NotebookPen,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { ROADMAP_CONTENT } from '../lib/roadmap-content';
@@ -38,12 +38,8 @@ function buildPieces(slug: string, c: HubConfig): Piece[] {
   if (slug === 'sas-migration') {
     if (c.sas_notebook_path)
       pieces.push({ icon: NotebookPen, label: 'Open the demo notebook',
-        sublabel: 'Self-contained — creates the data, shows the SAS, runs the Genie Code translation',
+        sublabel: 'Self-contained — Run all creates the data, shows the SAS, runs the Genie Code translation',
         href: dbx.workspacePath(host, c.sas_notebook_path) });
-    if (c.sas_job_id)
-      pieces.push({ icon: PlayCircle, label: 'Run job — SAS Migration demo',
-        sublabel: 'Re-creates the policies + claims tables and runs all three translations',
-        href: dbx.job(host, c.sas_job_id) });
     if (c.catalog_name && c.sas_schema) {
       pieces.push({ icon: Table2, label: `Table — ${c.sas_schema}.policies`,
         sublabel: 'Catalog Explorer — lineage, audit, sample data',
@@ -55,30 +51,18 @@ function buildPieces(slug: string, c: HubConfig): Piece[] {
   }
 
   if (slug === 'excel-migration') {
-    if (c.excel_folder_path)
-      pieces.push({ icon: FolderOpen, label: 'Browse the accelerator notebooks',
+    // Notebooks only for now — not yet validated end-to-end.
+    if (c.excel_folder_path) {
+      pieces.push({ icon: FolderOpen, label: 'Browse all accelerator notebooks',
         sublabel: 'demo_01_rfr_etl + demo_02a_scr_sf — the full migration recipe, step by step',
         href: dbx.workspacePath(host, c.excel_folder_path) });
-    if (c.excel_rfr_job_id)
-      pieces.push({ icon: PlayCircle, label: 'Run job — EIOPA RFR ETL (demo 1)',
-        sublabel: 'bronze autoloader → DLT silver → gold rfr_curves',
-        href: dbx.job(host, c.excel_rfr_job_id) });
-    if (c.excel_pipeline_id)
-      pieces.push({ icon: Workflow, label: 'DLT pipeline — silver_rfr (demo 1)',
-        sublabel: 'Unpivot + data-quality expectations + forward rate',
-        href: dbx.pipeline(host, c.excel_pipeline_id) });
-    if (c.excel_scr_job_id)
-      pieces.push({ icon: PlayCircle, label: 'Run job — SCR Standard Formula (demo 2A)',
-        sublabel: 'orchestrator → parity test → MLflow sweep → UC UDFs → dashboard',
-        href: dbx.job(host, c.excel_scr_job_id) });
-    if (c.excel_dashboard_id)
-      pieces.push({ icon: LayoutDashboard, label: 'Lakeview dashboard — SCR Standard Formula',
-        sublabel: 'SCR waterfall, sub-module breakdown, worst scenarios',
-        href: dbx.dashboard(host, c.excel_dashboard_id) });
-    if (c.catalog_name && c.excel_schema)
-      pieces.push({ icon: Table2, label: `Table — ${c.excel_schema}.rfr_curves`,
-        sublabel: 'Catalog Explorer — the gold term-structure table demos 2 + 3 consume',
-        href: dbx.table(host, c.catalog_name, c.excel_schema, 'rfr_curves') });
+      pieces.push({ icon: NotebookPen, label: 'Demo 1 — EIOPA RFR ETL notebooks',
+        sublabel: 'bronze autoloader · DLT silver (02_silver_dlt.sql) · gold publish · validate',
+        href: dbx.workspacePath(host, `${c.excel_folder_path}/demo_01_rfr_etl/src`) });
+      pieces.push({ icon: NotebookPen, label: 'Demo 2A — SCR Standard Formula notebooks',
+        sublabel: 'sub-modules · orchestrator · parity · MLflow sweep · UC UDFs · dashboard',
+        href: dbx.workspacePath(host, `${c.excel_folder_path}/demo_02a_scr_sf/src`) });
+    }
   }
 
   return pieces;
@@ -132,9 +116,11 @@ export default function AcceleratorDetail({ slug }: { slug: string }) {
 
       {/* Live pieces — the whole point of this page */}
       <section className="bg-white border-2 border-blue-200 rounded-lg p-5">
-        <h2 className="text-base font-bold text-gray-900 mb-1">Live in this workspace</h2>
+        <h2 className="text-base font-bold text-gray-900 mb-1">In this workspace</h2>
         <p className="text-xs text-gray-500 mb-3 leading-relaxed">
-          Deployed and run on {cfg?.catalog_name || 'this workspace'}. Each opens in the Databricks workspace (new tab).
+          {slug === 'excel-migration'
+            ? 'Notebooks deployed to this workspace — open and run them interactively (not yet validated end-to-end).'
+            : 'Deployed in this workspace. Each opens in the Databricks workspace (new tab).'}
         </p>
         {pieces.length === 0 ? (
           <p className="text-sm text-gray-500 italic">

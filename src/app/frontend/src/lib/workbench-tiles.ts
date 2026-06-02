@@ -26,6 +26,7 @@ export interface Tile {
   icon: React.ComponentType<{ className?: string }>;
   to: string;                      // navigate target (external URL for live tiles)
   accent?: 'blue';                 // live tile colour palette
+  subtitle?: string;               // optional small line under the title (e.g. entity)
 }
 
 // Static fallback URLs for the live tiles. These are overridden at runtime by
@@ -36,6 +37,8 @@ export const DEFAULT_SOLVENCY_APP_URL =
   'https://solvency2-workbench-7474656169654171.aws.databricksapps.com';
 export const DEFAULT_PRICING_APP_URL =
   'https://pricing-workbench-7474656169654171.aws.databricksapps.com/';
+export const DEFAULT_CLAIMS_APP_URL =
+  'https://claims-workbench-7474656169654171.aws.databricksapps.com';
 
 export const TILES: Tile[] = [
   {
@@ -73,12 +76,14 @@ export const TILES: Tile[] = [
     to: '/roadmap/reinsurance',
   },
   {
-    slug: 'claims-analytics',
-    label: 'Claims analytics',
-    description: 'Fraud signals, experience monitoring, reserving feedback loop. Same claim data the reserving model already reads.',
-    status: 'roadmap',
+    slug: 'claims-workbench',
+    label: 'Claims Intelligence Workbench',
+    description: 'From first notice to settlement on one governed platform. AI auto-closes the simple claims in minutes and flags the rest for a handler — with its reasoning shown. Built on the Databricks Smart Claims accelerator, extended with agentic AI.',
+    status: 'live',
     icon: AlertOctagon,
-    to: '/roadmap/claims-analytics',
+    to: DEFAULT_CLAIMS_APP_URL,
+    accent: 'blue',
+    subtitle: 'Bricksurance SE',
   },
   {
     slug: 'reserving-deep-dive',
