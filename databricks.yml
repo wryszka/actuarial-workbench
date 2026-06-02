@@ -83,6 +83,11 @@ workspace:
   profile: ${var.databricks_profile}
 
 sync:
+  # Force-include the built SPA: dist/ is in .gitignore (rebuilt on deploy), and
+  # `databricks bundle deploy` respects .gitignore, so without this the frontend
+  # never uploads and the app 404s. sync.include overrides .gitignore.
+  include:
+    - src/app/frontend/dist/**
   exclude:
     - src/app/.venv/
     - src/app/frontend/node_modules/
