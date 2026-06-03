@@ -13,7 +13,7 @@
  */
 import {
   Shield, TrendingUp, FileSpreadsheet, Network, AlertOctagon, BarChart3,
-  Code2, Table2,
+  Code2, Table2, ScrollText,
 } from 'lucide-react';
 
 export type TileStatus = 'live' | 'in_progress' | 'roadmap';
@@ -111,5 +111,14 @@ export const TILES: Tile[] = [
     icon: Table2,
     to: '/excel-migration',
     accent: 'blue',
+  },
+  {
+    slug: 'mrc-intelligence',
+    label: 'MRC policy intelligence',
+    description: "Lloyd's Market Reform Contract (MRC) PDFs turned into a governed knowledge graph using ACORD terminology — insured, broker, syndicate, limits, clauses and exclusions, and the links between them, extracted with the Foundation Model API. A multi-agent assistant (Genie NL-to-SQL, Knowledge Assistant vector search, and a Claude supervisor) answers underwriter, broker and compliance questions over it.",
+    status: 'in_progress',
+    icon: ScrollText,
+    to: '',                       // description only for now — not yet wired to the app
+    subtitle: "Lloyd's market · ACORD",
   },
 ];

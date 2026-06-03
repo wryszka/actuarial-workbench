@@ -134,12 +134,13 @@ function TileCard({ tile }: { tile: Tile }) {
   }
 
   if (isInProgress) {
-    // In-progress tile — warmer than roadmap, signals active build
-    return (
-      <Link to={tile.to}
-        className="block bg-white border-2 border-amber-300 rounded-2xl p-5 hover:shadow-lg hover:border-amber-400 hover:shadow-amber-100 transition-all flex flex-col group">
+    // In-progress tile — warmer than roadmap, signals active build. When `to`
+    // is empty the card is description-only (not yet wired to anything).
+    const hasLink = Boolean(tile.to);
+    const inner = (
+      <>
         <div className="flex items-start gap-3 mb-3">
-          <div className="w-12 h-12 rounded-xl bg-amber-100 group-hover:bg-amber-200 flex items-center justify-center transition-colors">
+          <div className={`w-12 h-12 rounded-xl bg-amber-100 ${hasLink ? 'group-hover:bg-amber-200' : ''} flex items-center justify-center transition-colors`}>
             <Icon className="w-6 h-6 text-amber-700" />
           </div>
           <div className="flex-1">
@@ -150,15 +151,21 @@ function TileCard({ tile }: { tile: Tile }) {
                 in progress
               </span>
             </div>
-            <p className="text-[11px] text-amber-700/80 mt-0.5">Worked example · being built</p>
+            <p className="text-[11px] text-amber-700/80 mt-0.5">{tile.subtitle ?? 'Worked example · being built'}</p>
           </div>
         </div>
         <TileDescription description={tile.description} />
-        <div className="mt-3 inline-flex items-center gap-1 text-sm font-bold text-amber-700">
-          Read more <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-        </div>
-      </Link>
+        {hasLink && (
+          <div className="mt-3 inline-flex items-center gap-1 text-sm font-bold text-amber-700">
+            Read more <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </div>
+        )}
+      </>
     );
+    const baseCls = 'block bg-white border-2 border-amber-300 rounded-2xl p-5 transition-all flex flex-col';
+    return hasLink
+      ? <Link to={tile.to} className={`${baseCls} hover:shadow-lg hover:border-amber-400 hover:shadow-amber-100 group`}>{inner}</Link>
+      : <div className={baseCls}>{inner}</div>;
   }
 
   // Roadmap tile — visually de-emphasised
