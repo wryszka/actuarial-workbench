@@ -139,6 +139,7 @@ function TileCard({ tile }: { tile: Tile }) {
     // In-progress tile — warmer than roadmap, signals active build. When `to`
     // is empty the card is description-only (not yet wired to anything).
     const hasLink = Boolean(tile.to);
+    const isExternalLink = hasLink && /^https?:\/\//.test(tile.to);
     const inner = (
       <>
         <div className="flex items-start gap-3 mb-3">
@@ -159,15 +160,17 @@ function TileCard({ tile }: { tile: Tile }) {
         <TileDescription description={tile.description} />
         {hasLink && (
           <div className="mt-3 inline-flex items-center gap-1 text-sm font-bold text-amber-700">
-            Read more <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            {isExternalLink ? 'Open' : 'Read more'} <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </div>
         )}
       </>
     );
     const baseCls = 'block bg-white border-2 border-amber-300 rounded-2xl p-5 transition-all flex flex-col';
-    return hasLink
-      ? <Link to={tile.to} className={`${baseCls} hover:shadow-lg hover:border-amber-400 hover:shadow-amber-100 group`}>{inner}</Link>
-      : <div className={baseCls}>{inner}</div>;
+    const linkCls = `${baseCls} hover:shadow-lg hover:border-amber-400 hover:shadow-amber-100 group`;
+    if (!hasLink) return <div className={baseCls}>{inner}</div>;
+    return isExternalLink
+      ? <a href={tile.to} target="_blank" rel="noopener noreferrer" className={linkCls}>{inner}</a>
+      : <Link to={tile.to} className={linkCls}>{inner}</Link>;
   }
 
   // Roadmap tile — visually de-emphasised

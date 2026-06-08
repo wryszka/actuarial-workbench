@@ -74,10 +74,10 @@ export const TILES: Tile[] = [
     slug: 'reinsurance',
     label: 'Reinsurance',
     description: 'Treaty performance, retrocession optimisation and capital relief — on the same exposures that feed the Solvency II cat models.',
-    status: 'live',
+    status: 'in_progress',
     icon: Network,
     to: DEFAULT_REINSURANCE_APP_URL,
-    accent: 'blue',
+    subtitle: 'External app · opens in new tab',
   },
   {
     slug: 'claims-workbench',
