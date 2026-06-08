@@ -20,7 +20,7 @@ import { fetchConfig } from '../lib/config';
 export default function Workbench() {
   // Live-tile target URLs are per-workspace; source them from /api/config and
   // fall back to the static tile defaults if the call fails.
-  const [urls, setUrls] = useState<{ solvency?: string; pricing?: string; claims?: string }>({});
+  const [urls, setUrls] = useState<{ solvency?: string; pricing?: string; claims?: string; reinsurance?: string }>({});
   const [entity, setEntity] = useState<string>('Bricksurance SE');
 
   useEffect(() => {
@@ -30,6 +30,7 @@ export default function Workbench() {
           solvency: c.solvency_app_url || undefined,
           pricing: c.pricing_app_url || undefined,
           claims: c.claims_app_url || undefined,
+          reinsurance: c.reinsurance_app_url || undefined,
         });
         if (c.entity_name) setEntity(c.entity_name);
       })
@@ -40,6 +41,7 @@ export default function Workbench() {
     if (t.slug === 'solvency-2' && urls.solvency) return { ...t, to: urls.solvency };
     if (t.slug === 'pricing' && urls.pricing) return { ...t, to: urls.pricing };
     if (t.slug === 'claims-workbench' && urls.claims) return { ...t, to: urls.claims };
+    if (t.slug === 'reinsurance' && urls.reinsurance) return { ...t, to: urls.reinsurance };
     return t;
   });
 

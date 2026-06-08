@@ -42,6 +42,9 @@ variables:
   claims_app_url:
     description: Deployed claims workbench Databricks App URL (derived from apps_domain_number)
     default: "https://claims-workbench-${var.apps_domain_number}.aws.databricksapps.com"
+  reinsurance_app_url:
+    description: Deployed reinsurance workbench Databricks App URL (derived from apps_domain_number)
+    default: "https://reinsurance-workbench-${var.apps_domain_number}.aws.databricksapps.com"
 
   # — Accelerator deep links —
   # The SAS migration + Excel accelerator tiles open in-hub detail pages that

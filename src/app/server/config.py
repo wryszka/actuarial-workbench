@@ -36,6 +36,10 @@ def get_claims_app_url() -> str:
     return _env("CLAIMS_APP_URL")
 
 
+def get_reinsurance_app_url() -> str:
+    return _env("REINSURANCE_APP_URL")
+
+
 def hub_config() -> dict:
     """Everything the frontend needs at /api/config."""
     return {
@@ -44,6 +48,7 @@ def hub_config() -> dict:
         "solvency_app_url": get_solvency_app_url(),
         "pricing_app_url": get_pricing_app_url(),
         "claims_app_url": get_claims_app_url(),
+        "reinsurance_app_url": get_reinsurance_app_url(),
         # Workspace base + catalog for accelerator deep links.
         "workspace_host": _env("WORKSPACE_HOST"),
         "catalog_name": _env("CATALOG_NAME"),

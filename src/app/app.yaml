@@ -10,6 +10,8 @@ env:
     value: ${var.pricing_app_url}
   - name: CLAIMS_APP_URL
     value: ${var.claims_app_url}
+  - name: REINSURANCE_APP_URL
+    value: ${var.reinsurance_app_url}
   # — Workspace + catalog for accelerator deep links —
   - name: WORKSPACE_HOST
     value: ${var.workspace_host}

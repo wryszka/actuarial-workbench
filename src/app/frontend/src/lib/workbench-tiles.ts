@@ -39,6 +39,8 @@ export const DEFAULT_PRICING_APP_URL =
   'https://pricing-workbench-7474656169654171.aws.databricksapps.com/';
 export const DEFAULT_CLAIMS_APP_URL =
   'https://claims-workbench-7474656169654171.aws.databricksapps.com';
+export const DEFAULT_REINSURANCE_APP_URL =
+  'https://reinsurance-workbench-7474656169654171.aws.databricksapps.com';
 
 export const TILES: Tile[] = [
   {
@@ -71,10 +73,11 @@ export const TILES: Tile[] = [
   {
     slug: 'reinsurance',
     label: 'Reinsurance',
-    description: 'Treaty performance, retrocession optimisation, capital relief. Same exposures fed into Solvency II cat models.',
-    status: 'roadmap',
+    description: 'Treaty performance, retrocession optimisation and capital relief — on the same exposures that feed the Solvency II cat models.',
+    status: 'live',
     icon: Network,
-    to: '/roadmap/reinsurance',
+    to: DEFAULT_REINSURANCE_APP_URL,
+    accent: 'blue',
   },
   {
     slug: 'claims-workbench',

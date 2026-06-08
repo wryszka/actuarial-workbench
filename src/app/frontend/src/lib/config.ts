@@ -12,6 +12,7 @@ export interface HubConfig {
   solvency_app_url: string;
   pricing_app_url: string;
   claims_app_url: string;
+  reinsurance_app_url: string;
 
   // Workspace base URL used to build deep links into notebooks / jobs /
   // pipelines / dashboards / Catalog Explorer for the accelerator tiles.
