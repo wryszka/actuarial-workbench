@@ -13,7 +13,7 @@
  */
 import {
   Shield, TrendingUp, FileSpreadsheet, Network, AlertOctagon, BarChart3,
-  Code2, Table2, ScrollText,
+  Code2, Table2, ScrollText, HeartPulse,
 } from 'lucide-react';
 
 export type TileStatus = 'live' | 'in_progress' | 'roadmap';
@@ -41,6 +41,8 @@ export const DEFAULT_CLAIMS_APP_URL =
   'https://claims-workbench-7474656169654171.aws.databricksapps.com';
 export const DEFAULT_REINSURANCE_APP_URL =
   'https://reinsurance-workbench-7474656169654171.aws.databricksapps.com';
+export const DEFAULT_LIFECAST_APP_URL =
+  'https://lifecast-workbench-7474656169654171.aws.databricksapps.com';
 
 export const TILES: Tile[] = [
   {
@@ -88,6 +90,15 @@ export const TILES: Tile[] = [
     to: DEFAULT_CLAIMS_APP_URL,
     accent: 'blue',
     subtitle: 'Bricksurance SE',
+  },
+  {
+    slug: 'lifecast',
+    label: 'LifeCast',
+    description: 'Life insurance liability modelling, end to end on real worked examples — governed model points and assumptions, best-estimate liability projection, ESG scenario testing and stochastic fan-out — with the actuarial engine logic versioned, audited and run on serverless.',
+    status: 'in_progress',
+    icon: HeartPulse,
+    to: DEFAULT_LIFECAST_APP_URL,
+    subtitle: 'Bricksurance Life · external app',
   },
   {
     slug: 'reserving-deep-dive',

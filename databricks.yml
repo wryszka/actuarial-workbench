@@ -45,6 +45,9 @@ variables:
   reinsurance_app_url:
     description: Deployed reinsurance workbench Databricks App URL (derived from apps_domain_number)
     default: "https://reinsurance-workbench-${var.apps_domain_number}.aws.databricksapps.com"
+  lifecast_app_url:
+    description: Deployed LifeCast workbench Databricks App URL (derived from apps_domain_number)
+    default: "https://lifecast-workbench-${var.apps_domain_number}.aws.databricksapps.com"
 
   # — Accelerator deep links —
   # The SAS migration + Excel accelerator tiles open in-hub detail pages that
