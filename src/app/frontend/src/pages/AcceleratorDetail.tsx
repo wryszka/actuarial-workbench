@@ -51,10 +51,10 @@ function buildPieces(slug: string, c: HubConfig): Piece[] {
   }
 
   if (slug === 'excel-migration') {
-    // Notebooks only for now — not yet validated end-to-end.
+    // Deployed to a shared workspace folder so the notebooks open for everyone.
     if (c.excel_folder_path) {
       pieces.push({ icon: FolderOpen, label: 'Browse all accelerator notebooks',
-        sublabel: 'demo_01_rfr_etl + demo_02a_scr_sf — the full migration recipe, step by step',
+        sublabel: 'Shared folder — demo_01_rfr_etl + demo_02a_scr_sf + demo_03_experience_genie',
         href: dbx.workspacePath(host, c.excel_folder_path) });
       pieces.push({ icon: NotebookPen, label: 'Demo 1 — EIOPA RFR ETL notebooks',
         sublabel: 'bronze autoloader · DLT silver (02_silver_dlt.sql) · gold publish · validate',
@@ -62,6 +62,9 @@ function buildPieces(slug: string, c: HubConfig): Piece[] {
       pieces.push({ icon: NotebookPen, label: 'Demo 2A — SCR Standard Formula notebooks',
         sublabel: 'sub-modules · orchestrator · parity · MLflow sweep · UC UDFs · dashboard',
         href: dbx.workspacePath(host, `${c.excel_folder_path}/demo_02a_scr_sf/src`) });
+      pieces.push({ icon: NotebookPen, label: 'Demo 3 — Experience & loss-ratio monitoring notebooks',
+        sublabel: 'bronze → silver → gold experience · parity · Genie space · AI/BI dashboard',
+        href: dbx.workspacePath(host, `${c.excel_folder_path}/demo_03_experience_genie`) });
     }
   }
 

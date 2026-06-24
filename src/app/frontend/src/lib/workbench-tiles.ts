@@ -120,7 +120,7 @@ export const TILES: Tile[] = [
   {
     slug: 'excel-migration',
     label: 'Excel migration',
-    description: 'Worked example — lifting actuarial Excel + VBA (EIOPA RFR ingestion, Solvency II SCR Standard Formula) into governed Delta tables, DLT, MLflow, UC UDFs and a Lakeview dashboard, with an Excel round-trip and parity testing.',
+    description: 'Worked examples — lifting actuarial Excel + VBA into governed Delta: EIOPA RFR ingestion, the Solvency II SCR Standard Formula (with Excel round-trip + parity), and monthly experience / loss-ratio monitoring served through a Genie space and AI/BI dashboard.',
     status: 'in_progress',
     icon: Table2,
     to: '/excel-migration',

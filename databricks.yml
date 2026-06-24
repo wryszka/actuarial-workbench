@@ -106,7 +106,7 @@ targets:
       databricks_profile: DEV
       # Accelerator deep links (dev workspace) — captured after install.
       catalog_name: lr_dev_aws_us_catalog
-      excel_folder_path: /Workspace/Users/laurence.ryszka@databricks.com/actuarial-excel-accelerator/files
+      excel_folder_path: /Workspace/Shared/actuarial-excel-accelerator
       sas_schema: sas_migration
       sas_notebook_path: /Workspace/Users/laurence.ryszka@databricks.com/sas_migration/files/sas_migration_demo
 
