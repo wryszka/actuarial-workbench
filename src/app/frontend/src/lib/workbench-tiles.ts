@@ -154,14 +154,4 @@ export const TILES: Tile[] = [
     to: '',                       // recording link to come — placeholder for now
     subtitle: 'Enablement · recording to come',
   },
-  {
-    slug: 'contact',
-    label: 'Laurence Ryszka',
-    description: 'Insurance Tech Lead — for any questions or details, info inside.',
-    status: 'contact',
-    icon: HeartPulse,                 // unused for contact tiles (photo shown instead)
-    to: '/contact',
-    photo: '/laurence.png',
-    subtitle: 'Owner & creator of these demos',
-  },
 ];

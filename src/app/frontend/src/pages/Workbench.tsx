@@ -35,13 +35,24 @@ export default function Workbench() {
   return (
     <>
     <div className="max-w-6xl mx-auto p-6 space-y-7">
-      <header className="pt-2">
-        <div className="text-[11px] uppercase tracking-widest text-blue-700 font-bold">Actuarial Workbench</div>
-        <h1 className="text-3xl font-bold text-gray-900 tracking-tight mt-1">{entity} — Composite Insurer</h1>
-        <p className="text-base text-gray-500 mt-1.5 leading-relaxed max-w-3xl">
-          One front door for the actuarial work — each workflow is its own app on the
-          shared lakehouse. Solvency II and Pricing are running today; the others are next.
-        </p>
+      <header className="pt-2 flex items-start justify-between gap-4 flex-wrap">
+        <div className="min-w-0">
+          <div className="text-[11px] uppercase tracking-widest text-blue-700 font-bold">Actuarial Workbench</div>
+          <h1 className="text-3xl font-bold text-gray-900 tracking-tight mt-1">{entity} — Composite Insurer</h1>
+          <p className="text-base text-gray-500 mt-1.5 leading-relaxed max-w-3xl">
+            One front door for the actuarial work — each workflow is its own app on the
+            shared lakehouse. Solvency II and Pricing are running today; the others are next.
+          </p>
+        </div>
+        <Link to="/contact"
+          className="shrink-0 flex items-center gap-3 bg-white border border-emerald-200 rounded-xl pl-2 pr-3.5 py-2 hover:border-emerald-300 hover:shadow-sm transition-all">
+          <img src="/laurence.png" alt="Laurence Ryszka"
+            className="w-11 h-11 rounded-full object-cover ring-2 ring-emerald-100" />
+          <div className="leading-tight">
+            <div className="text-sm font-bold text-gray-900">Laurence Ryszka</div>
+            <div className="text-[11px] text-gray-500">Creator of the demos</div>
+          </div>
+        </Link>
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -91,32 +102,6 @@ function TileCard({ tile }: { tile: Tile }) {
   const isInProgress = tile.status === 'in_progress';
   const Icon = tile.icon;
   const isExternal = isLive && /^https?:\/\//.test(tile.to);
-
-  if (tile.status === 'contact') {
-    return (
-      <Link to={tile.to}
-        className="block bg-white border-2 border-emerald-200 rounded-2xl p-5 transition-all hover:shadow-lg hover:border-emerald-300 hover:shadow-emerald-100 flex flex-col group">
-        <div className="flex items-start gap-3 mb-3">
-          {tile.photo
-            ? <img src={tile.photo} alt={tile.label} className="w-14 h-14 rounded-full object-cover shrink-0 ring-2 ring-emerald-100" />
-            : <div className="w-14 h-14 rounded-full bg-emerald-100" />}
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2">
-              <h3 className="text-xl font-bold text-gray-900 tracking-tight">{tile.label}</h3>
-              <span className="text-[10px] uppercase tracking-widest font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-200">
-                contact
-              </span>
-            </div>
-            <p className="text-[11px] text-gray-500 mt-0.5">{tile.subtitle}</p>
-          </div>
-        </div>
-        <p className="text-sm text-gray-700 leading-relaxed flex-1">{tile.description}</p>
-        <div className="mt-3 inline-flex items-center gap-1 text-sm font-bold text-emerald-700">
-          Get in touch <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-        </div>
-      </Link>
-    );
-  }
 
   if (isLive) {
     const cls = LIVE_TILE_PALETTE[tile.accent ?? 'blue'];

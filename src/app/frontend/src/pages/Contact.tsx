@@ -23,7 +23,7 @@ export default function Contact() {
         <img src="/laurence.png" alt="Laurence Ryszka"
           className="w-28 h-28 rounded-2xl object-cover shrink-0 ring-2 ring-emerald-100" />
         <div className="flex-1 pt-1">
-          <div className="text-[11px] uppercase tracking-widest text-emerald-700 font-bold">Owner &amp; creator of these demos</div>
+          <div className="text-[11px] uppercase tracking-widest text-emerald-700 font-bold">Creator of the demos</div>
           <h1 className="text-3xl font-bold text-gray-900 tracking-tight mt-1">Laurence Ryszka</h1>
           <p className="text-base text-gray-500 mt-0.5">Insurance Tech Lead</p>
           <p className="text-sm text-gray-700 mt-3 leading-relaxed max-w-2xl">
