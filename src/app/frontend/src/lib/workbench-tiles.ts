@@ -75,11 +75,12 @@ export const TILES: Tile[] = [
   {
     slug: 'reinsurance',
     label: 'Reinsurance',
-    description: 'Treaty performance, retrocession optimisation and capital relief — on the same exposures that feed the Solvency II cat models.',
-    status: 'in_progress',
+    description: 'Treaty submission intelligence for a reinsurer — triage and rate-on-line pricing, then the crux: each submission’s marginal accumulation into the peak windstorm zone and its Solvency II capital impact, decided in seconds. Live cat-event response when a storm makes landfall, with Genie, a tool-calling agent and AI/BI over one governed book.',
+    status: 'live',
     icon: Network,
     to: DEFAULT_REINSURANCE_APP_URL,
-    subtitle: 'External app · opens in new tab',
+    accent: 'blue',
+    subtitle: 'Bricksurance Re',
   },
   {
     slug: 'claims-workbench',
