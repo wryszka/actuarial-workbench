@@ -14,7 +14,10 @@
  * opens (falls back to `appUrlFallback` if config is unavailable).
  */
 import type { HubConfig } from './config';
-import { DEFAULT_REINSURANCE_APP_URL } from './workbench-tiles';
+import {
+  DEFAULT_SOLVENCY_APP_URL, DEFAULT_PRICING_APP_URL, DEFAULT_CLAIMS_APP_URL,
+  DEFAULT_REINSURANCE_APP_URL, DEFAULT_LIFECAST_APP_URL,
+} from './workbench-tiles';
 
 export interface DemoPage {
   slug: string;
@@ -30,6 +33,56 @@ export interface DemoPage {
 }
 
 export const DEMO_PAGES: Record<string, DemoPage> = {
+  'solvency-2': {
+    slug: 'solvency-2',
+    title: 'Solvency II',
+    subtitle: 'Bricksurance SE',
+    blurb:
+      'Capital, governance, disclosure and ORSA — the full Solvency II cycle on one platform, ' +
+      'with native model development and an end-to-end audit trail.',
+    appUrlKey: 'solvency_app_url',
+    appUrlFallback: DEFAULT_SOLVENCY_APP_URL,
+    learnInApp: true,
+  },
+
+  pricing: {
+    slug: 'pricing',
+    title: 'Pricing workbench',
+    subtitle: 'Commercial motor',
+    blurb:
+      'The full pricing loop on Databricks — ingest, build, price, investigate, govern. AI agents ' +
+      'across it: data-quality checks, factor-lift explainers, model selection, and “why this price?” ' +
+      'quote investigation via Genie + Mosaic AI.',
+    appUrlKey: 'pricing_app_url',
+    appUrlFallback: DEFAULT_PRICING_APP_URL,
+  },
+
+  'claims-workbench': {
+    slug: 'claims-workbench',
+    title: 'Claims Intelligence Workbench',
+    subtitle: 'Bricksurance SE',
+    blurb:
+      'From first notice to settlement on one governed platform. AI auto-closes the simple claims in ' +
+      'minutes and flags the rest for a handler — with its reasoning shown. Built on the Databricks ' +
+      'Smart Claims accelerator, extended with agentic AI.',
+    appUrlKey: 'claims_app_url',
+    appUrlFallback: DEFAULT_CLAIMS_APP_URL,
+    learnInApp: true,
+  },
+
+  lifecast: {
+    slug: 'lifecast',
+    title: 'LifeCast',
+    subtitle: 'Bricksurance Life',
+    blurb:
+      'Life insurance liability modelling, end to end on real worked examples — governed model points ' +
+      'and assumptions, best-estimate liability projection, ESG scenario testing and stochastic ' +
+      'fan-out — with the actuarial engine logic versioned, audited and run on serverless.',
+    appUrlKey: 'lifecast_app_url',
+    appUrlFallback: DEFAULT_LIFECAST_APP_URL,
+    learnInApp: true,
+  },
+
   reinsurance: {
     slug: 'reinsurance',
     title: 'Reinsurance',

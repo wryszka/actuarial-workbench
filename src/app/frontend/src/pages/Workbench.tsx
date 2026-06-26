@@ -18,35 +18,18 @@ import { TILES, type Tile } from '../lib/workbench-tiles';
 import { fetchConfig } from '../lib/config';
 
 export default function Workbench() {
-  // Live-tile target URLs are per-workspace; source them from /api/config and
-  // fall back to the static tile defaults if the call fails.
-  const [urls, setUrls] = useState<{ solvency?: string; pricing?: string; claims?: string; reinsurance?: string; lifecast?: string }>({});
+  // Demo tiles route to in-hub landing pages (/demo/<slug>), which resolve the
+  // per-workspace app URL from /api/config themselves — so the landing page only
+  // needs the entity name for the header.
   const [entity, setEntity] = useState<string>('Bricksurance SE');
 
   useEffect(() => {
     fetchConfig()
-      .then((c) => {
-        setUrls({
-          solvency: c.solvency_app_url || undefined,
-          pricing: c.pricing_app_url || undefined,
-          claims: c.claims_app_url || undefined,
-          reinsurance: c.reinsurance_app_url || undefined,
-          lifecast: c.lifecast_app_url || undefined,
-        });
-        if (c.entity_name) setEntity(c.entity_name);
-      })
+      .then((c) => { if (c.entity_name) setEntity(c.entity_name); })
       .catch(() => undefined);
   }, []);
 
-  const tiles: Tile[] = TILES.map((t) => {
-    if (t.slug === 'solvency-2' && urls.solvency) return { ...t, to: urls.solvency };
-    if (t.slug === 'pricing' && urls.pricing) return { ...t, to: urls.pricing };
-    if (t.slug === 'claims-workbench' && urls.claims) return { ...t, to: urls.claims };
-    // reinsurance routes to its in-hub demo landing page (/demo/reinsurance),
-    // which opens the app itself — so it is NOT overridden to the app URL here.
-    if (t.slug === 'lifecast' && urls.lifecast) return { ...t, to: urls.lifecast };
-    return t;
-  });
+  const tiles: Tile[] = TILES;
 
   return (
     <>

@@ -67,14 +67,12 @@ export default function DemoLanding() {
         </a>
       )}
 
-      {/* Resources */}
+      {/* Resources — same standard set on every demo; placeholders until provided */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {demo.runDocUrl && (
-          <ResourceCard
-            icon={FileText} title="Demo run doc"
-            sublabel="Step-by-step guide to running this demo"
-            href={demo.runDocUrl} cta="Open doc" />
-        )}
+        <ResourceCard
+          icon={FileText} title="Demo run doc"
+          sublabel="Step-by-step guide to running this demo"
+          href={demo.runDocUrl} cta="Open doc" />
         <ResourceCard
           icon={Clapperboard} title="Client-facing demo"
           sublabel="Polished walkthrough video for customer audiences"
