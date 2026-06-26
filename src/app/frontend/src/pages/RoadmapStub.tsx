@@ -6,7 +6,7 @@
  * app, rendered as external deep links onto its configured base URL.
  */
 import { Link, useParams } from 'react-router-dom';
-import { ArrowLeft, Compass, ExternalLink, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Compass, ExternalLink, ChevronRight, Presentation, ArrowRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { ROADMAP_CONTENT } from '../lib/roadmap-content';
 import { TILES, DEFAULT_SOLVENCY_APP_URL } from '../lib/workbench-tiles';
@@ -77,6 +77,22 @@ export default function RoadmapStub() {
         <h2 className="text-base font-bold text-gray-900 mb-2">What this workflow covers</h2>
         <p className="text-sm text-gray-700 leading-relaxed">{content.what}</p>
       </section>
+
+      {content.firstStepsDeckUrl && (
+        <a href={content.firstStepsDeckUrl} target="_blank" rel="noopener noreferrer"
+          className="flex items-center justify-between gap-3 p-5 rounded-2xl bg-gray-900 text-white hover:bg-gray-800 transition-colors group">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center shrink-0">
+              <Presentation className="w-6 h-6 text-blue-300" />
+            </div>
+            <div>
+              <div className="text-lg font-bold tracking-tight">First steps deck</div>
+              <div className="text-[13px] text-gray-300">Where this is heading and how to get started · opens in a new tab</div>
+            </div>
+          </div>
+          <ArrowRight className="w-5 h-5 shrink-0 group-hover:translate-x-1 transition-transform" />
+        </a>
+      )}
 
       <section className="bg-gradient-to-br from-blue-50/50 to-white border border-blue-100 rounded-lg p-5">
         <div className="flex items-center gap-2 mb-3">

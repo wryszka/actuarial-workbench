@@ -12,6 +12,7 @@ export interface RoadmapEntry {
   what: string;                                    // What this workflow covers (1 paragraph)
   workbench_capabilities: string[];                // Bullets — how it extends the platform
   adjacent_links: { label: string; to: string }[]; // Live patterns to point at (Solvency app paths)
+  firstStepsDeckUrl?: string;                      // optional "first steps" deck (full-width card under the description)
 }
 
 export const ROADMAP_CONTENT: Record<string, RoadmapEntry> = {
@@ -45,6 +46,7 @@ export const ROADMAP_CONTENT: Record<string, RoadmapEntry> = {
       "AI that speaks the standard — Genie and the agents resolve business terms to the right governed columns automatically.",
     ],
     adjacent_links: [],
+    firstStepsDeckUrl: 'https://docs.google.com/presentation/d/1vXC7SVZUC-23adWG5KTLvSwzzjNGKSskvf1Yq-AXOoc/edit',
   },
 
   'ifrs-17': {
