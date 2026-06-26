@@ -71,6 +71,7 @@ export const DEMO_PAGES: Record<string, DemoPage> = {
       'Smart Claims accelerator, extended with agentic AI.',
     appUrlKey: 'claims_app_url',
     appUrlFallback: DEFAULT_CLAIMS_APP_URL,
+    previewImage: '/claims-preview.png',
     learnInApp: true,
   },
 
@@ -84,6 +85,7 @@ export const DEMO_PAGES: Record<string, DemoPage> = {
       'fan-out — with the actuarial engine logic versioned, audited and run on serverless.',
     appUrlKey: 'lifecast_app_url',
     appUrlFallback: DEFAULT_LIFECAST_APP_URL,
+    previewImage: '/lifecast-preview.png',
     learnInApp: true,
   },
 
