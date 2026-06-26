@@ -16,7 +16,7 @@ import {
   Code2, Table2, ScrollText, HeartPulse, Waypoints,
 } from 'lucide-react';
 
-export type TileStatus = 'live' | 'in_progress' | 'roadmap';
+export type TileStatus = 'live' | 'in_progress' | 'roadmap' | 'contact';
 
 export interface Tile {
   slug: string;                    // URL slug + key
@@ -27,6 +27,7 @@ export interface Tile {
   to: string;                      // navigate target (external URL for live tiles)
   accent?: 'blue';                 // live tile colour palette
   subtitle?: string;               // optional small line under the title (e.g. entity)
+  photo?: string;                  // contact tile — path to a headshot in public/
 }
 
 // Static fallback URLs for the live tiles. These are overridden at runtime by
@@ -142,5 +143,15 @@ export const TILES: Tile[] = [
     status: 'roadmap',
     icon: Waypoints,
     to: '/roadmap/insurance-ontology',
+  },
+  {
+    slug: 'contact',
+    label: 'Laurence Ryszka',
+    description: 'Insurance Tech Lead — for any questions or details, info inside.',
+    status: 'contact',
+    icon: HeartPulse,                 // unused for contact tiles (photo shown instead)
+    to: '/contact',
+    photo: '/laurence.png',
+    subtitle: 'Owner & creator of these demos',
   },
 ];

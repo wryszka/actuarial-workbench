@@ -104,6 +104,32 @@ function TileCard({ tile }: { tile: Tile }) {
   const Icon = tile.icon;
   const isExternal = isLive && /^https?:\/\//.test(tile.to);
 
+  if (tile.status === 'contact') {
+    return (
+      <Link to={tile.to}
+        className="block bg-white border-2 border-emerald-200 rounded-2xl p-5 transition-all hover:shadow-lg hover:border-emerald-300 hover:shadow-emerald-100 flex flex-col group">
+        <div className="flex items-start gap-3 mb-3">
+          {tile.photo
+            ? <img src={tile.photo} alt={tile.label} className="w-14 h-14 rounded-full object-cover shrink-0 ring-2 ring-emerald-100" />
+            : <div className="w-14 h-14 rounded-full bg-emerald-100" />}
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2">
+              <h3 className="text-xl font-bold text-gray-900 tracking-tight">{tile.label}</h3>
+              <span className="text-[10px] uppercase tracking-widest font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-200">
+                contact
+              </span>
+            </div>
+            <p className="text-[11px] text-gray-500 mt-0.5">{tile.subtitle}</p>
+          </div>
+        </div>
+        <p className="text-sm text-gray-700 leading-relaxed flex-1">{tile.description}</p>
+        <div className="mt-3 inline-flex items-center gap-1 text-sm font-bold text-emerald-700">
+          Get in touch <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+        </div>
+      </Link>
+    );
+  }
+
   if (isLive) {
     const cls = LIVE_TILE_PALETTE[tile.accent ?? 'blue'];
     const periodNote = tile.subtitle
