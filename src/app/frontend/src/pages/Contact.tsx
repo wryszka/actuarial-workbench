@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft, Mail, Slack, CalendarClock, ExternalLink, ArrowRight } from 'lucide-react';
 
 const EMAIL = 'laurence.ryszka@databricks.com';
-const SLACK_HANDLE = '@laurence.ryszka';
+const SLACK_CHANNEL = '#bricksurance';
 const GO_LINK = 'http://go/laurence';
 
 export default function Contact() {
@@ -70,7 +70,7 @@ export default function Contact() {
             </div>
             <div className="min-w-0">
               <div className="text-sm font-semibold text-gray-900">Slack</div>
-              <div className="text-[12px] text-gray-500">DM {SLACK_HANDLE} on the Databricks Slack</div>
+              <div className="text-[12px] text-gray-500">Ask in {SLACK_CHANNEL} on the Databricks Slack</div>
             </div>
           </div>
         </div>

@@ -12,7 +12,7 @@
  * Tile metadata lives in workbench-tiles.ts so adding a tile is one file.
  */
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Mail, MessagesSquare, CalendarClock, ExternalLink } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { TILES, type Tile } from '../lib/workbench-tiles';
 import { fetchConfig } from '../lib/config';
@@ -49,6 +49,7 @@ export default function Workbench() {
   });
 
   return (
+    <>
     <div className="max-w-6xl mx-auto p-6 space-y-7">
       <header className="pt-2">
         <div className="text-[11px] uppercase tracking-widest text-blue-700 font-bold">Actuarial Workbench</div>
@@ -82,6 +83,43 @@ export default function Workbench() {
         output or financial advice. Linked apps open only when deployed and running in this workspace.
       </p>
     </div>
+    <ContactFooter />
+    </>
+  );
+}
+
+function ContactFooter() {
+  return (
+    <footer className="mt-8 bg-[#1e293b] text-white">
+      <div className="max-w-6xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-start sm:items-center gap-5">
+        <img src="/laurence.png" alt="Laurence Ryszka"
+          className="w-16 h-16 rounded-full object-cover shrink-0 ring-2 ring-white/10" />
+        <div className="flex-1 min-w-0">
+          <div className="text-[11px] uppercase tracking-widest text-emerald-300 font-bold">Questions &amp; suggestions</div>
+          <h2 className="text-lg font-bold tracking-tight mt-0.5">Contact Laurence Ryszka — Insurance Tech Lead</h2>
+          <p className="text-sm text-gray-300 mt-1 leading-relaxed">
+            For a demo, an issue, first steps to stand one of these up — or anything at all.
+            Weekly office hours every <strong className="text-white">Friday at 4:00 PM UK time</strong>.
+          </p>
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 mt-3 text-sm">
+            <a href="mailto:laurence.ryszka@databricks.com"
+              className="inline-flex items-center gap-1.5 text-gray-200 hover:text-white">
+              <Mail className="w-4 h-4 text-emerald-300" /> laurence.ryszka@databricks.com
+            </a>
+            <span className="inline-flex items-center gap-1.5 text-gray-200">
+              <MessagesSquare className="w-4 h-4 text-emerald-300" /> #bricksurance
+            </span>
+            <span className="inline-flex items-center gap-1.5 text-gray-200">
+              <CalendarClock className="w-4 h-4 text-emerald-300" /> Fri 4:00 PM UK
+            </span>
+            <a href="http://go/laurence" target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 font-semibold text-emerald-300 hover:text-emerald-200">
+              <ExternalLink className="w-4 h-4" /> go/laurence
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
   );
 }
 
@@ -202,10 +240,12 @@ function TileCard({ tile }: { tile: Tile }) {
       : <Link to={tile.to} className={linkCls}>{inner}</Link>;
   }
 
-  // Roadmap tile — visually de-emphasised
-  return (
-    <Link to={tile.to}
-      className="block bg-slate-50 border border-slate-200 rounded-2xl p-5 hover:bg-white hover:shadow-md transition-all flex flex-col">
+  // Roadmap tile — visually de-emphasised. When `to` is empty the card is
+  // non-clickable (coming soon, no destination yet); external URLs open in a tab.
+  const roadHasLink = Boolean(tile.to);
+  const roadExternal = roadHasLink && /^https?:\/\//.test(tile.to);
+  const roadInner = (
+    <>
       <div className="flex items-start gap-3 mb-3">
         <div className="w-12 h-12 rounded-xl bg-slate-200 flex items-center justify-center">
           <Icon className="w-6 h-6 text-slate-500" />
@@ -217,15 +257,23 @@ function TileCard({ tile }: { tile: Tile }) {
               coming soon
             </span>
           </div>
-          <p className="text-[11px] text-slate-400 mt-0.5">Roadmap</p>
+          <p className="text-[11px] text-slate-400 mt-0.5">{tile.subtitle ?? 'Roadmap'}</p>
         </div>
       </div>
       <TileDescription description={tile.description} tone="muted" />
-      <div className="mt-3 inline-flex items-center gap-1 text-xs text-slate-500">
-        Read more <ArrowRight className="w-3 h-3" />
-      </div>
-    </Link>
+      {roadHasLink && (
+        <div className="mt-3 inline-flex items-center gap-1 text-xs text-slate-500">
+          {roadExternal ? 'Open' : 'Read more'} <ArrowRight className="w-3 h-3" />
+        </div>
+      )}
+    </>
   );
+  const roadBase = 'block bg-slate-50 border border-slate-200 rounded-2xl p-5 transition-all flex flex-col';
+  const roadLink = `${roadBase} hover:bg-white hover:shadow-md`;
+  if (!roadHasLink) return <div className={roadBase}>{roadInner}</div>;
+  return roadExternal
+    ? <a href={tile.to} target="_blank" rel="noopener noreferrer" className={roadLink}>{roadInner}</a>
+    : <Link to={tile.to} className={roadLink}>{roadInner}</Link>;
 }
 
 const LIVE_TILE_PALETTE = {
