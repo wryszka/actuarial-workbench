@@ -13,7 +13,7 @@
  */
 import {
   Shield, TrendingUp, FileSpreadsheet, Network, AlertOctagon, BarChart3,
-  Code2, Table2, ScrollText, HeartPulse,
+  Code2, Table2, ScrollText, HeartPulse, Waypoints,
 } from 'lucide-react';
 
 export type TileStatus = 'live' | 'in_progress' | 'roadmap';
@@ -134,5 +134,13 @@ export const TILES: Tile[] = [
     icon: ScrollText,
     to: '',                       // description only for now — not yet wired to the app
     subtitle: "Lloyd's market · ACORD",
+  },
+  {
+    slug: 'insurance-ontology',
+    label: 'Insurance ontology',
+    description: 'A shared insurance semantic layer in Unity Catalog — ACORD-aligned entities, attributes and code lists as governed definitions, tags, a business glossary and certified metric views, so every workbench speaks one language with lineage end to end.',
+    status: 'roadmap',
+    icon: Waypoints,
+    to: '/roadmap/insurance-ontology',
   },
 ];

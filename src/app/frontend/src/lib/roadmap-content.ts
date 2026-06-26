@@ -32,6 +32,21 @@ export const ROADMAP_CONTENT: Record<string, RoadmapEntry> = {
     ],
   },
 
+  'insurance-ontology': {
+    what: "An ACORD-based semantic standard for the lakehouse: the industry's entities, " +
+      "attributes, relationships and code lists expressed once as a governed vocabulary in " +
+      "Unity Catalog, so Solvency II, Pricing, Claims, Reinsurance, LifeCast and the rest all " +
+      "read from the same definitions instead of each re-inventing them.",
+    workbench_capabilities: [
+      "ACORD-aligned entity + attribute dictionary expressed as Unity Catalog tags, comments and a business glossary — the canonical names, types and allowed code lists in one governed place.",
+      "Certified tables, views and metric views that implement the standard, so 'gross written premium' or 'syndicate' means exactly the same thing in every workbench.",
+      "A relationship / ontology layer (insured ↔ policy ↔ claim ↔ treaty ↔ exposure) captured as governed structure — building on the MRC knowledge-graph pattern.",
+      "End-to-end lineage and access control on the vocabulary itself: every definition traceable, every code list versioned and audited.",
+      "AI that speaks the standard — Genie and the agents resolve business terms to the right governed columns automatically.",
+    ],
+    adjacent_links: [],
+  },
+
   'ifrs-17': {
     what: "IFRS 17 financial reporting for insurance contracts: contract groups, " +
       "Contractual Service Margin (CSM), risk adjustment, fulfilment cashflows. Heavy " +
