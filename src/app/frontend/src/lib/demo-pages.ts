@@ -26,6 +26,7 @@ export interface DemoPage {
   blurb: string;
   appUrlKey?: keyof HubConfig;   // which /api/config field holds the app URL
   appUrlFallback?: string;       // used if config is unavailable
+  previewImage?: string;         // screenshot shown on the Open-demo tile (path in public/)
   runDocUrl?: string;            // "demo run doc" link
   clientVideoUrl?: string;       // client-facing walkthrough recording (placeholder if unset)
   internalVideoUrl?: string;     // Databricks-internal "how to run it" (placeholder if unset)
@@ -43,6 +44,7 @@ export const DEMO_PAGES: Record<string, DemoPage> = {
       'with native model development and an end-to-end audit trail.',
     appUrlKey: 'solvency_app_url',
     appUrlFallback: DEFAULT_SOLVENCY_APP_URL,
+    previewImage: '/solvency-2-preview.png',
     learnInApp: true,
   },
 

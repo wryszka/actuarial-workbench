@@ -54,7 +54,24 @@ export default function DemoLanding() {
 
       {/* Big Open-demo tile on the left, four smaller resource tiles on the right */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-stretch">
-        {appUrl ? (
+        {appUrl && demo.previewImage ? (
+          <a href={appUrl} target="_blank" rel="noopener noreferrer"
+            className="relative rounded-2xl overflow-hidden bg-gray-900 group min-h-[15rem]">
+            <img src={demo.previewImage} alt={`${demo.title} demo`}
+              className="absolute inset-0 w-full h-full object-cover object-left-top" />
+            <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-gray-900/10" />
+            <div className="absolute inset-x-0 bottom-0 p-5 text-white flex items-center gap-3">
+              <div className="w-11 h-11 rounded-xl bg-blue-500/30 backdrop-blur flex items-center justify-center shrink-0">
+                <Rocket className="w-6 h-6 text-blue-200" />
+              </div>
+              <div className="min-w-0">
+                <div className="text-xl font-bold tracking-tight">Open demo</div>
+                <div className="text-[12px] text-gray-200">The running app — opens in a new tab</div>
+              </div>
+              <ArrowRight className="w-5 h-5 ml-auto shrink-0 group-hover:translate-x-1 transition-transform" />
+            </div>
+          </a>
+        ) : appUrl ? (
           <a href={appUrl} target="_blank" rel="noopener noreferrer"
             className="rounded-2xl bg-gray-900 text-white hover:bg-gray-800 transition-colors group p-6 flex flex-col justify-between min-h-[15rem]">
             <div className="w-14 h-14 rounded-xl bg-blue-500/20 flex items-center justify-center">
