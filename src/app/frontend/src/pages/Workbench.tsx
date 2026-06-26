@@ -40,8 +40,7 @@ export default function Workbench() {
           <div className="text-[11px] uppercase tracking-widest text-blue-700 font-bold">Actuarial Workbench</div>
           <h1 className="text-3xl font-bold text-gray-900 tracking-tight mt-1">{entity} — Composite Insurer</h1>
           <p className="text-base text-gray-500 mt-1.5 leading-relaxed max-w-3xl">
-            One front door for the actuarial work — each workflow is its own app on the
-            shared lakehouse. Solvency II and Pricing are running today; the others are next.
+            Real insurance business process demos, implemented fully in Databricks.
           </p>
         </div>
         <Link to="/contact"
