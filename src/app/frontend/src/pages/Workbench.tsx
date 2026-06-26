@@ -38,7 +38,7 @@ export default function Workbench() {
       <header className="pt-2 flex items-start justify-between gap-4 flex-wrap">
         <div className="min-w-0">
           <div className="text-[11px] uppercase tracking-widest text-blue-700 font-bold">Actuarial Workbench</div>
-          <h1 className="text-3xl font-bold text-gray-900 tracking-tight mt-1">{entity} — Composite Insurer</h1>
+          <h1 className="text-3xl font-bold text-gray-900 tracking-tight mt-1">Bricksurance — insurance on Databricks</h1>
           <p className="text-base text-gray-500 mt-1.5 leading-relaxed max-w-3xl">
             Real insurance business process demos, implemented fully in Databricks.
           </p>
