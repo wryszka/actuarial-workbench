@@ -43,7 +43,7 @@ export default function Contact() {
           <div className="flex-1">
             <h2 className="text-base font-bold text-gray-900">Weekly office hours</h2>
             <p className="text-sm text-gray-700 mt-0.5 leading-relaxed">
-              Every week at <strong>4:00 PM UK time</strong> — open session, drop in with anything:
+              Every <strong>Friday at 4:00 PM UK time</strong> — open session, drop in with anything:
               a walkthrough, a question, or where to start. No agenda needed.
             </p>
           </div>
