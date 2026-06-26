@@ -42,7 +42,8 @@ export default function Workbench() {
     if (t.slug === 'solvency-2' && urls.solvency) return { ...t, to: urls.solvency };
     if (t.slug === 'pricing' && urls.pricing) return { ...t, to: urls.pricing };
     if (t.slug === 'claims-workbench' && urls.claims) return { ...t, to: urls.claims };
-    if (t.slug === 'reinsurance' && urls.reinsurance) return { ...t, to: urls.reinsurance };
+    // reinsurance routes to its in-hub demo landing page (/demo/reinsurance),
+    // which opens the app itself — so it is NOT overridden to the app URL here.
     if (t.slug === 'lifecast' && urls.lifecast) return { ...t, to: urls.lifecast };
     return t;
   });

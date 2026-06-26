@@ -12,6 +12,7 @@ import Workbench from './pages/Workbench';
 import RoadmapStub from './pages/RoadmapStub';
 import AcceleratorDetail from './pages/AcceleratorDetail';
 import Contact from './pages/Contact';
+import DemoLanding from './pages/DemoLanding';
 
 function SignedInUser() {
   const [user, setUser] = useState<string | null>(null);
@@ -57,6 +58,7 @@ export default function App() {
             <Route path="/sas-migration" element={<AcceleratorDetail slug="sas-migration" />} />
             <Route path="/excel-migration" element={<AcceleratorDetail slug="excel-migration" />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/demo/:slug" element={<DemoLanding />} />
             <Route path="/roadmap/:slug" element={<RoadmapStub />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

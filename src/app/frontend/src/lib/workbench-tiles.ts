@@ -79,7 +79,7 @@ export const TILES: Tile[] = [
     description: 'Treaty submission intelligence for a reinsurer — triage and rate-on-line pricing, then the crux: each submission’s marginal accumulation into the peak windstorm zone and its Solvency II capital impact, decided in seconds. Live cat-event response when a storm makes landfall, with Genie, a tool-calling agent and AI/BI over one governed book.',
     status: 'live',
     icon: Network,
-    to: DEFAULT_REINSURANCE_APP_URL,
+    to: '/demo/reinsurance',        // two-level: tile → demo landing → app/docs/videos
     accent: 'blue',
     subtitle: 'Bricksurance Re',
   },
