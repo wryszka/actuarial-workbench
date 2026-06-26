@@ -96,6 +96,7 @@ export const DEMO_PAGES: Record<string, DemoPage> = {
       'impact, decided in seconds. Plus a live cat-event response when a storm makes landfall.',
     appUrlKey: 'reinsurance_app_url',
     appUrlFallback: DEFAULT_REINSURANCE_APP_URL,
+    previewImage: '/reinsurance-preview.png',
     runDocUrl:
       'https://docs.google.com/document/d/1UL3evJpQUwRRGv7E3mY1D0sfDMM8BHj_SU49I0YXR1g/edit',
     learnInApp: true,
