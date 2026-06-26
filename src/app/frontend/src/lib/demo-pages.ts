@@ -58,6 +58,7 @@ export const DEMO_PAGES: Record<string, DemoPage> = {
       'quote investigation via Genie + Mosaic AI.',
     appUrlKey: 'pricing_app_url',
     appUrlFallback: DEFAULT_PRICING_APP_URL,
+    previewImage: '/pricing-preview.png',
   },
 
   'claims-workbench': {
