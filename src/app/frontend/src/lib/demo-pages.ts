@@ -29,6 +29,7 @@ export interface DemoPage {
   runDocUrl?: string;            // "demo run doc" link
   clientVideoUrl?: string;       // client-facing walkthrough recording (placeholder if unset)
   internalVideoUrl?: string;     // Databricks-internal "how to run it" (placeholder if unset)
+  smeVideoUrl?: string;          // SME training on this demo's process (placeholder if unset)
   learnInApp?: boolean;          // show the "full Learn section lives in the demo" note
 }
 

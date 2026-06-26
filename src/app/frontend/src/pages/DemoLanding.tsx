@@ -8,11 +8,12 @@
 import { Link, useParams } from 'react-router-dom';
 import {
   ArrowLeft, ArrowRight, ExternalLink, Rocket, FileText, Clapperboard,
-  GraduationCap, BookOpen,
+  GraduationCap, BookOpen, MonitorPlay,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { DEMO_PAGES } from '../lib/demo-pages';
 import { fetchConfig, type HubConfig } from '../lib/config';
+import ContactFooter from '../components/ContactFooter';
 
 export default function DemoLanding() {
   const { slug } = useParams<{ slug: string }>();
@@ -37,6 +38,7 @@ export default function DemoLanding() {
     (demo.appUrlKey && cfg?.[demo.appUrlKey]) || demo.appUrlFallback || '';
 
   return (
+    <>
     <div className="max-w-4xl mx-auto p-6 space-y-5">
       <Link to="/" className="text-xs text-gray-500 hover:text-gray-800 inline-flex items-center gap-1">
         <ArrowLeft className="w-3.5 h-3.5" /> Back to Workbench
@@ -81,6 +83,10 @@ export default function DemoLanding() {
           icon={GraduationCap} title="Learn how to run this"
           sublabel="Databricks-internal — how to deliver the demo end to end"
           href={demo.internalVideoUrl} cta="Watch" />
+        <ResourceCard
+          icon={MonitorPlay} title={`SME training on the ${demo.title} process`}
+          sublabel="Subject-matter-expert walkthrough of the underlying insurance process"
+          href={demo.smeVideoUrl} cta="Watch" />
       </div>
 
       {/* In-app Learn note */}
@@ -97,6 +103,8 @@ export default function DemoLanding() {
         </section>
       )}
     </div>
+    <ContactFooter />
+    </>
   );
 }
 
