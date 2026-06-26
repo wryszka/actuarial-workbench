@@ -13,7 +13,7 @@
  */
 import {
   Shield, TrendingUp, FileSpreadsheet, Network, AlertOctagon, BarChart3,
-  Code2, Table2, ScrollText, HeartPulse, Waypoints, MonitorPlay,
+  Code2, Table2, ScrollText, HeartPulse, Waypoints,
 } from 'lucide-react';
 
 export type TileStatus = 'live' | 'in_progress' | 'roadmap' | 'contact';
@@ -144,14 +144,5 @@ export const TILES: Tile[] = [
     status: 'roadmap',
     icon: Waypoints,
     to: '/roadmap/insurance-ontology',
-  },
-  {
-    slug: 'sme-training',
-    label: 'SME training recording',
-    description: 'A recorded subject-matter-expert session on the insurance domain behind these demos — how each maps to real actuarial, underwriting and claims work. Watch before you present.',
-    status: 'roadmap',
-    icon: MonitorPlay,
-    to: '',                       // recording link to come — placeholder for now
-    subtitle: 'Enablement · recording to come',
   },
 ];

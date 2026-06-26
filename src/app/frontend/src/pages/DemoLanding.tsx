@@ -39,7 +39,7 @@ export default function DemoLanding() {
 
   return (
     <>
-    <div className="max-w-4xl mx-auto p-6 space-y-5">
+    <div className="max-w-5xl mx-auto p-6 space-y-5">
       <Link to="/" className="text-xs text-gray-500 hover:text-gray-800 inline-flex items-center gap-1">
         <ArrowLeft className="w-3.5 h-3.5" /> Back to Workbench
       </Link>
@@ -52,41 +52,47 @@ export default function DemoLanding() {
         <p className="text-sm text-gray-700 mt-2 leading-relaxed max-w-3xl">{demo.blurb}</p>
       </header>
 
-      {/* Open demo — the primary action */}
-      {appUrl && (
-        <a href={appUrl} target="_blank" rel="noopener noreferrer"
-          className="flex items-center justify-between gap-3 p-5 rounded-2xl bg-gray-900 text-white hover:bg-gray-800 transition-colors group">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center shrink-0">
-              <Rocket className="w-6 h-6 text-blue-300" />
+      {/* Big Open-demo tile on the left, four smaller resource tiles on the right */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-stretch">
+        {appUrl ? (
+          <a href={appUrl} target="_blank" rel="noopener noreferrer"
+            className="rounded-2xl bg-gray-900 text-white hover:bg-gray-800 transition-colors group p-6 flex flex-col justify-between min-h-[15rem]">
+            <div className="w-14 h-14 rounded-xl bg-blue-500/20 flex items-center justify-center">
+              <Rocket className="w-7 h-7 text-blue-300" />
             </div>
             <div>
-              <div className="text-lg font-bold tracking-tight">Open demo</div>
-              <div className="text-[13px] text-gray-300">The running app · opens in a new tab</div>
+              <div className="text-2xl font-bold tracking-tight">Open demo</div>
+              <div className="text-sm text-gray-300 mt-1">The running app — opens in a new tab.</div>
+              <div className="mt-3 inline-flex items-center gap-1.5 text-sm font-bold text-blue-300">
+                Launch <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </div>
             </div>
+          </a>
+        ) : (
+          <div className="rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 p-6 flex items-center justify-center text-sm text-slate-500 min-h-[15rem]">
+            App URL not configured for this workspace.
           </div>
-          <ArrowRight className="w-5 h-5 shrink-0 group-hover:translate-x-1 transition-transform" />
-        </a>
-      )}
+        )}
 
-      {/* Resources — same standard set on every demo; placeholders until provided */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <ResourceCard
-          icon={FileText} title="Demo run doc"
-          sublabel="Step-by-step guide to running this demo"
-          href={demo.runDocUrl} cta="Open doc" />
-        <ResourceCard
-          icon={Clapperboard} title="Client-facing demo"
-          sublabel="Polished walkthrough video for customer audiences"
-          href={demo.clientVideoUrl} cta="Watch" />
-        <ResourceCard
-          icon={GraduationCap} title="Learn how to run this"
-          sublabel="Databricks-internal — how to deliver the demo end to end"
-          href={demo.internalVideoUrl} cta="Watch" />
-        <ResourceCard
-          icon={MonitorPlay} title={`SME training on the ${demo.title} process`}
-          sublabel="Subject-matter-expert walkthrough of the underlying insurance process"
-          href={demo.smeVideoUrl} cta="Watch" />
+        {/* Right: four smaller tiles */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <ResourceCard
+            icon={FileText} title="Demo run doc"
+            sublabel="Step-by-step guide to running this demo"
+            href={demo.runDocUrl} cta="Open doc" />
+          <ResourceCard
+            icon={Clapperboard} title="Client-facing demo"
+            sublabel="Polished walkthrough video for customers"
+            href={demo.clientVideoUrl} cta="Watch" />
+          <ResourceCard
+            icon={GraduationCap} title="Learn how to run this"
+            sublabel="Databricks-internal — deliver it end to end"
+            href={demo.internalVideoUrl} cta="Watch" />
+          <ResourceCard
+            icon={MonitorPlay} title={`SME training — ${demo.title}`}
+            sublabel="Subject-matter-expert walkthrough of the process"
+            href={demo.smeVideoUrl} cta="Watch" />
+        </div>
       </div>
 
       {/* In-app Learn note */}
