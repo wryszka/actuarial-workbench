@@ -45,12 +45,20 @@ export default function Workbench() {
           </p>
         </div>
         <Link to="/contact"
-          className="shrink-0 flex items-center gap-3 bg-white border border-emerald-200 rounded-xl pl-2 pr-3.5 py-2 hover:border-emerald-300 hover:shadow-sm transition-all">
-          <img src="/laurence.png" alt="Laurence Ryszka"
-            className="w-11 h-11 rounded-full object-cover ring-2 ring-emerald-100" />
-          <div className="leading-tight">
-            <div className="text-sm font-bold text-gray-900">Laurence Ryszka</div>
-            <div className="text-[11px] text-gray-500">Creator of the demos</div>
+          className="shrink-0 w-full sm:w-72 bg-white border-2 border-emerald-200 rounded-2xl p-4 hover:border-emerald-300 hover:shadow-lg hover:shadow-emerald-100 transition-all flex flex-col group">
+          <div className="flex items-center gap-3">
+            <img src="/laurence.png" alt="Laurence Ryszka"
+              className="w-12 h-12 rounded-full object-cover ring-2 ring-emerald-100 shrink-0" />
+            <div className="min-w-0">
+              <div className="text-sm font-bold text-gray-900">Laurence Ryszka</div>
+              <div className="text-[11px] text-gray-500">Creator of the demos</div>
+            </div>
+          </div>
+          <p className="text-[12px] text-gray-600 mt-2.5 leading-snug">
+            Click for help, a demo, first steps, or weekly office hours.
+          </p>
+          <div className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-emerald-700">
+            Get in touch <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
           </div>
         </Link>
       </header>
