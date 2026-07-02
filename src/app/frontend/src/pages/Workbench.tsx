@@ -50,7 +50,7 @@ export default function Workbench() {
               className="w-12 h-12 rounded-full object-cover ring-2 ring-emerald-100 shrink-0" />
             <div className="min-w-0">
               <div className="text-sm font-bold text-gray-900">Laurence Ryszka</div>
-              <div className="text-[11px] text-gray-500">Creator of the demos</div>
+              <div className="text-[11px] text-gray-500">Questions &amp; office hours</div>
             </div>
           </div>
           <p className="text-[12px] text-gray-600 mt-2.5 leading-snug">
