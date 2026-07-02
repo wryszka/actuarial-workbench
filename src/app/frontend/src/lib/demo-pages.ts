@@ -81,8 +81,8 @@ export const DEMO_PAGES: Record<string, DemoPage> = {
     subtitle: 'Bricksurance Life',
     blurb:
       'Life insurance liability modelling, end to end on real worked examples — governed model points ' +
-      'and assumptions, best-estimate liability projection, ESG scenario testing and stochastic ' +
-      'fan-out — with the actuarial engine logic versioned, audited and run on serverless.',
+      'and assumptions, best-estimate liability projection, ESG scenario testing and GPU-accelerated ' +
+      'stochastic fan-out — with the actuarial engine logic versioned, audited and run on serverless.',
     appUrlKey: 'lifecast_app_url',
     appUrlFallback: DEFAULT_LIFECAST_APP_URL,
     previewImage: '/lifecast-preview.png',

@@ -49,6 +49,21 @@ export const ROADMAP_CONTENT: Record<string, RoadmapEntry> = {
     firstStepsDeckUrl: 'https://docs.google.com/presentation/d/1vXC7SVZUC-23adWG5KTLvSwzzjNGKSskvf1Yq-AXOoc/edit',
   },
 
+  'customer-lake': {
+    what: "CustomerLake is Databricks' agentic Customer Data Platform, embedded in the lakehouse — " +
+      "Customer 360, identity resolution, segmentation and cross-channel activation, run where the " +
+      "data already lives and governed by Unity Catalog. For an insurer that means a governed " +
+      "policyholder 360 across every line of business, without copying PII into a separate CDP.",
+    workbench_capabilities: [
+      "Policyholder 360 across policy admin, claims, quotes, telematics and web/app behaviour — unified on the same governed tables the other workbenches read, with no data movement.",
+      "Agentic Identity Resolution (deterministic + probabilistic + agentic) links a customer across motor, home and life, across households, and across broker/agent records.",
+      "Segments and next-best-action for the moments that matter in insurance: renewal retention, cross-line up-sell (motor → home → life), and lapse prevention + win-back.",
+      "Campaign agents run continuous engagement — build the audience, recommend the action, activate across channels (email, ad platforms, the broker) and optimise to a business goal.",
+      "Under Unity Catalog governance throughout: consent and marketing-preference controls, fraud-aware suppression and full lineage — the same governance plane as Solvency II, Pricing and Claims.",
+    ],
+    adjacent_links: [],
+  },
+
   'ifrs-17': {
     what: "IFRS 17 financial reporting for insurance contracts: contract groups, " +
       "Contractual Service Margin (CSM), risk adjustment, fulfilment cashflows. Heavy " +

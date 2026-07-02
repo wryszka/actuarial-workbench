@@ -13,7 +13,7 @@
  */
 import {
   Shield, TrendingUp, FileSpreadsheet, Network, AlertOctagon, BarChart3,
-  Code2, Table2, ScrollText, HeartPulse, Waypoints,
+  Code2, Table2, ScrollText, HeartPulse, Waypoints, UsersRound,
 } from 'lucide-react';
 
 export type TileStatus = 'live' | 'in_progress' | 'roadmap' | 'contact';
@@ -97,7 +97,7 @@ export const TILES: Tile[] = [
   {
     slug: 'lifecast',
     label: 'LifeCast',
-    description: 'Life insurance liability modelling, end to end on real worked examples — governed model points and assumptions, best-estimate liability projection, ESG scenario testing and stochastic fan-out — with the actuarial engine logic versioned, audited and run on serverless.',
+    description: 'Life insurance liability modelling, end to end on real worked examples — governed model points and assumptions, best-estimate liability projection, ESG scenario testing and GPU-accelerated stochastic fan-out — with the actuarial engine logic versioned, audited and run on serverless.',
     status: 'in_progress',
     icon: HeartPulse,
     to: '/demo/lifecast',
@@ -144,5 +144,14 @@ export const TILES: Tile[] = [
     status: 'roadmap',
     icon: Waypoints,
     to: '/roadmap/insurance-ontology',
+  },
+  {
+    slug: 'customer-lake',
+    label: 'CustomerLake',
+    description: "Databricks' agentic Customer Data Platform, brought to insurance — a governed policyholder 360 built where the policy, claims, quote and telematics data already lives. Agentic identity resolution links a customer across motor, home and life, across households and broker records; campaign agents drive renewal retention, cross-line next-best-action and lapse win-back — all under Unity Catalog, no PII copied into a separate CDP.",
+    status: 'roadmap',
+    icon: UsersRound,
+    to: '/roadmap/customer-lake',
+    subtitle: 'Agentic CDP · policyholder 360',
   },
 ];
