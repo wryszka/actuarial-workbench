@@ -62,7 +62,7 @@ export default function Workbench() {
         </Link>
       </header>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 auto-rows-fr gap-3">
         {tiles.map((t) => <TileCard key={t.slug} tile={t} />)}
       </div>
 
