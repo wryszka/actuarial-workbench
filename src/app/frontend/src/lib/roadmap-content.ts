@@ -64,6 +64,21 @@ export const ROADMAP_CONTENT: Record<string, RoadmapEntry> = {
     adjacent_links: [],
   },
 
+  'mrc-intelligence': {
+    what: "Lloyd's Market Reform Contract (MRC) PDFs turned into a governed knowledge graph using " +
+      "ACORD terminology — insured, broker, syndicate, limits, clauses and exclusions, and the links " +
+      "between them, extracted with the Foundation Model API. A multi-agent assistant answers " +
+      "underwriter, broker and compliance questions over it.",
+    workbench_capabilities: [
+      "ai_parse_document + ai_query (Foundation Model API) extract an ACORD-aligned entity/relationship graph from raw MRC slips into governed Delta tables (graph nodes + edges).",
+      "A Genie space does NL-to-SQL over the graph, and a Knowledge Assistant does semantic search over the raw slips.",
+      "A Claude supervisor agent combines the two and answers underwriter, broker and compliance questions with citations.",
+      "Change management built in: add ACORD entity types or new files and the graph re-extracts — no re-plumbing.",
+      "Everything under Unity Catalog — governance, lineage and audit on the extracted graph, same as the other workbenches.",
+    ],
+    adjacent_links: [],
+  },
+
   'bordereaux-ingestion': {
     what: "A bordereau is the periodic file — usually a spreadsheet — that a coverholder, MGA or " +
       "cedant sends to the (re)insurer under a delegated authority or binder, listing the risks " +

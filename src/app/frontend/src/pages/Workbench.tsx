@@ -62,7 +62,7 @@ export default function Workbench() {
         </Link>
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
         {tiles.map((t) => <TileCard key={t.slug} tile={t} />)}
       </div>
 
@@ -91,17 +91,9 @@ export default function Workbench() {
 }
 
 function TileDescription({ description, tone = 'default' }: { description: string | string[]; tone?: 'default' | 'muted' }) {
-  const color = tone === 'muted' ? 'text-slate-600' : 'text-gray-700';
-  if (Array.isArray(description)) {
-    return (
-      <ul className="space-y-1.5 flex-1">
-        {description.map((line, i) => (
-          <li key={i} className={`text-sm ${color} leading-snug border-l-2 border-blue-300 pl-2.5`}>{line}</li>
-        ))}
-      </ul>
-    );
-  }
-  return <p className={`text-sm ${color} leading-relaxed flex-1`}>{description}</p>;
+  const color = tone === 'muted' ? 'text-slate-600' : 'text-gray-600';
+  const text = Array.isArray(description) ? description.join(' ') : description;
+  return <p className={`text-xs ${color} leading-snug flex-1 line-clamp-2`}>{text}</p>;
 }
 
 function TileCard({ tile }: { tile: Tile }) {
@@ -112,29 +104,25 @@ function TileCard({ tile }: { tile: Tile }) {
 
   if (isLive) {
     const cls = LIVE_TILE_PALETTE[tile.accent ?? 'blue'];
-    const periodNote = tile.subtitle
-      ? (isExternal ? `${tile.subtitle} · opens in new tab` : tile.subtitle)
-      : (isExternal ? 'External app · opens in new tab' : 'Worked example · live in this workspace');
-    const containerCls = `block bg-white border-2 ${cls.border} rounded-2xl p-5 transition-all hover:shadow-lg ${cls.hover} group flex flex-col`;
+    const periodNote = tile.subtitle ?? (isExternal ? 'External app · new tab' : 'Live in this workspace');
+    const containerCls = `block bg-white border-2 ${cls.border} rounded-xl p-4 transition-all hover:shadow-lg ${cls.hover} group flex flex-col`;
     const inner = (
       <>
-        <div className="flex items-start gap-3 mb-3">
-          <div className={`w-12 h-12 rounded-xl ${cls.iconBg} flex items-center justify-center transition-colors`}>
-            <Icon className={`w-6 h-6 ${cls.iconColor}`} />
+        <div className="flex items-start gap-2.5 mb-2">
+          <div className={`w-9 h-9 rounded-lg ${cls.iconBg} flex items-center justify-center transition-colors shrink-0`}>
+            <Icon className={`w-5 h-5 ${cls.iconColor}`} />
           </div>
-          <div className="flex-1">
-            <div className="flex items-center gap-2">
-              <h3 className={`text-xl font-bold ${cls.title} tracking-tight`}>{tile.label}</h3>
-              <span className="text-[10px] uppercase tracking-widest font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-200">
-                live
-              </span>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <h3 className={`text-[15px] font-bold ${cls.title} tracking-tight leading-tight`}>{tile.label}</h3>
+              <span className="text-[9px] uppercase tracking-widest font-bold px-1 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-200">live</span>
             </div>
-            <p className="text-[11px] text-gray-500 mt-0.5 font-mono">{periodNote}</p>
+            <p className="text-[10px] text-gray-500 mt-0.5">{periodNote}</p>
           </div>
         </div>
         <TileDescription description={tile.description} />
-        <div className={`mt-3 inline-flex items-center gap-1 text-sm font-bold ${cls.arrow}`}>
-          Open <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+        <div className={`mt-2 inline-flex items-center gap-1 text-xs font-bold ${cls.arrow}`}>
+          Open <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
         </div>
       </>
     );
@@ -144,36 +132,33 @@ function TileCard({ tile }: { tile: Tile }) {
   }
 
   if (isInProgress) {
-    // In-progress tile — warmer than roadmap, signals active build. When `to`
-    // is empty the card is description-only (not yet wired to anything).
     const hasLink = Boolean(tile.to);
     const isExternalLink = hasLink && /^https?:\/\//.test(tile.to);
     const inner = (
       <>
-        <div className="flex items-start gap-3 mb-3">
-          <div className={`w-12 h-12 rounded-xl bg-amber-100 ${hasLink ? 'group-hover:bg-amber-200' : ''} flex items-center justify-center transition-colors`}>
-            <Icon className="w-6 h-6 text-amber-700" />
+        <div className="flex items-start gap-2.5 mb-2">
+          <div className={`w-9 h-9 rounded-lg bg-amber-100 ${hasLink ? 'group-hover:bg-amber-200' : ''} flex items-center justify-center transition-colors shrink-0`}>
+            <Icon className="w-5 h-5 text-amber-700" />
           </div>
-          <div className="flex-1">
-            <div className="flex items-center gap-2">
-              <h3 className="text-xl font-bold text-amber-900 tracking-tight">{tile.label}</h3>
-              <span className="text-[10px] uppercase tracking-widest font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 border border-amber-200 inline-flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
-                in progress
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <h3 className="text-[15px] font-bold text-amber-900 tracking-tight leading-tight">{tile.label}</h3>
+              <span className="text-[9px] uppercase tracking-widest font-bold px-1 py-0.5 rounded bg-amber-100 text-amber-800 border border-amber-200 inline-flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />in&nbsp;progress
               </span>
             </div>
-            <p className="text-[11px] text-amber-700/80 mt-0.5">{tile.subtitle ?? 'Worked example · being built'}</p>
+            <p className="text-[10px] text-amber-700/80 mt-0.5">{tile.subtitle ?? 'Being built'}</p>
           </div>
         </div>
         <TileDescription description={tile.description} />
         {hasLink && (
-          <div className="mt-3 inline-flex items-center gap-1 text-sm font-bold text-amber-700">
-            {isExternalLink ? 'Open' : 'Read more'} <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          <div className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-amber-700">
+            {isExternalLink ? 'Open' : 'Read more'} <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
           </div>
         )}
       </>
     );
-    const baseCls = 'block bg-white border-2 border-amber-300 rounded-2xl p-5 transition-all flex flex-col';
+    const baseCls = 'block bg-white border-2 border-amber-300 rounded-xl p-4 transition-all flex flex-col';
     const linkCls = `${baseCls} hover:shadow-lg hover:border-amber-400 hover:shadow-amber-100 group`;
     if (!hasLink) return <div className={baseCls}>{inner}</div>;
     return isExternalLink
@@ -181,35 +166,32 @@ function TileCard({ tile }: { tile: Tile }) {
       : <Link to={tile.to} className={linkCls}>{inner}</Link>;
   }
 
-  // Roadmap tile — visually de-emphasised. When `to` is empty the card is
-  // non-clickable (coming soon, no destination yet); external URLs open in a tab.
+  // Roadmap tile — de-emphasised. Empty `to` = non-clickable; external opens in a tab.
   const roadHasLink = Boolean(tile.to);
   const roadExternal = roadHasLink && /^https?:\/\//.test(tile.to);
   const roadInner = (
     <>
-      <div className="flex items-start gap-3 mb-3">
-        <div className="w-12 h-12 rounded-xl bg-slate-200 flex items-center justify-center">
-          <Icon className="w-6 h-6 text-slate-500" />
+      <div className="flex items-start gap-2.5 mb-2">
+        <div className="w-9 h-9 rounded-lg bg-slate-200 flex items-center justify-center shrink-0">
+          <Icon className="w-5 h-5 text-slate-500" />
         </div>
-        <div className="flex-1">
-          <div className="flex items-center gap-2">
-            <h3 className="text-xl font-bold text-slate-700 tracking-tight">{tile.label}</h3>
-            <span className="text-[10px] uppercase tracking-widest font-bold px-1.5 py-0.5 rounded bg-slate-200 text-slate-600">
-              coming soon
-            </span>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <h3 className="text-[15px] font-bold text-slate-700 tracking-tight leading-tight">{tile.label}</h3>
+            <span className="text-[9px] uppercase tracking-widest font-bold px-1 py-0.5 rounded bg-slate-200 text-slate-600">soon</span>
           </div>
-          <p className="text-[11px] text-slate-400 mt-0.5">{tile.subtitle ?? 'Roadmap'}</p>
+          <p className="text-[10px] text-slate-400 mt-0.5">{tile.subtitle ?? 'Roadmap'}</p>
         </div>
       </div>
       <TileDescription description={tile.description} tone="muted" />
       {roadHasLink && (
-        <div className="mt-3 inline-flex items-center gap-1 text-xs text-slate-500">
+        <div className="mt-2 inline-flex items-center gap-1 text-xs text-slate-500">
           {roadExternal ? 'Open' : 'Read more'} <ArrowRight className="w-3 h-3" />
         </div>
       )}
     </>
   );
-  const roadBase = 'block bg-slate-50 border border-slate-200 rounded-2xl p-5 transition-all flex flex-col';
+  const roadBase = 'block bg-slate-50 border border-slate-200 rounded-xl p-4 transition-all flex flex-col';
   const roadLink = `${roadBase} hover:bg-white hover:shadow-md`;
   if (!roadHasLink) return <div className={roadBase}>{roadInner}</div>;
   return roadExternal

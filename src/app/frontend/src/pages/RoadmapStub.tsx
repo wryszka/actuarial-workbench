@@ -67,7 +67,7 @@ export default function RoadmapStub() {
           </div>
           <p className="text-sm text-gray-500 mt-1">
             {isInProgress
-              ? 'Worked example · being built right now — drop in and follow the line-by-line conversion as it lands.'
+              ? 'In progress · being built — here’s what it covers and where it’s heading.'
               : 'Roadmap · same platform, different workflow.'}
           </p>
         </div>

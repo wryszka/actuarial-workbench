@@ -45,11 +45,13 @@ export const DEFAULT_REINSURANCE_APP_URL =
 export const DEFAULT_LIFECAST_APP_URL =
   'https://lifecast-workbench-7474656169654171.aws.databricksapps.com';
 
+// Tile `description` is the ONE-LINE hook shown on the card. The full write-up
+// lives on the click-through page (demo-pages.ts blurb, or roadmap-content.ts).
 export const TILES: Tile[] = [
   {
     slug: 'solvency-2',
     label: 'Solvency II',
-    description: 'Capital, governance, disclosure, ORSA — full cycle with native model development and end-to-end audit trail.',
+    description: 'The full Solvency II cycle — capital, governance, disclosure and ORSA.',
     status: 'live',
     icon: Shield,
     to: '/demo/solvency-2',
@@ -59,7 +61,7 @@ export const TILES: Tile[] = [
   {
     slug: 'pricing',
     label: 'Pricing workbench',
-    description: 'The full pricing loop on Databricks — ingest, build, price, investigate, govern. AI agents across it: data-quality checks, factor-lift explainers, model selection, and "why this price?" quote investigation via Genie + Mosaic AI.',
+    description: 'The end-to-end commercial-motor pricing loop, governed and AI-assisted.',
     status: 'live',
     icon: TrendingUp,
     to: '/demo/pricing',
@@ -69,7 +71,7 @@ export const TILES: Tile[] = [
   {
     slug: 'ifrs-17',
     label: 'IFRS 17',
-    description: 'Contract groups, CSM, financial disclosure. Heavy data overlap with Solvency II technical provisions.',
+    description: 'Contract groups, CSM and disclosure — sharing the Solvency II TP data.',
     status: 'roadmap',
     icon: FileSpreadsheet,
     to: '/roadmap/ifrs-17',
@@ -77,7 +79,7 @@ export const TILES: Tile[] = [
   {
     slug: 'reinsurance',
     label: 'Reinsurance',
-    description: 'Treaty submission intelligence for a reinsurer — triage and rate-on-line pricing, then the crux: each submission’s marginal accumulation into the peak windstorm zone and its Solvency II capital impact, decided in seconds. Live cat-event response when a storm makes landfall, with Genie, a tool-calling agent and AI/BI over one governed book.',
+    description: 'Treaty submission intelligence — accumulation, capital and live cat response.',
     status: 'live',
     icon: Network,
     to: '/demo/reinsurance',        // two-level: tile → demo landing → app/docs/videos
@@ -87,7 +89,7 @@ export const TILES: Tile[] = [
   {
     slug: 'claims-workbench',
     label: 'Claims Intelligence Workbench',
-    description: 'From first notice to settlement on one governed platform. AI auto-closes the simple claims in minutes and flags the rest for a handler — with its reasoning shown. Built on the Databricks Smart Claims accelerator, extended with agentic AI.',
+    description: 'First notice to settlement — AI auto-closes the simple, flags the rest.',
     status: 'live',
     icon: AlertOctagon,
     to: '/demo/claims-workbench',
@@ -97,7 +99,7 @@ export const TILES: Tile[] = [
   {
     slug: 'lifecast',
     label: 'LifeCast',
-    description: 'Life insurance liability modelling, end to end on real worked examples — governed model points and assumptions, best-estimate liability projection, ESG scenario testing and GPU-accelerated stochastic fan-out — with the actuarial engine logic versioned, audited and run on serverless.',
+    description: 'Life liability modelling end to end — projection, ESG, GPU stochastic fan-out.',
     status: 'in_progress',
     icon: HeartPulse,
     to: '/demo/lifecast',
@@ -106,7 +108,7 @@ export const TILES: Tile[] = [
   {
     slug: 'reserving-deep-dive',
     label: 'Reserving deep dive',
-    description: 'Triangle methods, model validation, methodology library. Extends the chain-ladder + BF examples already in the Lab.',
+    description: 'Triangle methods, model validation and a methodology library.',
     status: 'roadmap',
     icon: BarChart3,
     to: '/roadmap/reserving-deep-dive',
@@ -114,7 +116,7 @@ export const TILES: Tile[] = [
   {
     slug: 'sas-migration',
     label: 'SAS migration',
-    description: 'Worked example — moving a legacy SAS program to PySpark / Spark SQL on the lakehouse with Genie Code. PROC SQL, DATA step + RETAIN, and PROC MEANS translated and run on governed Delta tables.',
+    description: 'Legacy SAS → PySpark / Spark SQL with Genie Code, on governed Delta.',
     status: 'live',
     icon: Code2,
     to: '/sas-migration',
@@ -123,7 +125,7 @@ export const TILES: Tile[] = [
   {
     slug: 'excel-migration',
     label: 'Excel migration',
-    description: 'Worked examples — lifting actuarial Excel + VBA into governed Delta: EIOPA RFR ingestion, the Solvency II SCR Standard Formula (with Excel round-trip + parity), and monthly experience / loss-ratio monitoring served through a Genie space and AI/BI dashboard.',
+    description: 'Actuarial Excel + VBA → governed Delta, DLT, MLflow and dashboards.',
     status: 'in_progress',
     icon: Table2,
     to: '/excel-migration',
@@ -131,16 +133,16 @@ export const TILES: Tile[] = [
   {
     slug: 'mrc-intelligence',
     label: 'MRC policy intelligence',
-    description: "Lloyd's Market Reform Contract (MRC) PDFs turned into a governed knowledge graph using ACORD terminology — insured, broker, syndicate, limits, clauses and exclusions, and the links between them, extracted with the Foundation Model API. A multi-agent assistant (Genie NL-to-SQL, Knowledge Assistant vector search, and a Claude supervisor) answers underwriter, broker and compliance questions over it.",
+    description: "Lloyd's MRC PDFs → an ACORD knowledge graph + multi-agent assistant.",
     status: 'in_progress',
     icon: ScrollText,
-    to: '',                       // description only for now — not yet wired to the app
+    to: '/roadmap/mrc-intelligence',
     subtitle: "Lloyd's market · ACORD",
   },
   {
     slug: 'insurance-ontology',
     label: 'Insurance ontology',
-    description: 'A shared insurance semantic layer in Unity Catalog — ACORD-aligned entities, attributes and code lists as governed definitions, tags, a business glossary and certified metric views, so every workbench speaks one language with lineage end to end.',
+    description: 'An ACORD-based insurance semantic layer, governed in Unity Catalog.',
     status: 'roadmap',
     icon: Waypoints,
     to: '/roadmap/insurance-ontology',
@@ -148,7 +150,7 @@ export const TILES: Tile[] = [
   {
     slug: 'customer-lake',
     label: 'CustomerLake',
-    description: "Databricks' agentic Customer Data Platform, brought to insurance — a governed policyholder 360 built where the policy, claims, quote and telematics data already lives. Agentic identity resolution links a customer across motor, home and life, across households and broker records; campaign agents drive renewal retention, cross-line next-best-action and lapse win-back — all under Unity Catalog, no PII copied into a separate CDP.",
+    description: "Databricks' agentic CDP for insurance — a governed policyholder 360.",
     status: 'roadmap',
     icon: UsersRound,
     to: '/roadmap/customer-lake',
@@ -157,7 +159,7 @@ export const TILES: Tile[] = [
   {
     slug: 'bordereaux-ingestion',
     label: 'Bordereaux ingestion',
-    description: 'Delegated-authority and reinsurance data arrives as monthly bordereaux — premium and claims spreadsheets, a different template from every coverholder, MGA and cedant. This turns that messy intake into a governed pipeline: land the files, map each sender to a canonical (ACORD-aligned) schema, run data-quality checks, quarantine the rows that fail for review, and publish clean tables that pricing, accumulation and reserving can trust — with lineage and audit end to end.',
+    description: 'Messy delegated-authority bordereaux → a governed, validated pipeline.',
     status: 'roadmap',
     icon: FileInput,
     to: '/roadmap/bordereaux-ingestion',
