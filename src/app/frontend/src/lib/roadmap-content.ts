@@ -64,6 +64,22 @@ export const ROADMAP_CONTENT: Record<string, RoadmapEntry> = {
     adjacent_links: [],
   },
 
+  'bordereaux-ingestion': {
+    what: "A bordereau is the periodic file — usually a spreadsheet — that a coverholder, MGA or " +
+      "cedant sends to the (re)insurer under a delegated authority or binder, listing the risks " +
+      "written (premium bordereau) and the claims (claims bordereau). Every sender uses a different " +
+      "template, the formats drift month to month, and the volumes are large — so today it's a " +
+      "manual, error-prone reconciliation job. This makes it a governed, automated pipeline.",
+    workbench_capabilities: [
+      "Files land in a Unity Catalog volume and are picked up automatically (Auto Loader / Lakeflow) — premium and claims bordereaux, whatever format each sender uses.",
+      "Per-sender column mapping to a single canonical, ACORD-aligned schema; schema drift is rescued rather than silently dropped, and messy headers can be read with Document AI / ai_query.",
+      "Data-quality expectations validate every row; the ones that fail are quarantined to a review queue with the rule that fired — never mixed into the clean book.",
+      "Clean data publishes through bronze → silver → gold Delta tables that pricing, accumulation, reserving and reporting all read — one governed source, no re-keying.",
+      "Full lineage and audit under Unity Catalog: which file, which sender, which row, which rule — traceable end to end.",
+    ],
+    adjacent_links: [],
+  },
+
   'ifrs-17': {
     what: "IFRS 17 financial reporting for insurance contracts: contract groups, " +
       "Contractual Service Margin (CSM), risk adjustment, fulfilment cashflows. Heavy " +

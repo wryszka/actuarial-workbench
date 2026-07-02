@@ -13,7 +13,7 @@
  */
 import {
   Shield, TrendingUp, FileSpreadsheet, Network, AlertOctagon, BarChart3,
-  Code2, Table2, ScrollText, HeartPulse, Waypoints, UsersRound,
+  Code2, Table2, ScrollText, HeartPulse, Waypoints, UsersRound, FileInput,
 } from 'lucide-react';
 
 export type TileStatus = 'live' | 'in_progress' | 'roadmap' | 'contact';
@@ -153,5 +153,14 @@ export const TILES: Tile[] = [
     icon: UsersRound,
     to: '/roadmap/customer-lake',
     subtitle: 'Agentic CDP · policyholder 360',
+  },
+  {
+    slug: 'bordereaux-ingestion',
+    label: 'Bordereaux ingestion',
+    description: 'Delegated-authority and reinsurance data arrives as monthly bordereaux — premium and claims spreadsheets, a different template from every coverholder, MGA and cedant. This turns that messy intake into a governed pipeline: land the files, map each sender to a canonical (ACORD-aligned) schema, run data-quality checks, quarantine the rows that fail for review, and publish clean tables that pricing, accumulation and reserving can trust — with lineage and audit end to end.',
+    status: 'roadmap',
+    icon: FileInput,
+    to: '/roadmap/bordereaux-ingestion',
+    subtitle: 'Delegated authority · premium & claims',
   },
 ];
