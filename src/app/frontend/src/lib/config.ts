@@ -23,6 +23,7 @@ export interface HubConfig {
 
   // Excel accelerator (actuarial-excel-accelerator) — notebooks only for now.
   excel_folder_path: string;   // workspace folder holding the demo notebooks
+  excel_app_url: string;       // Excel Accelerator front-door app (four use cases + reset)
 
   // SAS migration (sas_migration) deployed pieces.
   sas_schema: string;

@@ -62,9 +62,10 @@ def hub_config() -> dict:
         # Workspace base + catalog for accelerator deep links.
         "workspace_host": _env("WORKSPACE_HOST"),
         "catalog_name": _env("CATALOG_NAME"),
-        # Excel accelerator pieces. Notebooks only for now — the jobs + DLT
-        # pipeline were removed and the notebooks aren't validated yet.
+        # Excel accelerator pieces: the shared notebooks folder + the
+        # front-door app (four use cases, health chips, reset buttons).
         "excel_folder_path": _env("EXCEL_FOLDER_PATH"),
+        "excel_app_url": _env("EXCEL_APP_URL"),
         # SAS migration pieces.
         "sas_schema": _env("SAS_SCHEMA"),
         "sas_notebook_path": _env("SAS_NOTEBOOK_PATH"),

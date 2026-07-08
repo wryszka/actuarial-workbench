@@ -51,20 +51,32 @@ function buildPieces(slug: string, c: HubConfig): Piece[] {
   }
 
   if (slug === 'excel-migration') {
+    // The front-door app is the recommended entry: four use cases, health
+    // chips, walkthrough links and reset buttons.
+    if (c.excel_app_url)
+      pieces.push({ icon: ExternalLink, label: 'Open the Excel Accelerator app',
+        sublabel: 'Four use cases — descriptions, walkthroughs, live assets, reset buttons',
+        href: c.excel_app_url });
     // Deployed to a shared workspace folder so the notebooks open for everyone.
     if (c.excel_folder_path) {
       pieces.push({ icon: FolderOpen, label: 'Browse all accelerator notebooks',
-        sublabel: 'Shared folder — demo_01_rfr_etl + demo_02a_scr_sf + demo_03_experience_genie',
+        sublabel: 'Shared folder — one flat sub-folder per use case',
         href: dbx.workspacePath(host, c.excel_folder_path) });
-      pieces.push({ icon: NotebookPen, label: 'Demo 1 — EIOPA RFR ETL notebooks',
-        sublabel: 'bronze autoloader · DLT silver (02_silver_dlt.sql) · gold publish · validate',
-        href: dbx.workspacePath(host, `${c.excel_folder_path}/demo_01_rfr_etl/src`) });
-      pieces.push({ icon: NotebookPen, label: 'Demo 2A — SCR Standard Formula notebooks',
-        sublabel: 'sub-modules · orchestrator · parity · MLflow sweep · UC UDFs · dashboard',
-        href: dbx.workspacePath(host, `${c.excel_folder_path}/demo_02a_scr_sf/src`) });
-      pieces.push({ icon: NotebookPen, label: 'Demo 3 — Experience & loss-ratio monitoring notebooks',
-        sublabel: 'bronze → silver → gold experience · parity · Genie space · AI/BI dashboard',
+      pieces.push({ icon: NotebookPen, label: 'Use case 1 — The VBA nobody understands',
+        sublabel: 'bordereau macro → Genie Code explains + converts → file-arrival job',
+        href: dbx.workspacePath(host, `${c.excel_folder_path}/demo_00_vba_csv_etl`) });
+      pieces.push({ icon: NotebookPen, label: 'Use case 2 — Model into Unity Catalog',
+        sublabel: 'SF workbook → versioned model (@cal_2025 / @cal_2026) → calibration impact',
+        href: dbx.workspacePath(host, `${c.excel_folder_path}/demo_02b_sf_model_uc`) });
+      pieces.push({ icon: NotebookPen, label: 'Use case 3 — Ad-hoc BI with Genie & AI/BI',
+        sublabel: 'claims listing → Genie quick setup → published dashboard → extend',
         href: dbx.workspacePath(host, `${c.excel_folder_path}/demo_03_experience_genie`) });
+      pieces.push({ icon: NotebookPen, label: 'Use case 4 — Lakeflow Designer',
+        sublabel: 'the monthly blend as a no-code canvas — governed, code behind the scenes',
+        href: dbx.workspacePath(host, `${c.excel_folder_path}/demo_04_lakeflow_designer`) });
+      pieces.push({ icon: NotebookPen, label: 'Deep dives — EIOPA RFR ETL + SCR Standard Formula',
+        sublabel: 'demo_01_rfr_etl · demo_02a_scr_sf (DLT, MLflow sweep, UC UDF round-trip)',
+        href: dbx.workspacePath(host, `${c.excel_folder_path}/demo_01_rfr_etl/src`) });
     }
   }
 

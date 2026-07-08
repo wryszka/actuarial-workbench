@@ -24,6 +24,8 @@ env:
   # — Excel accelerator (actuarial-excel-accelerator) — notebooks only —
   - name: EXCEL_FOLDER_PATH
     value: ${var.excel_folder_path}
+  - name: EXCEL_APP_URL
+    value: ${var.excel_app_url}
   # — SAS migration (sas_migration) —
   - name: SAS_SCHEMA
     value: ${var.sas_schema}

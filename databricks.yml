@@ -62,6 +62,9 @@ variables:
   excel_folder_path:
     description: Workspace folder holding the Excel accelerator demo notebooks
     default: ""
+  excel_app_url:
+    description: URL of the Excel Accelerator front-door app (empty hides the link)
+    default: ""
   sas_schema:
     description: Schema for the SAS migration demo (sas_migration)
     default: ""
@@ -110,6 +113,7 @@ targets:
       # Accelerator deep links (dev workspace) — captured after install.
       catalog_name: lr_dev_aws_us_catalog
       excel_folder_path: /Workspace/Shared/actuarial-excel-accelerator
+      excel_app_url: "https://excel-accelerator-${var.apps_domain_number}.aws.databricksapps.com"
       sas_schema: sas_migration
       sas_notebook_path: /Workspace/Users/laurence.ryszka@databricks.com/sas_migration/files/sas_migration_demo
 

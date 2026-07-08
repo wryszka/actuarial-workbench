@@ -137,8 +137,8 @@ export const TILES: Tile[] = [
   {
     slug: 'excel-migration',
     label: 'Excel migration',
-    description: 'Actuarial Excel + VBA → governed Delta, DLT, MLflow and dashboards.',
-    status: 'in_progress',
+    description: 'Four use cases off the spreadsheet estate: VBA ETL, models to UC, Genie/AI-BI, Lakeflow Designer.',
+    status: 'live',
     icon: Table2,
     to: '/excel-migration',
   },
