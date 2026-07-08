@@ -8,10 +8,11 @@
 import { Link, useParams } from 'react-router-dom';
 import {
   ArrowLeft, ArrowRight, ExternalLink, Rocket, FileText, Clapperboard,
-  GraduationCap, BookOpen, MonitorPlay,
+  GraduationCap, BookOpen, MonitorPlay, Milestone,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { DEMO_PAGES } from '../lib/demo-pages';
+import { NEXT_STEPS } from '../lib/next-steps';
 import { fetchConfig, type HubConfig } from '../lib/config';
 import ContactFooter from '../components/ContactFooter';
 
@@ -111,6 +112,23 @@ export default function DemoLanding() {
             href={demo.smeVideoUrl} cta="Watch" />
         </div>
       </div>
+
+      {/* After the demo — GTM next steps (only when published for this demo) */}
+      {slug && NEXT_STEPS[slug] && (
+        <Link to={`/demo/${slug}/next-steps`}
+          className="flex items-center justify-between gap-3 p-5 rounded-2xl bg-gradient-to-r from-blue-700 to-blue-600 text-white hover:from-blue-600 hover:to-blue-500 transition-colors group">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-white/15 flex items-center justify-center shrink-0">
+              <Milestone className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <div className="text-lg font-bold tracking-tight">After the demo — next steps</div>
+              <div className="text-[13px] text-blue-100">Make it real in your estate: scoping workshop, reference architecture, the code, training path, POC plan.</div>
+            </div>
+          </div>
+          <ArrowRight className="w-5 h-5 shrink-0 group-hover:translate-x-1 transition-transform" />
+        </Link>
+      )}
 
       {/* In-app Learn note */}
       {demo.learnInApp && (
