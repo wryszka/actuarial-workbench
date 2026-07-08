@@ -14,6 +14,7 @@
 import {
   Shield, TrendingUp, FileSpreadsheet, Network, AlertOctagon, BarChart3,
   Code2, Table2, ScrollText, HeartPulse, Waypoints, UsersRound, FileInput,
+  Stamp,
 } from 'lucide-react';
 
 export type TileStatus = 'live' | 'in_progress' | 'roadmap' | 'contact';
@@ -164,5 +165,14 @@ export const TILES: Tile[] = [
     icon: FileInput,
     to: '/roadmap/bordereaux-ingestion',
     subtitle: 'Delegated authority · premium & claims',
+  },
+  {
+    slug: 'underwriting-workbench',
+    label: 'Underwriting workbench',
+    description: 'Submission to bind — triage, appetite, enrichment and quote, AI-assisted.',
+    status: 'roadmap',
+    icon: Stamp,
+    to: '/roadmap/underwriting-workbench',
+    subtitle: 'Commercial lines',
   },
 ];

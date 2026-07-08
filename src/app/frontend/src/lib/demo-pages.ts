@@ -45,6 +45,7 @@ export const DEMO_PAGES: Record<string, DemoPage> = {
     appUrlKey: 'solvency_app_url',
     appUrlFallback: DEFAULT_SOLVENCY_APP_URL,
     previewImage: '/solvency-2-preview.png',
+    clientVideoUrl: 'https://youtu.be/gqVdLiK4TNo',
     learnInApp: true,
   },
 
@@ -72,6 +73,8 @@ export const DEMO_PAGES: Record<string, DemoPage> = {
     appUrlKey: 'claims_app_url',
     appUrlFallback: DEFAULT_CLAIMS_APP_URL,
     previewImage: '/claims-preview.png',
+    runDocUrl:
+      'https://docs.google.com/document/d/1JYlkNrESd53c4he-XS_TqEbOAoke9dUptcvpqUUfE2w/edit',
     learnInApp: true,
   },
 
@@ -86,6 +89,8 @@ export const DEMO_PAGES: Record<string, DemoPage> = {
     appUrlKey: 'lifecast_app_url',
     appUrlFallback: DEFAULT_LIFECAST_APP_URL,
     previewImage: '/lifecast-preview.png',
+    runDocUrl:
+      'https://docs.google.com/document/d/1daijoVb751CezD_qLQBEqLPbM4HePms7ScvBa24hxfg/edit',
     learnInApp: true,
   },
 

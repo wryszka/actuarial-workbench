@@ -95,6 +95,22 @@ export const ROADMAP_CONTENT: Record<string, RoadmapEntry> = {
     adjacent_links: [],
   },
 
+  'underwriting-workbench': {
+    what: "The commercial underwriter's desk on the lakehouse — from submission arriving in the " +
+      "inbox to a bound risk. Broker submissions (emails, SOVs, loss runs, questionnaires) are " +
+      "extracted with Document AI, triaged against risk appetite, enriched with internal experience " +
+      "and external data, priced, and put in front of the underwriter with the reasoning shown — " +
+      "quote, refer or decline, with the whole trail governed.",
+    workbench_capabilities: [
+      "Submission intake: broker emails, SOVs, loss runs and questionnaires parsed with Document AI / ai_query into structured, ACORD-aligned data — low-confidence extractions quarantined for review.",
+      "Appetite and triage: rules + models score each submission against line-of-business appetite, capacity and sanctions/KYC checks, so the desk works the best risks first.",
+      "Enrichment: internal claims experience (the Claims workbench's book), geospatial exposure, and third-party firmographics joined onto the risk — one governed view of everything known.",
+      "Rate–quote–bind with the reasoning shown: pricing via the same governed model patterns as the Pricing workbench, an underwriting agent that drafts the quote and explains the drivers, human in the loop for refer/decline.",
+      "Portfolio steering: written vs plan by segment, capacity burn, and the feedback loop into pricing and accumulation — same Unity Catalog governance plane as every other workbench.",
+    ],
+    adjacent_links: [],
+  },
+
   'ifrs-17': {
     what: "IFRS 17 financial reporting for insurance contracts: contract groups, " +
       "Contractual Service Margin (CSM), risk adjustment, fulfilment cashflows. Heavy " +
