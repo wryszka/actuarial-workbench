@@ -47,6 +47,8 @@ export const DEFAULT_LIFECAST_APP_URL =
   'https://lifecast-workbench-7474656169654171.aws.databricksapps.com';
 export const DEFAULT_UNDERWRITING_APP_URL =
   'https://underwriting-workbench-7474656169654171.aws.databricksapps.com';
+export const DEFAULT_EXCEL_APP_URL =
+  'https://excel-accelerator-7474656169654171.aws.databricksapps.com';
 
 // Tile `description` is the ONE-LINE hook shown on the card. The full write-up
 // lives on the click-through page (demo-pages.ts blurb, or roadmap-content.ts).
@@ -140,7 +142,11 @@ export const TILES: Tile[] = [
     description: 'Four use cases off the spreadsheet estate: VBA ETL, models to UC, Genie/AI-BI, Lakeflow Designer.',
     status: 'live',
     icon: Table2,
-    to: '/excel-migration',
+    // Opens the Excel Accelerator front-door app directly (no in-hub detail
+    // page). Overridden per-workspace by /api/config → excel_app_url.
+    to: DEFAULT_EXCEL_APP_URL,
+    accent: 'blue',
+    subtitle: 'Four use cases · reset buttons · new tab',
   },
   {
     slug: 'mrc-intelligence',

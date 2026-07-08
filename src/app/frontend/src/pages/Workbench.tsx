@@ -23,14 +23,21 @@ export default function Workbench() {
   // per-workspace app URL from /api/config themselves — so the landing page only
   // needs the entity name for the header.
   const [entity, setEntity] = useState<string>('Bricksurance SE');
+  const [tiles, setTiles] = useState<Tile[]>(TILES);
 
   useEffect(() => {
     fetchConfig()
-      .then((c) => { if (c.entity_name) setEntity(c.entity_name); })
+      .then((c) => {
+        if (c.entity_name) setEntity(c.entity_name);
+        // Tiles that open an external app directly get their URL from config
+        // so the hub stays portable across workspaces.
+        if (c.excel_app_url) {
+          setTiles(TILES.map((t) =>
+            t.slug === 'excel-migration' ? { ...t, to: c.excel_app_url } : t));
+        }
+      })
       .catch(() => undefined);
   }, []);
-
-  const tiles: Tile[] = TILES;
 
   return (
     <>
