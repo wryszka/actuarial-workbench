@@ -28,6 +28,7 @@ export interface DemoPage {
   appUrlFallback?: string;       // used if config is unavailable
   previewImage?: string;         // screenshot shown on the Open-demo tile (path in public/)
   runDocUrl?: string;            // "demo run doc" link
+  deckUrl?: string;              // "first steps deck" — rendered as an extra resource card when set
   clientVideoUrl?: string;       // client-facing walkthrough recording (placeholder if unset)
   internalVideoUrl?: string;     // Databricks-internal "how to run it" (placeholder if unset)
   smeVideoUrl?: string;          // SME training on this demo's process (placeholder if unset)
@@ -94,6 +95,22 @@ export const DEMO_PAGES: Record<string, DemoPage> = {
     runDocUrl:
       'https://docs.google.com/document/d/1daijoVb751CezD_qLQBEqLPbM4HePms7ScvBa24hxfg/edit',
     learnInApp: true,
+  },
+
+  'insurance-ontology': {
+    slug: 'insurance-ontology',
+    title: 'Insurance ontology',
+    subtitle: 'Bricksurance data core · ACORD',
+    blurb:
+      'One shared, ACORD-aligned semantic model for insurance data — the common data layer under every ' +
+      'workbench. Entities, attributes, relationships and code lists are defined once as model-as-code ' +
+      '(YAML) and compiled into governed Unity Catalog assets: domain schemas, tables, tags, comments ' +
+      'and a business glossary — so Solvency II, Pricing, Claims, Reinsurance and LifeCast all speak ' +
+      'the same language, with lineage end to end. The console below is where you browse the standard: ' +
+      'domains, entities, their definitions and what each workbench implements.',
+    // Lives on the serverless workspace — not derived from apps_domain_number.
+    appUrlFallback: 'https://data-core-console-7474659673789953.aws.databricksapps.com',
+    deckUrl: 'https://docs.google.com/presentation/d/1vXC7SVZUC-23adWG5KTLvSwzzjNGKSskvf1Yq-AXOoc/edit',
   },
 
   reinsurance: {

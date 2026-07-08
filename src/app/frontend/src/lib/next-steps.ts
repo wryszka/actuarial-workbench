@@ -43,9 +43,9 @@ export const NEXT_STEPS: Record<string, NextSteps> = {
         assets: [
           {
             title: 'Scoping workshop',
-            sublabel: 'A working session mapping the demo to your data, models and rating flow — book via the contact page.',
-            href: '/contact',
-            cta: 'Book',
+            sublabel: 'The workshop template we work through together — process mapping, data & ingestion, governance, integration, modelling, first-phase scope.',
+            href: 'https://docs.google.com/document/d/10o--F4lMReF0a3ASXb92hB9ZvFuoB7mpk5Ug1wI8QWs/edit',
+            cta: 'Open doc',
           },
           {
             title: 'Sizing & cost estimate',
@@ -87,6 +87,20 @@ export const NEXT_STEPS: Record<string, NextSteps> = {
           {
             title: 'Typical POC plan',
             sublabel: 'A bounded 4–6 week proof: one line of business, one model family end to end, with agreed success criteria.',
+          },
+        ],
+      },
+      {
+        title: 'Partners',
+        blurb: 'Partner solutions and delivery capacity around the workbench.',
+        assets: [
+          {
+            title: 'Partner solutions',
+            sublabel: 'Packaged partner offerings that extend the workbench — rating engines, data providers and pricing tooling integrations.',
+          },
+          {
+            title: 'Delivery partners',
+            sublabel: 'System integrators with insurance pricing practices who can deliver the implementation alongside your team.',
           },
         ],
       },
