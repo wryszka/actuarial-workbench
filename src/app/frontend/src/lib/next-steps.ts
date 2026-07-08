@@ -13,8 +13,9 @@
 export interface NextStepAsset {
   title: string;
   sublabel: string;    // one line on what it is / why it matters
-  href?: string;       // live link; omit for a coming-soon placeholder
+  href?: string;       // live link; omit for a non-clickable placeholder
   cta?: string;        // defaults to "Open"
+  badge?: string;      // placeholder badge text; defaults to "coming soon"
 }
 
 export interface NextStepPhase {
@@ -64,9 +65,8 @@ export const NEXT_STEPS: Record<string, NextSteps> = {
           },
           {
             title: 'Deploy the code',
-            sublabel: 'The demo is a public repo with a Databricks Asset Bundle — deployable into your own workspace as the starting skeleton.',
-            href: 'https://github.com/wryszka/pricing-workbench',
-            cta: 'GitHub',
+            sublabel: 'The demo code with its Databricks Asset Bundle — deployable into your own workspace as the starting skeleton. Available upon request.',
+            badge: 'upon request',
           },
           {
             title: 'First implementation guide',

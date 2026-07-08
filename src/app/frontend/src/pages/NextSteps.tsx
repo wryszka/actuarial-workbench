@@ -77,7 +77,7 @@ function AssetCard({ asset }: { asset: NextStepAsset }) {
         <div className="flex items-center gap-2">
           <span className="text-sm font-semibold text-slate-700">{asset.title}</span>
           <span className="text-[10px] uppercase tracking-widest font-bold px-1.5 py-0.5 rounded bg-slate-200 text-slate-600">
-            coming soon
+            {asset.badge ?? 'coming soon'}
           </span>
         </div>
         <p className="text-[12px] text-slate-500 leading-snug mt-1 flex-1">{asset.sublabel}</p>
