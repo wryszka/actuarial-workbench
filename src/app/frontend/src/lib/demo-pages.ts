@@ -60,6 +60,8 @@ export const DEMO_PAGES: Record<string, DemoPage> = {
     appUrlKey: 'pricing_app_url',
     appUrlFallback: DEFAULT_PRICING_APP_URL,
     previewImage: '/pricing-preview.png',
+    runDocUrl:
+      'https://docs.google.com/document/d/1VHVMrbwo1D2Gfl2NKnKJzosBlS-hltcFZ9guvBejUkM/edit',
   },
 
   'claims-workbench': {

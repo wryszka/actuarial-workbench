@@ -12,7 +12,7 @@
  * Tile metadata lives in workbench-tiles.ts so adding a tile is one file.
  */
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, GraduationCap } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { TILES, type Tile } from '../lib/workbench-tiles';
 import { fetchConfig } from '../lib/config';
@@ -43,6 +43,25 @@ export default function Workbench() {
             Real insurance business process demos, implemented fully in Databricks.
           </p>
         </div>
+        <a href="https://docs.google.com/presentation/d/1u6wyShLPEq8a6hcYC3dCr904GwQ6V7NYtJVUCZGFWzE/edit"
+          target="_blank" rel="noopener noreferrer"
+          className="shrink-0 w-full sm:w-72 bg-gradient-to-br from-red-600 to-red-700 text-white rounded-2xl p-4 hover:from-red-500 hover:to-red-600 hover:shadow-lg hover:shadow-red-200 transition-all flex flex-col group">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-xl bg-white/15 flex items-center justify-center shrink-0">
+              <GraduationCap className="w-6 h-6 text-white" />
+            </div>
+            <div className="min-w-0">
+              <div className="text-sm font-bold">Internal Databricks training</div>
+              <div className="text-[11px] text-red-100">Databricks-only · not for customers</div>
+            </div>
+          </div>
+          <p className="text-[12px] text-red-50 mt-2.5 leading-snug">
+            The training deck behind these demos — start here before you present.
+          </p>
+          <div className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-white">
+            Open deck <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </a>
         <Link to="/contact"
           className="shrink-0 w-full sm:w-72 bg-white border-2 border-emerald-200 rounded-2xl p-4 hover:border-emerald-300 hover:shadow-lg hover:shadow-emerald-100 transition-all flex flex-col group">
           <div className="flex items-center gap-3">
