@@ -53,12 +53,12 @@ export default function Workbench() {
                 <GraduationCap className="w-5 h-5 text-white" />
               </div>
               <div className="min-w-0">
-                <div className="text-[13px] font-bold leading-tight">Internal Databricks training</div>
-                <div className="text-[10px] text-red-100 mt-0.5">Databricks-only · not for customers</div>
+                <div className="text-[13px] font-bold leading-tight">Databricks internal training</div>
+                <div className="text-[10px] text-red-100 mt-0.5">Learn insurance with Laurence</div>
               </div>
             </div>
             <div className="mt-2.5 inline-flex items-center gap-1 text-xs font-bold text-white">
-              Open deck <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+              Click for details <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
             </div>
           </a>
           <Link to="/contact"
