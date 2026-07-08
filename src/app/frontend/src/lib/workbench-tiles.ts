@@ -144,9 +144,11 @@ export const TILES: Tile[] = [
     slug: 'insurance-ontology',
     label: 'Insurance ontology',
     description: 'An ACORD-based insurance semantic layer, governed in Unity Catalog.',
-    status: 'roadmap',
+    status: 'in_progress',
     icon: Waypoints,
-    to: '/roadmap/insurance-ontology',
+    // Lives on the serverless workspace (not derived from apps_domain_number).
+    to: 'https://data-core-console-7474659673789953.aws.databricksapps.com',
+    subtitle: 'ACORD data core · external app',
   },
   {
     slug: 'customer-lake',
