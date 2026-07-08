@@ -17,6 +17,7 @@ import type { HubConfig } from './config';
 import {
   DEFAULT_SOLVENCY_APP_URL, DEFAULT_PRICING_APP_URL, DEFAULT_CLAIMS_APP_URL,
   DEFAULT_REINSURANCE_APP_URL, DEFAULT_LIFECAST_APP_URL,
+  DEFAULT_UNDERWRITING_APP_URL,
 } from './workbench-tiles';
 
 export interface DemoPage {
@@ -95,6 +96,22 @@ export const DEMO_PAGES: Record<string, DemoPage> = {
     runDocUrl:
       'https://docs.google.com/document/d/1daijoVb751CezD_qLQBEqLPbM4HePms7ScvBa24hxfg/edit',
     learnInApp: true,
+  },
+
+  'underwriting-workbench': {
+    slug: 'underwriting-workbench',
+    title: 'Underwriting workbench',
+    subtitle: 'Commercial lines',
+    blurb:
+      'The commercial underwriter’s desk on the lakehouse — from submission arriving in the inbox to a ' +
+      'bound risk. Broker submissions (emails, SOVs, loss runs, questionnaires) are extracted with ' +
+      'Document AI, triaged against risk appetite, enriched with internal experience and external data, ' +
+      'priced, and put in front of the underwriter with the reasoning shown — quote, refer or decline, ' +
+      'with the whole trail governed.',
+    appUrlKey: 'underwriting_app_url',
+    appUrlFallback: DEFAULT_UNDERWRITING_APP_URL,
+    runDocUrl:
+      'https://docs.google.com/document/d/1-J6OfcRAekJUEwmA3kWD3GpBZx7OoNT0LbDLA7j-jRY/edit',
   },
 
   'insurance-ontology': {

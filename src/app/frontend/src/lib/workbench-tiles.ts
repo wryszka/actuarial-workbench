@@ -45,6 +45,8 @@ export const DEFAULT_REINSURANCE_APP_URL =
   'https://reinsurance-workbench-7474656169654171.aws.databricksapps.com';
 export const DEFAULT_LIFECAST_APP_URL =
   'https://lifecast-workbench-7474656169654171.aws.databricksapps.com';
+export const DEFAULT_UNDERWRITING_APP_URL =
+  'https://underwriting-workbench-7474656169654171.aws.databricksapps.com';
 
 // Tile `description` is the ONE-LINE hook shown on the card. The full write-up
 // lives on the click-through page (demo-pages.ts blurb, or roadmap-content.ts).
@@ -68,6 +70,15 @@ export const TILES: Tile[] = [
     to: '/demo/pricing',
     accent: 'blue',
     subtitle: 'Commercial motor',
+  },
+  {
+    slug: 'underwriting-workbench',
+    label: 'Underwriting workbench',
+    description: 'Submission to bind — triage, appetite, enrichment and quote, AI-assisted.',
+    status: 'in_progress',
+    icon: Stamp,
+    to: '/demo/underwriting-workbench',
+    subtitle: 'Commercial lines',
   },
   {
     slug: 'ifrs-17',
@@ -166,14 +177,5 @@ export const TILES: Tile[] = [
     icon: FileInput,
     to: '/roadmap/bordereaux-ingestion',
     subtitle: 'Delegated authority · premium & claims',
-  },
-  {
-    slug: 'underwriting-workbench',
-    label: 'Underwriting workbench',
-    description: 'Submission to bind — triage, appetite, enrichment and quote, AI-assisted.',
-    status: 'roadmap',
-    icon: Stamp,
-    to: '/roadmap/underwriting-workbench',
-    subtitle: 'Commercial lines',
   },
 ];
