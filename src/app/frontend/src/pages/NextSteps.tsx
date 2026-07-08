@@ -68,7 +68,9 @@ export default function NextSteps() {
 }
 
 function AssetCard({ asset }: { asset: NextStepAsset }) {
-  const internal = asset.href?.startsWith('/');
+  // In-app routes go through the router; anything with a file extension (e.g.
+  // /pricing-architecture.png) must be a real navigation so the server serves it.
+  const internal = asset.href?.startsWith('/') && !asset.href.includes('.');
   if (!asset.href) {
     return (
       <div className="flex flex-col p-4 rounded-lg border border-dashed border-slate-300 bg-slate-50">

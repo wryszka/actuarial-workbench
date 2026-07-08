@@ -58,7 +58,9 @@ export const NEXT_STEPS: Record<string, NextSteps> = {
         assets: [
           {
             title: 'Reference architecture',
-            sublabel: 'The production blueprint — ingestion, medallion, Unity Catalog governance, MLflow, serving and the app layer.',
+            sublabel: 'The production blueprint — ingestion with HITL, medallion, model factory, route-optimised serving and the app, governed end to end by Unity Catalog.',
+            href: '/pricing-architecture.png',
+            cta: 'View diagram',
           },
           {
             title: 'Deploy the code',

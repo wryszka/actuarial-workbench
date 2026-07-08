@@ -1,0 +1,77 @@
+digraph pricing {
+  rankdir=LR;
+  fontname="Helvetica";
+  labelloc="t";
+  label=<<font point-size="26"><b>Pricing Workbench — reference architecture</b></font><br/><font point-size="15" color="#475569">Commercial motor pricing, end to end on the Databricks Data Intelligence Platform</font>>;
+  graph [newrank=true, splines=spline, nodesep=0.45, ranksep=0.9, pad=0.5, bgcolor="white", dpi=150];
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=13, margin="0.22,0.14", penwidth=1.4];
+  edge [fontname="Helvetica", fontsize=11, color="#475569", penwidth=1.3, arrowsize=0.8];
+
+  subgraph cluster_sources {
+    label=<<b>Client sources</b>>; fontsize=15; style="rounded,filled"; fillcolor="#f8fafc"; color="#cbd5e1";
+    policy   [label="Policy admin\n(policies)", fillcolor="#f1f5f9", color="#94a3b8"];
+    claims   [label="Claims history", fillcolor="#f1f5f9", color="#94a3b8"];
+    quotes   [label="Quote stream", fillcolor="#f1f5f9", color="#94a3b8"];
+    external [label="External providers\nmarket · geo hazard\ncredit · ONS", fillcolor="#f1f5f9", color="#94a3b8"];
+  }
+
+  subgraph cluster_dbx {
+    label=<<b>Databricks — governed end to end by Unity Catalog</b>   <font color="#475569">lineage · audit · metadata · access control · bias monitoring</font>>;
+    fontsize=16; style="rounded,filled"; fillcolor="#fffdfa"; color="#FF3621"; penwidth=2;
+
+    subgraph cluster_ingest {
+      label=<<b>Ingestion</b>>; fontsize=14; style="rounded,filled"; fillcolor="#eff6ff"; color="#93c5fd";
+      volume [label="UC Volume\nfile landing", fillcolor="#dbeafe", color="#3b82f6"];
+      dlt    [label="Lakeflow pipeline\nDQ expectations", fillcolor="#dbeafe", color="#3b82f6"];
+      hitl   [label="Actuary review\nhuman-in-the-loop gate", fillcolor="#fefce8", color="#ca8a04"];
+    }
+
+    subgraph cluster_lake {
+      label=<<b>Lakehouse — medallion</b>>; fontsize=14; style="rounded,filled"; fillcolor="#fafaf9"; color="#d6d3d1";
+      bronze  [label="Bronze\nas-arrived", fillcolor="#f5e0cc", color="#b45309"];
+      silver  [label="Silver\nvalidated + external", fillcolor="#e5e7eb", color="#6b7280"];
+      derived [label="Derived factors\npostcode enrichment", fillcolor="#fef3c7", color="#d97706"];
+      gold    [label="Gold — Unified Pricing Table\nlive + monthly snapshots", fillcolor="#fde68a", color="#d97706"];
+    }
+
+    subgraph cluster_models {
+      label=<<b>Model factory</b>>; fontsize=14; style="rounded,filled"; fillcolor="#faf5ff"; color="#d8b4fe";
+      train      [label="MLflow training\n4 families: frequency · severity\ndemand · fraud", fillcolor="#ede9fe", color="#7c3aed"];
+      challenger [label="Challenger comparison\nlift attribution", fillcolor="#ede9fe", color="#7c3aed"];
+      registry   [label="UC model registry\n@champion aliases", fillcolor="#ede9fe", color="#7c3aed"];
+    }
+
+    serving [label="Model Serving\nroute-optimised endpoint\nmillisecond live quotes", fillcolor="#dcfce7", color="#16a34a"];
+
+    subgraph cluster_ai {
+      label=<<b>AI layer</b>>; fontsize=14; style="rounded,filled"; fillcolor="#fdf4ff"; color="#e9d5ff";
+      agents [label="Foundation Model API agents\nDQ monitor · lift explainer\nmodel selector · quote investigation", fillcolor="#f3e8ff", color="#9333ea"];
+      genie  [label="Genie spaces\nUPT · Quote Review", fillcolor="#f3e8ff", color="#9333ea"];
+    }
+
+    app [label=<<b>Pricing Workbench app</b><br/>React + FastAPI<br/>ingest · price · models · quotes ·<br/>monitoring · governance>, fillcolor="#0f172a", color="#0f172a", fontcolor="white"];
+  }
+
+  users [label="Actuaries · underwriters\npricing ops", fillcolor="#f1f5f9", color="#94a3b8"];
+
+  { rank=same; volume; dlt; hitl; }
+  { rank=same; bronze; silver; derived; gold; }
+  { rank=same; train; challenger; registry; }
+  { rank=same; agents; genie; serving; }
+
+  {policy claims quotes external} -> volume;
+  volume -> dlt;
+  dlt -> hitl [style=dashed, dir=both, label="approve /\nquarantine", color="#ca8a04"];
+  dlt -> bronze;
+  bronze -> silver;
+  silver -> derived;
+  silver -> gold;
+  derived -> gold;
+  gold -> train -> challenger -> registry -> serving;
+  serving -> app;
+  gold -> agents [color="#9333ea"];
+  gold -> genie  [color="#9333ea"];
+  agents -> app  [color="#9333ea"];
+  genie -> app   [color="#9333ea"];
+  app -> users;
+}
