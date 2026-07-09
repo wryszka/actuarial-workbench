@@ -6,7 +6,8 @@
  * hours, and the go/laurence link that carries everything else.
  */
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Mail, Slack, CalendarClock, ExternalLink, ArrowRight, Boxes } from 'lucide-react';
+import { ArrowLeft, Mail, Slack, CalendarClock, ExternalLink, ArrowRight, Boxes, MessageSquarePlus } from 'lucide-react';
+import { FEEDBACK_FORM_URL } from '../lib/next-steps';
 
 const EMAIL = 'laurence.ryszka@databricks.com';
 const SLACK_CHANNEL = '#bricksurance';
@@ -81,8 +82,10 @@ export default function Contact() {
           <h1 className="text-3xl font-bold text-gray-900 tracking-tight mt-1">Laurence Ryszka</h1>
           <p className="text-base text-gray-500 mt-0.5">Insurance Tech Lead</p>
           <p className="text-sm text-gray-700 mt-3 leading-relaxed max-w-2xl">
-            Your first point of contact for everything on this hub — a walkthrough, a question,
-            an issue, or the first steps to standing one of these up in your own account.
+            The best ways to get help: <strong>Friday office hours</strong> for anything that needs
+            a conversation, <strong>{SLACK_CHANNEL}</strong> for quick questions, and the
+            <strong> requests &amp; feedback form</strong> for bugs and ideas — that way nothing
+            gets lost in one inbox.
           </p>
         </div>
         <img src="/bricksurance-logo.png" alt="Bricksurance"
@@ -124,7 +127,17 @@ export default function Contact() {
       {/* Direct contact rows */}
       <section className="bg-white border border-gray-200 rounded-lg p-5">
         <h2 className="text-base font-bold text-gray-900 mb-3">Get in touch</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+          <a href={FEEDBACK_FORM_URL} target="_blank" rel="noopener noreferrer"
+            className="flex items-start gap-3 p-3 rounded-lg border border-gray-200 hover:border-emerald-300 hover:bg-emerald-50/40 transition-colors group">
+            <div className="w-9 h-9 rounded-lg bg-emerald-100 flex items-center justify-center shrink-0">
+              <MessageSquarePlus className="w-4 h-4 text-emerald-700" />
+            </div>
+            <div className="min-w-0">
+              <div className="text-sm font-semibold text-gray-900">Requests &amp; feedback</div>
+              <div className="text-[12px] text-gray-500">Bug, idea, new feature or feedback — one simple form</div>
+            </div>
+          </a>
           <a href={`mailto:${EMAIL}`}
             className="flex items-start gap-3 p-3 rounded-lg border border-gray-200 hover:border-emerald-300 hover:bg-emerald-50/40 transition-colors group">
             <div className="w-9 h-9 rounded-lg bg-emerald-100 flex items-center justify-center shrink-0">
