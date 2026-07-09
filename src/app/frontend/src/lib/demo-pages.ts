@@ -42,7 +42,7 @@ export const DEMO_PAGES: Record<string, DemoPage> = {
   'ifrs-17': {
     slug: 'ifrs-17',
     title: 'IFRS 17',
-    subtitle: 'Bricksurance SE · Q2 2026 close',
+    subtitle: 'Bricksurance SE',
     blurb:
       'The quarterly IFRS 17 close, end to end: nine governed feeds, a quality gate that blocks the ' +
       'close visibly, real PAA/GMM measurement engines (B96-ordered CSM, the §57 onerous test every ' +

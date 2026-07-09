@@ -92,7 +92,7 @@ export const TILES: Tile[] = [
     icon: FileSpreadsheet,
     to: '/demo/ifrs-17',
     accent: 'blue',
-    subtitle: 'Bricksurance SE · Q2 2026 close',
+    subtitle: 'Bricksurance SE',
   },
   {
     slug: 'reinsurance',
@@ -150,7 +150,7 @@ export const TILES: Tile[] = [
     // page). Overridden per-workspace by /api/config → excel_app_url.
     to: DEFAULT_EXCEL_APP_URL,
     accent: 'blue',
-    subtitle: 'Four use cases · reset buttons · new tab',
+    subtitle: 'Bricksurance SE',
   },
   {
     slug: 'mrc-intelligence',
