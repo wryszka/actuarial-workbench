@@ -96,9 +96,9 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* Executive support */}
+      {/* Executive sponsors */}
       <section>
-        <h2 className="text-base font-bold text-gray-900 mb-2.5">Executive support</h2>
+        <h2 className="text-base font-bold text-gray-900 mb-2.5">Executive sponsors</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
           {EXEC_SUPPORT.map((m) => <MemberCard key={m.email} m={m} />)}
         </div>
