@@ -6,7 +6,7 @@
  * hours, and the go/laurence link that carries everything else.
  */
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Mail, Slack, CalendarClock, ExternalLink, ArrowRight } from 'lucide-react';
+import { ArrowLeft, Mail, Slack, CalendarClock, ExternalLink, ArrowRight, Boxes } from 'lucide-react';
 
 const EMAIL = 'laurence.ryszka@databricks.com';
 const SLACK_CHANNEL = '#bricksurance';
@@ -164,6 +164,14 @@ export default function Contact() {
       <p className="text-[11px] text-gray-400 italic text-center pt-2">
         Want one of these in your account, or a tailored version for your line of business? That's exactly what office hours are for.
       </p>
+
+      {/* Quiet corner link to everything without a tile of its own */}
+      <div className="flex justify-end">
+        <Link to="/small-projects"
+          className="inline-flex items-center gap-1 text-[11px] text-gray-400 hover:text-blue-700 transition-colors">
+          <Boxes className="w-3 h-3" /> Small projects <ArrowRight className="w-3 h-3" />
+        </Link>
+      </div>
     </div>
   );
 }

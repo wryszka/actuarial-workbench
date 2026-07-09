@@ -12,7 +12,7 @@
  * Tile metadata lives in workbench-tiles.ts so adding a tile is one file.
  */
 import { Link } from 'react-router-dom';
-import { ArrowRight, GraduationCap, Boxes } from 'lucide-react';
+import { ArrowRight, GraduationCap } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { TILES, type Tile } from '../lib/workbench-tiles';
 import { fetchConfig } from '../lib/config';
@@ -89,11 +89,6 @@ export default function Workbench() {
               <div className="mt-1.5 inline-flex items-center gap-1 text-xs font-bold text-emerald-700">
                 Get in touch <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </div>
-            </Link>
-            <Link to="/small-projects"
-              className="w-full flex items-center justify-center gap-1.5 text-xs font-semibold text-gray-600 bg-white border border-gray-200 rounded-xl px-3 py-1.5 hover:border-blue-300 hover:text-blue-700 transition-colors group">
-              <Boxes className="w-3.5 h-3.5" /> Small projects
-              <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
             </Link>
           </div>
         </div>
