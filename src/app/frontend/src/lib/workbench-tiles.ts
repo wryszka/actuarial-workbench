@@ -88,7 +88,7 @@ export const TILES: Tile[] = [
     slug: 'ifrs-17',
     label: 'IFRS 17',
     description: 'The quarterly close, feeds to sign-off — CSM, onerous test, disclosures, audit.',
-    status: 'live',
+    status: 'in_progress',
     icon: FileSpreadsheet,
     to: '/demo/ifrs-17',
     accent: 'blue',
