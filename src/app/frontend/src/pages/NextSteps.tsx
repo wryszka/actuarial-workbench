@@ -6,8 +6,8 @@
  * as coming-soon placeholders. Same standard for every demo.
  */
 import { Link, useParams } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, ExternalLink, Milestone } from 'lucide-react';
-import { NEXT_STEPS, type NextStepAsset } from '../lib/next-steps';
+import { ArrowLeft, ArrowRight, ExternalLink, Milestone, MessageSquarePlus } from 'lucide-react';
+import { NEXT_STEPS, FEEDBACK_FORM_URL, type NextStepAsset } from '../lib/next-steps';
 import { DEMO_PAGES } from '../lib/demo-pages';
 import ContactFooter from '../components/ContactFooter';
 
@@ -58,8 +58,23 @@ export default function NextSteps() {
         </section>
       ))}
 
-      <p className="text-[11px] text-gray-400 italic pt-2">
-        Placeholders fill in as the assets are produced — if you need one sooner, say so at office hours.
+      {/* Requests & feedback — one form for everything, every page */}
+      <a href={FEEDBACK_FORM_URL} target="_blank" rel="noopener noreferrer"
+        className="flex items-center justify-between gap-3 p-4 rounded-lg bg-gray-900 text-white hover:bg-gray-800 transition-colors group">
+        <div className="flex items-center gap-3">
+          <MessageSquarePlus className="w-5 h-5 text-emerald-300 shrink-0" />
+          <div>
+            <div className="text-sm font-bold">Requests &amp; feedback</div>
+            <div className="text-[12px] text-gray-300">
+              Missing an asset, hit a bug, have an idea? One simple form — bug, idea, new feature or feedback.
+            </div>
+          </div>
+        </div>
+        <ArrowRight className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform" />
+      </a>
+
+      <p className="text-[11px] text-gray-400 italic pt-1">
+        Placeholders fill in as the assets are produced — use the form above if you need one sooner.
       </p>
     </div>
     <ContactFooter />
@@ -86,8 +101,13 @@ function AssetCard({ asset }: { asset: NextStepAsset }) {
   }
   const inner = (
     <>
-      <div className="text-sm font-semibold text-gray-900 inline-flex items-center gap-1">
+      <div className="text-sm font-semibold text-gray-900 inline-flex items-center gap-1.5 flex-wrap">
         {asset.title} <ExternalLink className="w-3 h-3 text-gray-400 group-hover:text-blue-600" />
+        {asset.badge && (
+          <span className="text-[10px] uppercase tracking-widest font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-700">
+            {asset.badge}
+          </span>
+        )}
       </div>
       <p className="text-[12px] text-gray-500 leading-snug mt-1 flex-1">{asset.sublabel}</p>
       <div className="text-[12px] font-bold text-blue-700 mt-2 inline-flex items-center gap-1">

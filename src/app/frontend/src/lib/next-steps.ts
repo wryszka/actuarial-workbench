@@ -3,11 +3,15 @@
  *
  * A demo landing page shows a full-width "After the demo — next steps" band
  * when its slug has an entry here; the band opens /demo/<slug>/next-steps.
- * The page walks the client journey in phases (scope → stand it up → skill up
- * & prove it), each phase holding asset cards. Assets without an `href` render
- * as "coming soon" placeholders — fill them one by one, same as the videos.
  *
- * To roll this out to another demo: add an entry keyed by the demo slug.
+ * The page is a STANDARD: three phases (understand → scope → prove & scale)
+ * built by standardNextSteps() from universal assets — reference architecture
+ * (one deck, deep-linked to the demo's slide), existing references, discovery
+ * guide, scoping workshop, POC plan, training — plus per-demo extras. A
+ * requests & feedback form (FEEDBACK_FORM_URL) closes every page.
+ *
+ * To roll out to another demo: add one standardNextSteps() entry with its
+ * arch slide id (see ARCH_SLIDES).
  */
 
 export interface NextStepAsset {
@@ -15,7 +19,8 @@ export interface NextStepAsset {
   sublabel: string;    // one line on what it is / why it matters
   href?: string;       // live link; omit for a non-clickable placeholder
   cta?: string;        // defaults to "Open"
-  badge?: string;      // placeholder badge text; defaults to "coming soon"
+  badge?: string;      // badge text; on placeholders defaults to "coming soon",
+                       // on linked assets shown next to the title when set
 }
 
 export interface NextStepPhase {
@@ -29,87 +34,142 @@ export interface NextSteps {
   phases: NextStepPhase[];
 }
 
-export const NEXT_STEPS: Record<string, NextSteps> = {
-  pricing: {
+/* ── Shared assets ──────────────────────────────────────────────────────── */
+
+const ARCH_DECK =
+  'https://docs.google.com/presentation/d/1YMxCOGG_tZYJuhttSfVi7OndYRRy-x-6zmT5blc4pv4/edit';
+
+/** Section-divider slide per demo in the reference-architectures deck. */
+export const ARCH_SLIDES: Record<string, string> = {
+  'solvency-2': 'solv_div_slide',
+  pricing: 'pric_div_slide',
+  'claims-workbench': 'clai_div_slide',
+  'underwriting-workbench': 'undw_div_slide',
+  reinsurance: 'rein_div_slide',
+  'ifrs-17': 'ifrs_div_slide',
+  lifecast: 'life_div_slide',
+  'legacy-migration': 'lega_div_slide', // SAS + Excel accelerators
+};
+
+const DISCOVERY_GUIDE_URL =
+  'https://docs.google.com/document/d/1D6WTlevsdxrsrR_2lLsXZuERuy0xGl6YwBXe1rPOY2M/edit';
+const REFERENCES_DOC_URL =
+  'https://docs.google.com/document/d/1uvvMcaJPQjWRxvjSfEtJXQa1L3QuBpcbiNXnlxmti78/edit';
+const TRAINING_SERIES_URL =
+  'https://docs.google.com/presentation/d/1u6wyShLPEq8a6hcYC3dCr904GwQ6V7NYtJVUCZGFWzE/edit';
+
+/** Requests & feedback Google Form — the strip at the bottom of every page. */
+export const FEEDBACK_FORM_URL =
+  'https://docs.google.com/forms/d/e/1FAIpQLScdASz6MdwBpcEhlh1cjEpH97JdgMpS_DglDGX0FXsCb3UJGg/viewform';
+
+/* ── The standard ───────────────────────────────────────────────────────── */
+
+interface StandardOptions {
+  demoName: string;          // used in copy, e.g. "the pricing workbench"
+  archSlideId: string;       // from ARCH_SLIDES
+  understandExtras?: NextStepAsset[]; // demo-specific deep-dives
+  scopeExtras?: NextStepAsset[];      // e.g. a demo-specific scoping workshop
+  proveExtras?: NextStepAsset[];
+}
+
+function standardNextSteps(opts: StandardOptions): NextSteps {
+  return {
     intro:
-      'You’ve seen the demo — here is how it becomes real in your estate. The path is deliberately ' +
-      'incremental: scope one line of business against what you run today, stand the foundation up on ' +
-      'your own data, and prove it with a bounded POC before going wider. Every asset below is the ' +
-      'reusable starting point for that step — none of it starts from a blank page.',
+      'You’ve seen the demo — here is how it becomes real in an account. The path is deliberately ' +
+      'incremental: understand what you saw, scope one process against the client’s estate, then ' +
+      'prove it on a bounded slice before going wider. Every asset below is a reusable starting ' +
+      'point — none of it starts from a blank page.',
     phases: [
       {
-        title: '1 · Scope it',
-        blurb: 'Map the demo to your estate — data sources, models, tooling, and the first line of business to land.',
-        assets: [
-          {
-            title: 'Scoping workshop',
-            sublabel: 'The workshop template we work through together — process mapping, data & ingestion, governance, integration, modelling, first-phase scope.',
-            href: 'https://docs.google.com/document/d/10o--F4lMReF0a3ASXb92hB9ZvFuoB7mpk5Ug1wI8QWs/edit',
-            cta: 'Open doc',
-          },
-          {
-            title: 'Sizing & cost estimate',
-            sublabel: 'Indicative platform consumption for your volumes — pipelines, training, serving and the app.',
-          },
-        ],
-      },
-      {
-        title: '2 · Stand it up',
-        blurb: 'The production shape of the demo, deployed on your workspace with your data.',
+        title: '1 · Understand what you saw',
+        blurb: 'The production shape behind the demo, and who is already taking it into accounts.',
         assets: [
           {
             title: 'Reference architecture',
-            sublabel: 'The production blueprint — ingestion with HITL, medallion, model factory, route-optimised serving and the app, governed end to end by Unity Catalog.',
-            href: '/pricing-architecture.png',
-            cta: 'View diagram',
+            sublabel: `The production blueprint for ${opts.demoName} — sources, medallion, models, serving and the app, governed end to end by Unity Catalog.`,
+            href: `${ARCH_DECK}#slide=id.${opts.archSlideId}`,
+            cta: 'Open deck',
           },
           {
-            title: 'Behind the scenes',
-            sublabel: 'Technical deep-dive: every asset, the code that creates it, and how four models plus a rating engine serve millisecond quotes from one endpoint.',
-            href: 'https://docs.google.com/document/d/1PyOMlo8x8yrXC8TLpRcYR480-xk2InlADOklkIcg93g/edit',
+            title: 'Existing references',
+            sublabel: 'Who is already working with this in an account — find each other, compare notes, add your engagement.',
+            href: REFERENCES_DOC_URL,
             cta: 'Open doc',
           },
+          ...(opts.understandExtras ?? []),
+        ],
+      },
+      {
+        title: '2 · Scope it',
+        blurb: 'From tool questions to the client’s process — discovery, terminology bridge, first-phase scope.',
+        assets: [
           {
-            title: 'Deploy the code',
-            sublabel: 'The demo code with its Databricks Asset Bundle — deployable into your own workspace as the starting skeleton. Available upon request.',
-            badge: 'upon request',
+            title: 'Discovery guide',
+            sublabel: 'From “how does the tool work” to the task, process and requirement behind it — with the insurance ↔ Databricks terminology bridge and the questions that work.',
+            href: DISCOVERY_GUIDE_URL,
+            cta: 'Open doc',
+            badge: 'in progress',
           },
+          ...(opts.scopeExtras ?? []),
           {
-            title: 'First implementation guide',
-            sublabel: 'Step-by-step: swap the synthetic book for your policy + telematics data, adapt the feature table, retrain the first model family.',
+            title: 'Sizing & cost estimate',
+            sublabel: 'Indicative platform consumption for the client’s volumes — pipelines, training, serving and the app.',
           },
         ],
       },
       {
-        title: '3 · Skill up & prove it',
-        blurb: 'Get your team self-sufficient and demonstrate value on a bounded scope.',
+        title: '3 · Prove it & scale',
+        blurb: 'A bounded proof with agreed success criteria, and a team that can deliver it.',
         assets: [
           {
+            title: 'Typical POC plan',
+            sublabel: 'A bounded 4–6 week proof: one process slice end to end on real data, with success criteria agreed before it starts.',
+          },
+          {
+            title: 'Insurance for Bricksters',
+            sublabel: 'The internal training series behind these demos — biweekly sessions taking account teams from insurance basics to delivering the workbenches.',
+            href: TRAINING_SERIES_URL,
+            cta: 'Open deck',
+          },
+          {
             title: 'Training path',
-            sublabel: 'The Databricks Academy route for pricing teams — data engineering, ML on Databricks, and Unity Catalog governance.',
+            sublabel: 'The Databricks Academy route for the client’s team — data engineering, ML on Databricks, and Unity Catalog governance.',
             href: 'https://www.databricks.com/learn/training/home',
             cta: 'Academy',
           },
           {
-            title: 'Typical POC plan',
-            sublabel: 'A bounded 4–6 week proof: one line of business, one model family end to end, with agreed success criteria.',
+            title: 'Deploy the code',
+            sublabel: 'The demo code with its Databricks Asset Bundle — deployable into any workspace as the starting skeleton. Available upon request.',
+            badge: 'upon request',
           },
-        ],
-      },
-      {
-        title: 'Partners',
-        blurb: 'Partner solutions and delivery capacity around the workbench.',
-        assets: [
-          {
-            title: 'Partner solutions',
-            sublabel: 'Packaged partner offerings that extend the workbench — rating engines, data providers and pricing tooling integrations.',
-          },
-          {
-            title: 'Delivery partners',
-            sublabel: 'System integrators with insurance pricing practices who can deliver the implementation alongside your team.',
-          },
+          ...(opts.proveExtras ?? []),
         ],
       },
     ],
-  },
+  };
+}
+
+/* ── Per-demo entries ───────────────────────────────────────────────────── */
+
+export const NEXT_STEPS: Record<string, NextSteps> = {
+  pricing: standardNextSteps({
+    demoName: 'the pricing workbench',
+    archSlideId: ARCH_SLIDES.pricing,
+    understandExtras: [
+      {
+        title: 'Behind the scenes',
+        sublabel: 'Technical deep-dive: every asset, the code that creates it, and how four models plus a rating engine serve millisecond quotes from one endpoint.',
+        href: 'https://docs.google.com/document/d/1PyOMlo8x8yrXC8TLpRcYR480-xk2InlADOklkIcg93g/edit',
+        cta: 'Open doc',
+      },
+    ],
+    scopeExtras: [
+      {
+        title: 'Scoping workshop',
+        sublabel: 'The workshop template we work through together — process mapping, data & ingestion, governance, integration, modelling, first-phase scope.',
+        href: 'https://docs.google.com/document/d/10o--F4lMReF0a3ASXb92hB9ZvFuoB7mpk5Ug1wI8QWs/edit',
+        cta: 'Open doc',
+      },
+    ],
+  }),
 };
