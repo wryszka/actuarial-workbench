@@ -81,9 +81,8 @@ export default function Contact() {
           <h1 className="text-3xl font-bold text-gray-900 tracking-tight mt-1">Laurence Ryszka</h1>
           <p className="text-base text-gray-500 mt-0.5">Insurance Tech Lead</p>
           <p className="text-sm text-gray-700 mt-3 leading-relaxed max-w-2xl">
-            Built every workbench on this hub. Reach out to <strong>book a demo</strong>, if you
-            <strong> hit an issue</strong>, want help with the <strong>first steps to stand one of these
-            up in your own account</strong> — or anything at all.
+            Your first point of contact for everything on this hub — a walkthrough, a question,
+            an issue, or the first steps to standing one of these up in your own account.
           </p>
         </div>
         <img src="/bricksurance-logo.png" alt="Bricksurance"
