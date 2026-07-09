@@ -75,6 +75,7 @@ export const SMALL_PROJECTS: SmallProject[] = [
     description: 'A hands-on Databricks bootcamp built around a synthetic Irish motor insurance book.',
     tag: 'Enablement',
     links: [
+      { label: 'Attendee guide', href: 'https://docs.google.com/document/d/1hWgUrJcj_TIim31NVE6UTWg5bxXl79vchx2BAMkSOG8/edit' },
       { label: 'Notebooks', href: wsFolder('/Workspace/Shared/shamrock-general-bootcamp') },
       { label: 'GitHub', href: 'https://github.com/wryszka/shamrock-general-bootcamp' },
     ],
@@ -84,6 +85,7 @@ export const SMALL_PROJECTS: SmallProject[] = [
     description: 'SAS-to-Databricks output reconciliation — mapping-driven comparison with row-level verdicts. Customer-specific; code on request.',
     tag: 'Migration',
     links: [
+      { label: 'Run guide', href: 'https://docs.google.com/document/d/1UJUKsOuCITDKkd7on1bTD5Olr1bUAWV7_3THBLtpRM8/edit' },
       { label: 'Notebooks', href: wsFolder('/Workspace/Shared/recon-demo') },
       { label: 'Data', href: wsSchema('recon_demo') },
     ],

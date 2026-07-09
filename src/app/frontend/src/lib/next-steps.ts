@@ -64,6 +64,12 @@ export const NEXT_STEPS: Record<string, NextSteps> = {
             cta: 'View diagram',
           },
           {
+            title: 'Behind the scenes',
+            sublabel: 'Technical deep-dive: every asset, the code that creates it, and how four models plus a rating engine serve millisecond quotes from one endpoint.',
+            href: 'https://docs.google.com/document/d/1PyOMlo8x8yrXC8TLpRcYR480-xk2InlADOklkIcg93g/edit',
+            cta: 'Open doc',
+          },
+          {
             title: 'Deploy the code',
             sublabel: 'The demo code with its Databricks Asset Bundle — deployable into your own workspace as the starting skeleton. Available upon request.',
             badge: 'upon request',

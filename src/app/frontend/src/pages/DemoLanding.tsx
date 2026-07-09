@@ -96,9 +96,9 @@ export default function DemoLanding() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {demo.deckUrl && (
             <ResourceCard
-              icon={Presentation} title="First steps deck"
-              sublabel="Where this is heading and how to get started"
-              href={demo.deckUrl} cta="Open deck" />
+              icon={Presentation} title={demo.deckLabel ?? 'First steps deck'}
+              sublabel={demo.deckSublabel ?? 'Where this is heading and how to get started'}
+              href={demo.deckUrl} cta="Open" />
           )}
           <ResourceCard
             icon={FileText} title="Demo run doc"

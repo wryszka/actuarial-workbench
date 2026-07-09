@@ -29,7 +29,9 @@ export interface DemoPage {
   appUrlFallback?: string;       // used if config is unavailable
   previewImage?: string;         // screenshot shown on the Open-demo tile (path in public/)
   runDocUrl?: string;            // "demo run doc" link
-  deckUrl?: string;              // "first steps deck" — rendered as an extra resource card when set
+  deckUrl?: string;              // extra resource card when set (deck or companion doc)
+  deckLabel?: string;            // title of that card (default "First steps deck")
+  deckSublabel?: string;         // sublabel of that card
   clientVideoUrl?: string;       // client-facing walkthrough recording (placeholder if unset)
   internalVideoUrl?: string;     // Databricks-internal "how to run it" (placeholder if unset)
   smeVideoUrl?: string;          // SME training on this demo's process (placeholder if unset)
@@ -62,6 +64,8 @@ export const DEMO_PAGES: Record<string, DemoPage> = {
     appUrlKey: 'solvency_app_url',
     appUrlFallback: DEFAULT_SOLVENCY_APP_URL,
     previewImage: '/solvency-2-preview.png',
+    runDocUrl:
+      'https://docs.google.com/document/d/17P21XLBKiCQ4ErpI_PbqkoySns0hfAlR78B4_xaWUgM/edit',
     clientVideoUrl: 'https://youtu.be/gqVdLiK4TNo',
     learnInApp: true,
   },
@@ -94,6 +98,10 @@ export const DEMO_PAGES: Record<string, DemoPage> = {
     previewImage: '/claims-preview.png',
     runDocUrl:
       'https://docs.google.com/document/d/1JYlkNrESd53c4he-XS_TqEbOAoke9dUptcvpqUUfE2w/edit',
+    deckUrl:
+      'https://docs.google.com/document/d/1RWa2OG2UFt6afu6KwH4c6SzN5NPH6apLJu5IO1Lpo8A/edit',
+    deckLabel: 'You asked, we built it',
+    deckSublabel: 'Workshop use cases mapped to the live demo, screen by screen',
     learnInApp: true,
   },
 
