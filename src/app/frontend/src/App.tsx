@@ -14,6 +14,7 @@ import AcceleratorDetail from './pages/AcceleratorDetail';
 import Contact from './pages/Contact';
 import DemoLanding from './pages/DemoLanding';
 import NextSteps from './pages/NextSteps';
+import SmallProjects from './pages/SmallProjects';
 
 function SignedInUser() {
   const [user, setUser] = useState<string | null>(null);
@@ -59,6 +60,7 @@ export default function App() {
             <Route path="/sas-migration" element={<AcceleratorDetail slug="sas-migration" />} />
             <Route path="/excel-migration" element={<AcceleratorDetail slug="excel-migration" />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/small-projects" element={<SmallProjects />} />
             <Route path="/demo/:slug" element={<DemoLanding />} />
             <Route path="/demo/:slug/next-steps" element={<NextSteps />} />
             <Route path="/roadmap/:slug" element={<RoadmapStub />} />
