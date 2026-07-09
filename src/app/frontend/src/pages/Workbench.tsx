@@ -72,10 +72,10 @@ export default function Workbench() {
             <Link to="/contact"
               className="w-full bg-white border-2 border-emerald-200 rounded-2xl p-3.5 hover:border-emerald-300 hover:shadow-lg hover:shadow-emerald-100 transition-all flex flex-col group">
               <div className="flex items-center gap-2.5">
-                <img src="/laurence.png" alt="Laurence Ryszka"
-                  className="w-10 h-10 rounded-full object-cover ring-2 ring-emerald-100 shrink-0" />
+                <img src="/bricksurance-logo.png" alt="Bricksurance"
+                  className="w-10 h-10 object-contain shrink-0" />
                 <div className="min-w-0">
-                  <div className="text-[13px] font-bold text-gray-900 leading-tight">Laurence</div>
+                  <div className="text-[13px] font-bold text-gray-900 leading-tight">Bricksurance Team</div>
                   <div className="text-[10px] text-gray-500 mt-0.5">Questions &amp; office hours</div>
                 </div>
               </div>

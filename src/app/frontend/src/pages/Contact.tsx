@@ -1,9 +1,9 @@
 /**
- * Contact — owner & creator card for the workbench.
+ * Contact — the Bricksurance team behind the workbenches.
  *
- * Reached from the contact tile. Photo + how to get in touch: book a demo, raise
- * an issue, get help with first steps, weekly office hours, and the go/laurence
- * link that carries everything else.
+ * Reached from the "Bricksurance Team" header card. Laurence as the main
+ * contact, the team members below, then executive support, weekly office
+ * hours, and the go/laurence link that carries everything else.
  */
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Mail, Slack, CalendarClock, ExternalLink, ArrowRight } from 'lucide-react';
@@ -11,6 +11,60 @@ import { ArrowLeft, Mail, Slack, CalendarClock, ExternalLink, ArrowRight } from 
 const EMAIL = 'laurence.ryszka@databricks.com';
 const SLACK_CHANNEL = '#bricksurance';
 const GO_LINK = 'http://go/laurence';
+
+interface TeamMember {
+  name: string;
+  title: string;
+  email: string;
+  photo: string;
+}
+
+const TEAM: TeamMember[] = [
+  {
+    name: 'Alexander Migunov',
+    title: 'Sr. Solutions Engineer',
+    email: 'alexander.migunov@databricks.com',
+    photo: '/aleksander-migunov.png',
+  },
+  {
+    name: 'Pinchu Ye',
+    title: 'Senior Solutions Engineer',
+    email: 'pinchu.ye@databricks.com',
+    photo: '/pinchu-ye.png',
+  },
+];
+
+const EXEC_SUPPORT: TeamMember[] = [
+  {
+    name: 'Marcela Granados',
+    title: 'Principal, Global Head of Insurance GTM',
+    email: 'marcela.granados@databricks.com',
+    photo: '/marcela-granados.png',
+  },
+  {
+    name: 'Anita Yuen',
+    title: 'Manager, Field Engineering',
+    email: 'anita.yuen@databricks.com',
+    photo: '/anita-yuen.png',
+  },
+];
+
+function MemberCard({ m }: { m: TeamMember }) {
+  return (
+    <a href={`mailto:${m.email}`}
+      className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 bg-white hover:border-emerald-300 hover:bg-emerald-50/40 transition-colors">
+      <img src={m.photo} alt={m.name}
+        className="w-14 h-14 rounded-xl object-cover shrink-0 ring-2 ring-emerald-100" />
+      <div className="min-w-0">
+        <div className="text-sm font-bold text-gray-900 leading-tight">{m.name}</div>
+        <div className="text-[12px] text-gray-500 mt-0.5">{m.title}</div>
+        <div className="text-[11px] text-emerald-700 mt-0.5 break-all inline-flex items-center gap-1">
+          <Mail className="w-3 h-3 shrink-0" /> {m.email}
+        </div>
+      </div>
+    </a>
+  );
+}
 
 export default function Contact() {
   return (
@@ -33,6 +87,22 @@ export default function Contact() {
           </p>
         </div>
       </header>
+
+      {/* The team */}
+      <section>
+        <h2 className="text-base font-bold text-gray-900 mb-2.5">The team</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          {TEAM.map((m) => <MemberCard key={m.email} m={m} />)}
+        </div>
+      </section>
+
+      {/* Executive support */}
+      <section>
+        <h2 className="text-base font-bold text-gray-900 mb-2.5">Executive support</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          {EXEC_SUPPORT.map((m) => <MemberCard key={m.email} m={m} />)}
+        </div>
+      </section>
 
       {/* Office hours — the headline call to action */}
       <section className="bg-gradient-to-br from-emerald-50 to-white border-2 border-emerald-200 rounded-lg p-5">
