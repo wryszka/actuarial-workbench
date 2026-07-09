@@ -15,11 +15,6 @@ export interface SmallProject {
 
 export const SMALL_PROJECTS: SmallProject[] = [
   {
-    title: 'Regulatory Reporting Workbench',
-    description: 'One app, two regimes — EU Solvency II and US NAIC statutory reporting side by side with a regime toggle.',
-    tag: 'Reporting',
-  },
-  {
     title: 'Genie Code demo',
     description: 'An end-to-end motor-claims analytics pipeline built with natural-language prompts — Free Edition friendly.',
     href: 'https://github.com/wryszka/genie_code_demo',
