@@ -51,6 +51,8 @@ export const DEMO_PAGES: Record<string, DemoPage> = {
       'travel. AI agents narrate the movements — deterministic SQL decides them.',
     appUrlKey: 'ifrs17_app_url',
     appUrlFallback: DEFAULT_IFRS17_APP_URL,
+    runDocUrl:
+      'https://docs.google.com/document/d/11dqx4qErSn-yuUtSQElQM8-62V_7QlHAzXOArJBXm7o/edit',
     learnInApp: true,
   },
 
