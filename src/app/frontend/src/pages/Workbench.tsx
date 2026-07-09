@@ -98,18 +98,6 @@ export default function Workbench() {
         {tiles.map((t) => <TileCard key={t.slug} tile={t} />)}
       </div>
 
-      <details className="bg-white rounded-lg border border-gray-200 p-4 text-sm text-gray-700 mt-2">
-        <summary className="font-semibold text-gray-800 cursor-pointer">Platform overview</summary>
-        <div className="mt-2 space-y-2 leading-relaxed">
-          <p>
-            Every workflow on this surface shares one foundation — Unity Catalog for governed
-            tables and ML models, Delta for storage and time travel, MLflow for model versioning,
-            Mosaic AI for the agent layer, Databricks Apps for the surfaces themselves. This hub is
-            the launcher; each tile opens the app that owns that workflow.
-          </p>
-        </div>
-      </details>
-
       <p className="text-[11px] text-gray-400 leading-relaxed border-t border-gray-200 pt-3">
         <span className="font-semibold text-gray-500">About this demo.</span>{' '}
         A Databricks Field Engineering demonstration. {entity} is a fictional composite insurer

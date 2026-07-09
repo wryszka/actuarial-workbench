@@ -4,7 +4,7 @@
  * Shared across the hub landing and every demo landing page: how to reach out,
  * weekly office hours, the #bricksurance Slack channel and go/laurence.
  */
-import { Mail, MessagesSquare, CalendarClock, ExternalLink } from 'lucide-react';
+import { MessagesSquare, CalendarClock, ExternalLink } from 'lucide-react';
 
 export default function ContactFooter() {
   return (
@@ -16,10 +16,6 @@ export default function ContactFooter() {
             Weekly office hours every <strong className="text-white">Friday at 4:00 PM UK time</strong>.
           </p>
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2 mt-3 text-sm">
-            <a href="mailto:laurence.ryszka@databricks.com"
-              className="inline-flex items-center gap-1.5 text-gray-200 hover:text-white">
-              <Mail className="w-4 h-4 text-emerald-300" /> laurence.ryszka@databricks.com
-            </a>
             <span className="inline-flex items-center gap-1.5 text-gray-200">
               <MessagesSquare className="w-4 h-4 text-emerald-300" /> #bricksurance
             </span>
