@@ -4,7 +4,7 @@
  * card in the landing header.
  */
 import { Link } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, ExternalLink, Boxes } from 'lucide-react';
+import { ArrowLeft, ExternalLink, Boxes } from 'lucide-react';
 import { SMALL_PROJECTS, type SmallProject } from '../lib/small-projects';
 import ContactFooter from '../components/ContactFooter';
 
@@ -24,8 +24,9 @@ export default function SmallProjects() {
           <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Small projects</h1>
           <p className="text-sm text-gray-700 mt-1.5 leading-relaxed max-w-3xl">
             Everything built around the workbenches that doesn't have a tile of its own —
-            standalone demos, enablement material and tools. Public ones link to their repo;
-            the rest are available on request.
+            standalone demos, enablement material and tools. Each card links to the real
+            assets: the app where one is deployed, the run doc, the notebooks and data in
+            this workspace, and the public repo.
           </p>
         </div>
       </header>
@@ -44,8 +45,8 @@ export default function SmallProjects() {
 }
 
 function ProjectCard({ project }: { project: SmallProject }) {
-  const inner = (
-    <>
+  return (
+    <div className="flex flex-col p-4 rounded-lg border border-gray-200 bg-white hover:border-blue-200 transition-colors">
       <div className="flex items-center gap-2 flex-wrap">
         <span className="text-sm font-semibold text-gray-900">{project.title}</span>
         {project.tag && (
@@ -53,28 +54,20 @@ function ProjectCard({ project }: { project: SmallProject }) {
             {project.tag}
           </span>
         )}
-        {!project.href && (
-          <span className="text-[10px] uppercase tracking-widest font-bold px-1.5 py-0.5 rounded bg-slate-200 text-slate-600">
-            {project.badge ?? 'on request'}
-          </span>
-        )}
       </div>
       <p className="text-[12px] text-gray-500 leading-snug mt-1 flex-1">{project.description}</p>
-      {project.href && (
-        <div className="text-[12px] font-bold text-blue-700 mt-2 inline-flex items-center gap-1">
-          GitHub <ExternalLink className="w-3 h-3" />
-          <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
-        </div>
-      )}
-    </>
-  );
-  if (!project.href) {
-    return <div className="flex flex-col p-4 rounded-lg border border-dashed border-slate-300 bg-slate-50">{inner}</div>;
-  }
-  return (
-    <a href={project.href} target="_blank" rel="noopener noreferrer"
-      className="flex flex-col p-4 rounded-lg border border-gray-200 hover:border-blue-300 hover:bg-blue-50/40 transition-colors group">
-      {inner}
-    </a>
+      <div className="flex flex-wrap gap-1.5 mt-2.5">
+        {project.links.map((l, i) => (
+          <a key={i} href={l.href} target="_blank" rel="noopener noreferrer"
+            className={`inline-flex items-center gap-1 text-[11px] font-bold px-2 py-1 rounded-md border transition-colors ${
+              i === 0
+                ? 'bg-blue-600 text-white border-blue-600 hover:bg-blue-500'
+                : 'bg-white text-blue-700 border-blue-200 hover:border-blue-400 hover:bg-blue-50'
+            }`}>
+            {l.label} <ExternalLink className="w-3 h-3" />
+          </a>
+        ))}
+      </div>
+    </div>
   );
 }
