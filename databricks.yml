@@ -51,6 +51,9 @@ variables:
   underwriting_app_url:
     description: Deployed underwriting workbench Databricks App URL (derived from apps_domain_number)
     default: "https://underwriting-workbench-${var.apps_domain_number}.aws.databricksapps.com"
+  ifrs17_app_url:
+    description: Deployed IFRS 17 workbench Databricks App URL (derived from apps_domain_number)
+    default: "https://ifrs17-workbench-${var.apps_domain_number}.aws.databricksapps.com"
 
   # — Accelerator deep links —
   # The SAS migration + Excel accelerator tiles open in-hub detail pages that

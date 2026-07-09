@@ -17,7 +17,7 @@ import type { HubConfig } from './config';
 import {
   DEFAULT_SOLVENCY_APP_URL, DEFAULT_PRICING_APP_URL, DEFAULT_CLAIMS_APP_URL,
   DEFAULT_REINSURANCE_APP_URL, DEFAULT_LIFECAST_APP_URL,
-  DEFAULT_UNDERWRITING_APP_URL,
+  DEFAULT_UNDERWRITING_APP_URL, DEFAULT_IFRS17_APP_URL,
 } from './workbench-tiles';
 
 export interface DemoPage {
@@ -37,6 +37,21 @@ export interface DemoPage {
 }
 
 export const DEMO_PAGES: Record<string, DemoPage> = {
+  'ifrs-17': {
+    slug: 'ifrs-17',
+    title: 'IFRS 17',
+    subtitle: 'Bricksurance SE · Q2 2026 close',
+    blurb:
+      'The quarterly IFRS 17 close, end to end: nine governed feeds, a quality gate that blocks the ' +
+      'close visibly, real PAA/GMM measurement engines (B96-ordered CSM, the §57 onerous test every ' +
+      'quarter, real EIOPA discount curves), a balanced subledger reconciled to GL, §80/§101/§104 ' +
+      'disclosures that foot by construction, and sign-off with as-at reproduction via Delta time ' +
+      'travel. AI agents narrate the movements — deterministic SQL decides them.',
+    appUrlKey: 'ifrs17_app_url',
+    appUrlFallback: DEFAULT_IFRS17_APP_URL,
+    learnInApp: true,
+  },
+
   'solvency-2': {
     slug: 'solvency-2',
     title: 'Solvency II',

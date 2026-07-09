@@ -48,6 +48,10 @@ def get_underwriting_app_url() -> str:
     return _env("UNDERWRITING_APP_URL")
 
 
+def get_ifrs17_app_url() -> str:
+    return _env("IFRS17_APP_URL")
+
+
 def hub_config() -> dict:
     """Everything the frontend needs at /api/config."""
     return {
@@ -59,6 +63,7 @@ def hub_config() -> dict:
         "reinsurance_app_url": get_reinsurance_app_url(),
         "lifecast_app_url": get_lifecast_app_url(),
         "underwriting_app_url": get_underwriting_app_url(),
+        "ifrs17_app_url": get_ifrs17_app_url(),
         # Workspace base + catalog for accelerator deep links.
         "workspace_host": _env("WORKSPACE_HOST"),
         "catalog_name": _env("CATALOG_NAME"),

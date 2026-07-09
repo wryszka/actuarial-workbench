@@ -49,6 +49,8 @@ export const DEFAULT_UNDERWRITING_APP_URL =
   'https://underwriting-workbench-7474656169654171.aws.databricksapps.com';
 export const DEFAULT_EXCEL_APP_URL =
   'https://excel-accelerator-7474656169654171.aws.databricksapps.com';
+export const DEFAULT_IFRS17_APP_URL =
+  'https://ifrs17-workbench-7474656169654171.aws.databricksapps.com';
 
 // Tile `description` is the ONE-LINE hook shown on the card. The full write-up
 // lives on the click-through page (demo-pages.ts blurb, or roadmap-content.ts).
@@ -85,10 +87,12 @@ export const TILES: Tile[] = [
   {
     slug: 'ifrs-17',
     label: 'IFRS 17',
-    description: 'Contract groups, CSM and disclosure — sharing the Solvency II TP data.',
-    status: 'roadmap',
+    description: 'The quarterly close, feeds to sign-off — CSM, onerous test, disclosures, audit.',
+    status: 'live',
     icon: FileSpreadsheet,
-    to: '/roadmap/ifrs-17',
+    to: '/demo/ifrs-17',
+    accent: 'blue',
+    subtitle: 'Bricksurance SE · Q2 2026 close',
   },
   {
     slug: 'reinsurance',
