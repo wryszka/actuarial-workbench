@@ -144,7 +144,7 @@ export const TILES: Tile[] = [
     slug: 'excel-migration',
     label: 'Excel migration',
     description: 'Four use cases off the spreadsheet estate: VBA ETL, models to UC, Genie/AI-BI, Lakeflow Designer.',
-    status: 'live',
+    status: 'in_progress',
     icon: Table2,
     // Opens the Excel Accelerator front-door app directly (no in-hub detail
     // page). Overridden per-workspace by /api/config → excel_app_url.
