@@ -172,4 +172,34 @@ export const NEXT_STEPS: Record<string, NextSteps> = {
       },
     ],
   }),
+
+  'solvency-2': standardNextSteps({
+    demoName: 'the Solvency II workbench',
+    archSlideId: ARCH_SLIDES['solvency-2'],
+  }),
+
+  'claims-workbench': standardNextSteps({
+    demoName: 'the claims workbench',
+    archSlideId: ARCH_SLIDES['claims-workbench'],
+  }),
+
+  'underwriting-workbench': standardNextSteps({
+    demoName: 'the underwriting workbench',
+    archSlideId: ARCH_SLIDES['underwriting-workbench'],
+  }),
+
+  reinsurance: standardNextSteps({
+    demoName: 'the reinsurance workbench',
+    archSlideId: ARCH_SLIDES.reinsurance,
+  }),
+
+  'ifrs-17': standardNextSteps({
+    demoName: 'the IFRS 17 workbench',
+    archSlideId: ARCH_SLIDES['ifrs-17'],
+  }),
+
+  lifecast: standardNextSteps({
+    demoName: 'LifeCast',
+    archSlideId: ARCH_SLIDES.lifecast,
+  }),
 };

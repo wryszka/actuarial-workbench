@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { DEMO_PAGES } from '../lib/demo-pages';
+import { TILES } from '../lib/workbench-tiles';
 import { NEXT_STEPS } from '../lib/next-steps';
 import { fetchConfig, type HubConfig } from '../lib/config';
 import ContactFooter from '../components/ContactFooter';
@@ -51,6 +52,9 @@ export default function DemoLanding() {
         )}
         <h1 className="text-3xl font-bold text-gray-900 tracking-tight mt-1">{demo.title}</h1>
         <p className="text-sm text-gray-700 mt-2 leading-relaxed max-w-3xl">{demo.blurb}</p>
+        {TILES.find((t) => t.slug === slug)?.status === 'in_progress' && (
+          <p className="text-sm font-semibold text-red-600 mt-2">This is not tested with clients yet.</p>
+        )}
       </header>
 
       {/* Big Open-demo tile on the left, four smaller resource tiles on the right */}
