@@ -43,12 +43,16 @@ export default function Workbench() {
     <>
     <div className="max-w-6xl mx-auto p-6 space-y-7">
       <header className="pt-2 flex items-start justify-between gap-4 flex-wrap">
-        <div className="min-w-0 flex-1 basis-72">
-          <div className="text-[11px] uppercase tracking-widest text-blue-700 font-bold">Actuarial Workbench</div>
-          <h1 className="text-3xl font-bold text-gray-900 tracking-tight mt-1">Bricksurance — insurance on Databricks</h1>
-          <p className="text-base text-gray-500 mt-1.5 leading-relaxed max-w-3xl">
-            Real insurance business process demos, implemented fully in Databricks.
-          </p>
+        <div className="min-w-0 flex-1 basis-72 flex items-center gap-4">
+          <img src="/bricksurance-shield.png" alt="Bricksurance"
+            className="h-20 w-auto object-contain shrink-0 hidden sm:block" />
+          <div className="min-w-0">
+            <div className="text-[11px] uppercase tracking-widest text-blue-700 font-bold">Actuarial Workbench</div>
+            <h1 className="text-3xl font-bold text-gray-900 tracking-tight mt-1">Bricksurance — insurance on Databricks</h1>
+            <p className="text-base text-gray-500 mt-1.5 leading-relaxed max-w-3xl">
+              Real insurance business process demos, implemented fully in Databricks.
+            </p>
+          </div>
         </div>
         {/* Header cards — kept together so they share the top row with the title */}
         <div className="flex gap-3 shrink-0 flex-wrap">

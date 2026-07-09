@@ -86,6 +86,8 @@ export default function Contact() {
             up in your own account</strong> — or anything at all.
           </p>
         </div>
+        <img src="/bricksurance-logo.png" alt="Bricksurance"
+          className="h-28 w-auto object-contain shrink-0 self-center hidden sm:block" />
       </header>
 
       {/* The team */}
