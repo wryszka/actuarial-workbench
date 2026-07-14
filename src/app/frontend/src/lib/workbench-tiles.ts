@@ -190,7 +190,7 @@ export const TILES: Tile[] = [
   },
   {
     slug: 'actuarial-lab',
-    label: 'Actuarial Lab',
+    label: 'Actuarial Exam Lab',
     description: 'Real society exam labs — CAS reserving, SOA ATPA, IFoA CS1B — on Free Edition, zero setup.',
     status: 'live',
     icon: GraduationCap,

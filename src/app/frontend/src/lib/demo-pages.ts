@@ -53,7 +53,7 @@ export interface DemoPage {
 export const DEMO_PAGES: Record<string, DemoPage> = {
   'actuarial-lab': {
     slug: 'actuarial-lab',
-    title: 'Actuarial Lab',
+    title: 'Actuarial Exam Lab',
     subtitle: 'Actuaries’ own exam prep · Free Edition',
     blurb:
       'Not Databricks training — this is the actuary’s own professional training, run on Databricks. ' +
