@@ -124,16 +124,6 @@ export const TILES: Tile[] = [
     subtitle: 'Bricksurance Life',
   },
   {
-    slug: 'actuarial-lab',
-    label: 'Actuarial Lab',
-    description: 'Real society exam labs — CAS reserving, SOA ATPA, IFoA CS1B — on Free Edition, zero setup.',
-    status: 'in_progress',
-    icon: GraduationCap,
-    to: '/demo/actuarial-lab',
-    accent: 'blue',
-    subtitle: 'Actuaries’ own exam prep',
-  },
-  {
     slug: 'reserving-deep-dive',
     label: 'Reserving deep dive',
     description: 'Triangle methods, model validation and a methodology library.',
@@ -197,5 +187,15 @@ export const TILES: Tile[] = [
     icon: FileInput,
     to: '/roadmap/bordereaux-ingestion',
     subtitle: 'Delegated authority · premium & claims',
+  },
+  {
+    slug: 'actuarial-lab',
+    label: 'Actuarial Lab',
+    description: 'Real society exam labs — CAS reserving, SOA ATPA, IFoA CS1B — on Free Edition, zero setup.',
+    status: 'live',
+    icon: GraduationCap,
+    to: '/demo/actuarial-lab',
+    accent: 'blue',
+    subtitle: 'Actuaries’ own exam prep',
   },
 ];

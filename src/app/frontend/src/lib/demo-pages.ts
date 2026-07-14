@@ -48,8 +48,12 @@ export const DEMO_PAGES: Record<string, DemoPage> = {
       'Three labs built on real, official exam material: CAS Exam 5 reserving with the CAS’s own ' +
       'chainladder library on the real Loss Reserve Database, the SOA ATPA sample take-home end to ' +
       'end, and IFoA CS1 Paper B (April 2024, all five questions) — every reproducible number ' +
-      'asserted against the societies’ examiner reports. Built for the free, never-expiring ' +
-      'Databricks Free Edition: no install, no setup, the data and tools already there. For GTM ' +
+      'asserted against the societies’ examiner reports. Everything loads itself: run the setup ' +
+      'notebook once and the data is there — the CAS database ships inside the chainladder ' +
+      'package, the SOA data is the publicly posted ATPA sample assessment, and the IFoA April ' +
+      '2024 exam datasets are bundled into a governed volume, each with its source documented in ' +
+      'the notebook. Exam papers and reports remain © SOA / CAS / IFoA — go to the societies for ' +
+      'the full material. Built for the free, never-expiring Databricks Free Edition: for GTM ' +
       'conversations with societies, universities and prep providers — and for any actuary who ' +
       'wants a study environment that just works.',
     appUrlFallback:
