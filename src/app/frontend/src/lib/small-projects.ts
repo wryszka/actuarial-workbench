@@ -77,6 +77,7 @@ export const SMALL_PROJECTS: SmallProject[] = [
     description: 'A hands-on Databricks bootcamp built around a synthetic Irish motor insurance book.',
     tag: 'Enablement',
     links: [
+      { label: 'Deck', href: 'https://docs.google.com/presentation/d/1uU-9D6j6JoReVX25lfZZixPURmD1uFk0fz1Tmi3nobg/edit' },
       { label: 'Attendee guide', href: 'https://docs.google.com/document/d/1hWgUrJcj_TIim31NVE6UTWg5bxXl79vchx2BAMkSOG8/edit' },
       { label: 'Notebooks', href: wsFolder('/Workspace/Shared/shamrock-general-bootcamp') },
       { label: 'GitHub', href: 'https://github.com/wryszka/shamrock-general-bootcamp' },
