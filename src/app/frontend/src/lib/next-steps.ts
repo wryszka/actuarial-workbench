@@ -7,8 +7,10 @@
  * The page is a STANDARD: three phases (understand → scope → prove & scale)
  * built by standardNextSteps() from universal assets — reference architecture
  * (one deck, deep-linked to the demo's slide), existing references, discovery
- * guide, scoping workshop, POC plan, training — plus per-demo extras. A
- * requests & feedback form (FEEDBACK_FORM_URL) closes every page.
+ * guide, sizing & cost guide, scoping workshop, POC plan template — plus
+ * per-demo extras. A requests & feedback form (FEEDBACK_FORM_URL) closes
+ * every page. Written so a standard SA can run first steps without the
+ * insurance specialist.
  *
  * To roll out to another demo: add one standardNextSteps() entry with its
  * arch slide id (see ARCH_SLIDES).
@@ -55,8 +57,10 @@ const DISCOVERY_GUIDE_URL =
   'https://docs.google.com/document/d/1D6WTlevsdxrsrR_2lLsXZuERuy0xGl6YwBXe1rPOY2M/edit';
 const REFERENCES_DOC_URL =
   'https://docs.google.com/document/d/1uvvMcaJPQjWRxvjSfEtJXQa1L3QuBpcbiNXnlxmti78/edit';
-const TRAINING_SERIES_URL =
-  'https://docs.google.com/presentation/d/1u6wyShLPEq8a6hcYC3dCr904GwQ6V7NYtJVUCZGFWzE/edit';
+const SIZING_GUIDE_URL =
+  'https://docs.google.com/document/d/1vDrxF3UnIe7QAkiorO7SetEJ4-puYqaAecAEmGLqHhA/edit';
+const POC_PLAN_URL =
+  'https://docs.google.com/document/d/1Mq_yNbS0Puw19zLhlZb44NH0QMm6kfIDHLNlMdGp6MA/edit';
 
 /** Requests & feedback Google Form — the strip at the bottom of every page. */
 export const FEEDBACK_FORM_URL =
@@ -75,10 +79,13 @@ interface StandardOptions {
 function standardNextSteps(opts: StandardOptions): NextSteps {
   return {
     intro:
-      'You’ve seen the demo — here is how it becomes real in an account. The path is deliberately ' +
-      'incremental: understand what you saw, scope one process against the client’s estate, then ' +
-      'prove it on a bounded slice before going wider. Every asset below is a reusable starting ' +
-      'point — none of it starts from a blank page.',
+      'You’ve seen the demo — here is how it becomes real in an account, and it does not depend ' +
+      'on the insurance specialist. Every step follows the standard Databricks motion (discovery, ' +
+      'go/sizing, the FE PoC process) with the insurance specifics pre-filled, so any account team ' +
+      'can run the first steps without an insurance background. Each asset below is a ' +
+      'fill-in-the-blanks starting point, and the demos integrate with the client’s existing estate ' +
+      '(Prophet, ResQ, Radar, Igloo, Guidewire) rather than replacing it. Escalation to the ' +
+      'insurance lead is the exception, not the path.',
     phases: [
       {
         title: '1 · Understand what you saw',
@@ -105,37 +112,29 @@ function standardNextSteps(opts: StandardOptions): NextSteps {
         assets: [
           {
             title: 'Discovery guide',
-            sublabel: 'From “how does the tool work” to the task, process and requirement behind it — with the insurance ↔ Databricks terminology bridge and the questions that work.',
+            sublabel: 'From “how does the tool work” to the task, process and requirement behind it — terminology bridge, per-workbench question banks, and how to land alongside Prophet, ResQ, Radar or Igloo.',
             href: DISCOVERY_GUIDE_URL,
             cta: 'Open doc',
-            badge: 'in progress',
           },
           ...(opts.scopeExtras ?? []),
           {
             title: 'Sizing & cost estimate',
-            sublabel: 'Indicative platform consumption for the client’s volumes — pipelines, training, serving and the app.',
+            sublabel: 'First-steps guide to the official sizing motion — Quicksizer and Lakemeter (go/sizing), the inputs to collect, and what each workbench actually consumes.',
+            href: SIZING_GUIDE_URL,
+            cta: 'Open doc',
+            badge: 'internal',
           },
         ],
       },
       {
         title: '3 · Prove it & scale',
-        blurb: 'A bounded proof with agreed success criteria, and a team that can deliver it.',
+        blurb: 'A bounded proof with success criteria signed before it starts — aligned to the official FE PoC process.',
         assets: [
           {
-            title: 'Typical POC plan',
-            sublabel: 'A bounded 4–6 week proof: one process slice end to end on real data, with success criteria agreed before it starts.',
-          },
-          {
-            title: 'Insurance for Bricksters',
-            sublabel: 'The internal training series behind these demos — biweekly sessions taking account teams from insurance basics to delivering the workbenches.',
-            href: TRAINING_SERIES_URL,
-            cta: 'Open deck',
-          },
-          {
-            title: 'Training path',
-            sublabel: 'The Databricks Academy route for the client’s team — data engineering, ML on Databricks, and Unity Catalog governance.',
-            href: 'https://www.databricks.com/learn/training/home',
-            cta: 'Academy',
+            title: 'POC plan template',
+            sublabel: 'A bounded proof on one process slice, pre-filled per workbench: success criteria, prerequisites, week-by-week plan, RACI — aligned to the FE PoC/MVP process.',
+            href: POC_PLAN_URL,
+            cta: 'Open doc',
           },
           {
             title: 'Deploy the code',
