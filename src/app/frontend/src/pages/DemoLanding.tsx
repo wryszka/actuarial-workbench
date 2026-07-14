@@ -57,9 +57,10 @@ export default function DemoLanding() {
         )}
       </header>
 
-      {/* Two-choice layout: some demos offer more than one worked example */}
+      {/* Two-choice layout: some demos offer more than one worked example.
+          The `primary` choice is the flagship — wide and dark; others compact. */}
       {demo.choices?.length ? (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-stretch">
           {demo.choices.map((c) => <ChoiceCard key={c.title} choice={c} />)}
         </div>
       ) : (
@@ -166,26 +167,58 @@ export default function DemoLanding() {
 }
 
 function ChoiceCard({ choice }: { choice: DemoChoice }) {
+  if (choice.primary) {
+    // The flagship: wide (2/3), dark, unmissable.
+    return (
+      <div className="lg:col-span-2 rounded-2xl bg-gray-900 text-white p-7 flex flex-col gap-3">
+        <div className="self-start rounded-full bg-blue-500/20 px-3 py-1 text-[12px] uppercase tracking-widest text-blue-200 font-bold">
+          {choice.sublabel}
+        </div>
+        <div className="text-2xl font-bold tracking-tight">{choice.title}</div>
+        <p className="text-[15px] text-gray-300 leading-relaxed flex-1">{choice.description}</p>
+        <div className="flex flex-wrap items-center gap-2 pt-1">
+          <a href={choice.appUrl} target="_blank" rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-bold hover:bg-blue-500 transition-colors">
+            <Rocket className="w-4 h-4" /> {choice.appLabel ?? 'Open'}
+          </a>
+          {choice.runDocUrl && (
+            <a href={choice.runDocUrl} target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-white/25 text-sm font-semibold text-white hover:bg-white/10 transition-colors">
+              <FileText className="w-4 h-4 text-blue-300" /> Run doc
+            </a>
+          )}
+          {choice.deckUrl && (
+            <a href={choice.deckUrl} target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-white/25 text-sm font-semibold text-white hover:bg-white/10 transition-colors">
+              <Presentation className="w-4 h-4 text-blue-300" /> First steps deck
+            </a>
+          )}
+        </div>
+      </div>
+    );
+  }
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white p-6 flex flex-col gap-3 hover:border-blue-300 transition-colors">
-      <div className="text-[11px] uppercase tracking-widest text-blue-700 font-bold">{choice.sublabel}</div>
-      <div className="text-xl font-bold text-gray-900 tracking-tight -mt-1">{choice.title}</div>
-      <p className="text-sm text-gray-700 leading-relaxed flex-1">{choice.description}</p>
+    <div className="rounded-2xl border border-gray-200 bg-white p-5 flex flex-col gap-2.5 hover:border-blue-300 transition-colors">
+      <div className="self-start rounded-full bg-blue-50 px-3 py-1 text-[11px] uppercase tracking-widest text-blue-700 font-bold">
+        {choice.sublabel}
+      </div>
+      <div className="text-lg font-bold text-gray-900 tracking-tight">{choice.title}</div>
+      <p className="text-[13px] text-gray-600 leading-relaxed flex-1">{choice.description}</p>
       <div className="flex flex-wrap items-center gap-2 pt-1">
         <a href={choice.appUrl} target="_blank" rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-gray-900 text-white text-sm font-bold hover:bg-gray-800 transition-colors">
-          <Rocket className="w-4 h-4" /> {choice.appLabel ?? 'Open'}
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-900 text-white text-[13px] font-bold hover:bg-gray-800 transition-colors">
+          <Rocket className="w-3.5 h-3.5" /> {choice.appLabel ?? 'Open'}
         </a>
         {choice.runDocUrl && (
           <a href={choice.runDocUrl} target="_blank" rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-gray-300 text-sm font-semibold text-gray-800 hover:border-blue-400 hover:bg-blue-50/40 transition-colors">
-            <FileText className="w-4 h-4 text-blue-700" /> Run doc
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-300 text-[13px] font-semibold text-gray-800 hover:border-blue-400 hover:bg-blue-50/40 transition-colors">
+            <FileText className="w-3.5 h-3.5 text-blue-700" /> Run doc
           </a>
         )}
         {choice.deckUrl && (
           <a href={choice.deckUrl} target="_blank" rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-gray-300 text-sm font-semibold text-gray-800 hover:border-blue-400 hover:bg-blue-50/40 transition-colors">
-            <Presentation className="w-4 h-4 text-blue-700" /> Deck
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-300 text-[13px] font-semibold text-gray-800 hover:border-blue-400 hover:bg-blue-50/40 transition-colors">
+            <Presentation className="w-3.5 h-3.5 text-blue-700" /> Deck
           </a>
         )}
       </div>

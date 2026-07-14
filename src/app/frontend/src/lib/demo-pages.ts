@@ -22,12 +22,13 @@ import {
 
 export interface DemoChoice {
   title: string;
-  sublabel: string;         // small badge line above the title
+  sublabel: string;         // classification chip above the title
   description: string;
   appUrl: string;           // what "Open" launches (app, console, dashboard…)
   appLabel?: string;        // label of the Open button (default "Open")
   runDocUrl?: string;
   deckUrl?: string;
+  primary?: boolean;        // the flagship: rendered wide (2/3) and dark
 }
 
 export interface DemoPage {
@@ -178,41 +179,37 @@ export const DEMO_PAGES: Record<string, DemoPage> = {
     title: 'Insurance ontology',
     subtitle: 'Bricksurance data core · ACORD',
     blurb:
-      'Semantics belong next to the data, governed in Unity Catalog — defined once, read by every ' +
-      'consumer. Two worked examples, at two altitudes: the full ACORD-aligned data core that ' +
-      'underpins every workbench, and a deliberately simple metric-views example showing the ' +
-      'migration pattern off SSAS cubes and Tabular / per-BI-tool semantic models.',
+      'Semantics live next to the data, governed in Unity Catalog. Two examples at two altitudes: ' +
+      'the full insurance semantic layer that powers Genie and every workbench out of the box — ' +
+      'and a small worked example of migrating legacy BI semantics onto it.',
     choices: [
       {
-        title: 'The data core',
-        sublabel: 'Full example · ACORD · model-as-code',
+        title: 'The insurance semantic layer',
+        sublabel: 'Data model as code · ACORD · Unity Catalog',
         description:
-          'One shared, ACORD-aligned semantic model for insurance data — the common data layer under ' +
-          'every workbench. Entities, attributes, relationships and code lists are defined once as ' +
-          'model-as-code (YAML) and compiled into governed Unity Catalog assets: domain schemas, ' +
-          'tables, tags, comments and a business glossary, with lineage end to end. Browse domains ' +
-          'and entities in the console.',
+          'The whole of insurance — policies, claims, premiums, parties, reinsurance — modelled once ' +
+          'as code and compiled into governed Unity Catalog schemas, tables, relationships, metrics ' +
+          'and a business glossary. Deploy it and the platform already speaks insurance: point Genie ' +
+          'at it and it answers business questions straight away, with almost no configuration — the ' +
+          'semantics are already there. It’s the common language under every workbench in this ' +
+          'hub, and the foundation for any agent that needs to understand an insurance business.',
         // Lives on the serverless workspace — not derived from apps_domain_number.
         appUrl: 'https://data-core-console-7474659673789953.aws.databricksapps.com',
         appLabel: 'Open the console',
         deckUrl: 'https://docs.google.com/presentation/d/1vXC7SVZUC-23adWG5KTLvSwzzjNGKSskvf1Yq-AXOoc/edit',
+        primary: true,
       },
       {
-        title: 'The semantic lakehouse',
-        sublabel: 'Simple example · migration off SSAS & Tabular',
+        title: 'Migrating legacy semantics',
+        sublabel: 'Simple worked example · SSAS & Tabular → metric views',
         description:
-          'The migration pattern for estates where semantics live in SSAS cubes, Tabular models or ' +
-          'per-BI-tool measures — each a copy of the truth that can disagree. The target state, built ' +
-          'end to end on synthetic data: a star schema with declared relationships (auto ER diagram), ' +
-          'ONE Unity Catalog metric view holding every measure including time intelligence (YTD, ' +
-          'rolling 12m), thin wrapper views so Excel and Power BI read the governed metrics as plain ' +
-          'SQL — with guardrails so non-additive ratios cannot be summed wrongly — and Genie plus ' +
-          'AI/BI dashboards reading the metric view natively. Legacy cubes and Tabular models are ' +
-          'deleted, not replaced. The run doc walks the "same number in four places" sequence and ' +
-          'the three migration waves.',
+          'For estates where the same metric lives in SSAS cubes, Tabular models and BI tools — and ' +
+          'the copies disagree. A small end-to-end example of the destination: one governed metric ' +
+          'view feeding Genie, dashboards, Excel and Power BI, so every tool returns the same number. ' +
+          'Run doc = a 15-minute demo; deck = the migration story in three waves.',
         appUrl:
           'https://fevm-lr-dev-aws-us.cloud.databricks.com/dashboardsv3/01f17e9a41c2175e8d9d4cd6838d155a/published',
-        appLabel: 'Open the target state',
+        appLabel: 'Example dashboard',
         runDocUrl:
           'https://docs.google.com/document/d/1AfZ3ddIq4f9N2hLpwzx5fiBdIH4_r1Sq-YSkJ6LtLqI/edit',
         deckUrl:
