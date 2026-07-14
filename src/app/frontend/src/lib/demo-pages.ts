@@ -54,6 +54,8 @@ export const DEMO_PAGES: Record<string, DemoPage> = {
       'wants a study environment that just works.',
     appUrlFallback:
       'https://fevm-lr-dev-aws-us.cloud.databricks.com/#workspace/Workspace/Shared/.bundle/actuarial-lab/files/src/notebooks',
+    runDocUrl:
+      'https://docs.google.com/document/d/1EimnJbuDWUbqHpLp5IY2P5cMezBvVU01FzVqd2QFnMk/edit',
   },
 
   'ifrs-17': {
