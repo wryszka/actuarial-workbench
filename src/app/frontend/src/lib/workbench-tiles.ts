@@ -14,7 +14,7 @@
 import {
   Shield, TrendingUp, FileSpreadsheet, Network, AlertOctagon, BarChart3,
   Code2, Table2, ScrollText, HeartPulse, Waypoints, UsersRound, FileInput,
-  Stamp,
+  Stamp, GraduationCap,
 } from 'lucide-react';
 
 export type TileStatus = 'live' | 'in_progress' | 'roadmap' | 'contact';
@@ -122,6 +122,16 @@ export const TILES: Tile[] = [
     icon: HeartPulse,
     to: '/demo/lifecast',
     subtitle: 'Bricksurance Life',
+  },
+  {
+    slug: 'actuarial-lab',
+    label: 'Actuarial Lab',
+    description: 'Real society exam labs — CAS reserving, SOA ATPA, IFoA CS1B — on Free Edition, zero setup.',
+    status: 'in_progress',
+    icon: GraduationCap,
+    to: '/demo/actuarial-lab',
+    accent: 'blue',
+    subtitle: 'Actuaries’ own exam prep',
   },
   {
     slug: 'reserving-deep-dive',

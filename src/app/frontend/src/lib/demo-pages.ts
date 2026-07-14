@@ -39,6 +39,23 @@ export interface DemoPage {
 }
 
 export const DEMO_PAGES: Record<string, DemoPage> = {
+  'actuarial-lab': {
+    slug: 'actuarial-lab',
+    title: 'Actuarial Lab',
+    subtitle: 'Actuaries’ own exam prep · Free Edition',
+    blurb:
+      'Not Databricks training — this is the actuary’s own professional training, run on Databricks. ' +
+      'Three labs built on real, official exam material: CAS Exam 5 reserving with the CAS’s own ' +
+      'chainladder library on the real Loss Reserve Database, the SOA ATPA sample take-home end to ' +
+      'end, and IFoA CS1 Paper B (April 2024, all five questions) — every reproducible number ' +
+      'asserted against the societies’ examiner reports. Built for the free, never-expiring ' +
+      'Databricks Free Edition: no install, no setup, the data and tools already there. For GTM ' +
+      'conversations with societies, universities and prep providers — and for any actuary who ' +
+      'wants a study environment that just works.',
+    appUrlFallback:
+      'https://fevm-lr-dev-aws-us.cloud.databricks.com/#workspace/Workspace/Shared/.bundle/actuarial-lab/files/src/notebooks',
+  },
+
   'ifrs-17': {
     slug: 'ifrs-17',
     title: 'IFRS 17',
