@@ -14,7 +14,7 @@
 import {
   Shield, TrendingUp, FileSpreadsheet, Network, AlertOctagon, BarChart3,
   Code2, Table2, ScrollText, HeartPulse, Waypoints, UsersRound, FileInput,
-  Stamp, GraduationCap,
+  Stamp, GraduationCap, Layers,
 } from 'lucide-react';
 
 export type TileStatus = 'live' | 'in_progress' | 'roadmap' | 'contact';
@@ -151,6 +151,16 @@ export const TILES: Tile[] = [
     to: DEFAULT_EXCEL_APP_URL,
     accent: 'blue',
     subtitle: 'Bricksurance SE',
+  },
+  {
+    slug: 'semantic-lakehouse',
+    label: 'Semantic lakehouse',
+    description: 'One governed metric view — Genie, dashboards, Excel and Power BI all read the same number.',
+    status: 'live',
+    icon: Layers,
+    to: '/demo/semantic-lakehouse',
+    accent: 'blue',
+    subtitle: 'Bricksurance SE · metric views',
   },
   {
     slug: 'mrc-intelligence',

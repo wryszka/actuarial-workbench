@@ -178,6 +178,30 @@ export const DEMO_PAGES: Record<string, DemoPage> = {
     deckUrl: 'https://docs.google.com/presentation/d/1vXC7SVZUC-23adWG5KTLvSwzzjNGKSskvf1Yq-AXOoc/edit',
   },
 
+  'semantic-lakehouse': {
+    slug: 'semantic-lakehouse',
+    title: 'Semantic lakehouse',
+    subtitle: 'Bricksurance SE · metric views',
+    blurb:
+      'One governed metric view in Unity Catalog as the single source of semantic truth — Genie, ' +
+      'AI/BI Dashboards, Excel and Power BI all read the same definition, so the same question returns ' +
+      'the same number everywhere. Built as the migration pattern off SSAS cubes, Tabular models and ' +
+      'per-tool BI measures: a star schema with declared relationships (auto ER diagram), the metric ' +
+      'view holding every measure including time intelligence, and thin wrapper views that hand any ' +
+      'SQL client the governed metrics — with guardrails so non-additive ratios cannot be summed ' +
+      'wrongly in a pivot. Open the demo to see the management dashboard; the run doc walks the ' +
+      '"same number in four places" sequence and the three migration waves.',
+    // The "app" for this demo is the published AI/BI dashboard on the dev workspace.
+    appUrlFallback:
+      'https://fevm-lr-dev-aws-us.cloud.databricks.com/dashboardsv3/01f17e9a41c2175e8d9d4cd6838d155a/published',
+    runDocUrl:
+      'https://docs.google.com/document/d/1AfZ3ddIq4f9N2hLpwzx5fiBdIH4_r1Sq-YSkJ6LtLqI/edit',
+    deckUrl:
+      'https://docs.google.com/presentation/d/1CJGAtjRjKipZld-zgILQxti59cD9s8IHfkQvfk4kp5k/edit',
+    deckLabel: 'Playback deck',
+    deckSublabel: 'Target state, two consumer tiers, three migration waves',
+  },
+
   reinsurance: {
     slug: 'reinsurance',
     title: 'Reinsurance',

@@ -33,6 +33,7 @@ export const SMALL_PROJECTS: SmallProject[] = [
     links: [
       { label: 'Open app', href: 'https://secops-operator-view-7474656169654171.aws.databricksapps.com' },
       { label: 'Run doc', href: 'https://docs.google.com/document/d/13zD2v47TDsYpwX6CzFjrYQmJWeTVBSVJDvLO2YpSg6Q/edit' },
+      { label: 'Deck', href: 'https://docs.google.com/presentation/d/1vkqIv0zXS0xMuE9GHKF_KmHbPUqqoeFx_zYzMMIiAWQ/edit' },
       { label: 'Notebooks', href: wsFolder('/Workspace/Shared/secops_demo') },
       { label: 'Pipeline', href: `${DEV_HOST}/pipelines/69d30a2d-3ee5-4cf5-9a42-cc6279730df7` },
       { label: 'Data', href: wsSchema('secops_demo') },
