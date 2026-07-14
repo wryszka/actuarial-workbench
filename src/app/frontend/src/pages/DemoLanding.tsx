@@ -118,14 +118,18 @@ export default function DemoLanding() {
             icon={Clapperboard} title="Client-facing demo"
             sublabel="Polished walkthrough video for customers"
             href={demo.clientVideoUrl} cta="Watch" />
-          <ResourceCard
-            icon={GraduationCap} title="Learn how to run this"
-            sublabel="Databricks-internal — deliver it end to end"
-            href={demo.internalVideoUrl} cta="Watch" />
-          <ResourceCard
-            icon={MonitorPlay} title={`SME training — ${demo.title}`}
-            sublabel="Subject-matter-expert walkthrough of the process"
-            href={demo.smeVideoUrl} cta="Watch" />
+          {!demo.hideTrainingCards && (
+            <>
+              <ResourceCard
+                icon={GraduationCap} title="Learn how to run this"
+                sublabel="Databricks-internal — deliver it end to end"
+                href={demo.internalVideoUrl} cta="Watch" />
+              <ResourceCard
+                icon={MonitorPlay} title={`SME training — ${demo.title}`}
+                sublabel="Subject-matter-expert walkthrough of the process"
+                href={demo.smeVideoUrl} cta="Watch" />
+            </>
+          )}
         </div>
       </div>
       )}

@@ -47,6 +47,7 @@ export interface DemoPage {
   clientVideoUrl?: string;       // client-facing walkthrough recording (placeholder if unset)
   internalVideoUrl?: string;     // Databricks-internal "how to run it" (placeholder if unset)
   smeVideoUrl?: string;          // SME training on this demo's process (placeholder if unset)
+  hideTrainingCards?: boolean;   // drop the internal "how to run" + SME training cards
   learnInApp?: boolean;          // show the "full Learn section lives in the demo" note
 }
 
@@ -72,6 +73,7 @@ export const DEMO_PAGES: Record<string, DemoPage> = {
       'https://fevm-lr-dev-aws-us.cloud.databricks.com/#workspace/Workspace/Shared/.bundle/actuarial-lab/files/src/notebooks',
     runDocUrl:
       'https://docs.google.com/document/d/1EimnJbuDWUbqHpLp5IY2P5cMezBvVU01FzVqd2QFnMk/edit',
+    hideTrainingCards: true,
   },
 
   'ifrs-17': {
