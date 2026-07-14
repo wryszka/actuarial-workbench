@@ -11,7 +11,7 @@ import {
   GraduationCap, BookOpen, MonitorPlay, Milestone, Presentation,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { DEMO_PAGES } from '../lib/demo-pages';
+import { DEMO_PAGES, type DemoChoice } from '../lib/demo-pages';
 import { TILES } from '../lib/workbench-tiles';
 import { NEXT_STEPS } from '../lib/next-steps';
 import { fetchConfig, type HubConfig } from '../lib/config';
@@ -57,7 +57,12 @@ export default function DemoLanding() {
         )}
       </header>
 
-      {/* Big Open-demo tile on the left, four smaller resource tiles on the right */}
+      {/* Two-choice layout: some demos offer more than one worked example */}
+      {demo.choices?.length ? (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-stretch">
+          {demo.choices.map((c) => <ChoiceCard key={c.title} choice={c} />)}
+        </div>
+      ) : (
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-stretch">
         {appUrl && demo.previewImage ? (
           <a href={appUrl} target="_blank" rel="noopener noreferrer"
@@ -122,6 +127,7 @@ export default function DemoLanding() {
             href={demo.smeVideoUrl} cta="Watch" />
         </div>
       </div>
+      )}
 
       {/* After the demo — GTM next steps (only when published for this demo) */}
       {slug && NEXT_STEPS[slug] && (
@@ -156,6 +162,34 @@ export default function DemoLanding() {
     </div>
     <ContactFooter />
     </>
+  );
+}
+
+function ChoiceCard({ choice }: { choice: DemoChoice }) {
+  return (
+    <div className="rounded-2xl border border-gray-200 bg-white p-6 flex flex-col gap-3 hover:border-blue-300 transition-colors">
+      <div className="text-[11px] uppercase tracking-widest text-blue-700 font-bold">{choice.sublabel}</div>
+      <div className="text-xl font-bold text-gray-900 tracking-tight -mt-1">{choice.title}</div>
+      <p className="text-sm text-gray-700 leading-relaxed flex-1">{choice.description}</p>
+      <div className="flex flex-wrap items-center gap-2 pt-1">
+        <a href={choice.appUrl} target="_blank" rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-gray-900 text-white text-sm font-bold hover:bg-gray-800 transition-colors">
+          <Rocket className="w-4 h-4" /> {choice.appLabel ?? 'Open'}
+        </a>
+        {choice.runDocUrl && (
+          <a href={choice.runDocUrl} target="_blank" rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-gray-300 text-sm font-semibold text-gray-800 hover:border-blue-400 hover:bg-blue-50/40 transition-colors">
+            <FileText className="w-4 h-4 text-blue-700" /> Run doc
+          </a>
+        )}
+        {choice.deckUrl && (
+          <a href={choice.deckUrl} target="_blank" rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-gray-300 text-sm font-semibold text-gray-800 hover:border-blue-400 hover:bg-blue-50/40 transition-colors">
+            <Presentation className="w-4 h-4 text-blue-700" /> Deck
+          </a>
+        )}
+      </div>
+    </div>
   );
 }
 

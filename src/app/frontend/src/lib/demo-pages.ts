@@ -20,11 +20,22 @@ import {
   DEFAULT_UNDERWRITING_APP_URL, DEFAULT_IFRS17_APP_URL,
 } from './workbench-tiles';
 
+export interface DemoChoice {
+  title: string;
+  sublabel: string;         // small badge line above the title
+  description: string;
+  appUrl: string;           // what "Open" launches (app, console, dashboard…)
+  appLabel?: string;        // label of the Open button (default "Open")
+  runDocUrl?: string;
+  deckUrl?: string;
+}
+
 export interface DemoPage {
   slug: string;
   title: string;
   subtitle?: string;
   blurb: string;
+  choices?: DemoChoice[];        // when set, the landing offers these instead of one Open-demo card
   appUrlKey?: keyof HubConfig;   // which /api/config field holds the app URL
   appUrlFallback?: string;       // used if config is unavailable
   previewImage?: string;         // screenshot shown on the Open-demo tile (path in public/)
@@ -167,39 +178,47 @@ export const DEMO_PAGES: Record<string, DemoPage> = {
     title: 'Insurance ontology',
     subtitle: 'Bricksurance data core · ACORD',
     blurb:
-      'One shared, ACORD-aligned semantic model for insurance data — the common data layer under every ' +
-      'workbench. Entities, attributes, relationships and code lists are defined once as model-as-code ' +
-      '(YAML) and compiled into governed Unity Catalog assets: domain schemas, tables, tags, comments ' +
-      'and a business glossary — so Solvency II, Pricing, Claims, Reinsurance and LifeCast all speak ' +
-      'the same language, with lineage end to end. The console below is where you browse the standard: ' +
-      'domains, entities, their definitions and what each workbench implements.',
-    // Lives on the serverless workspace — not derived from apps_domain_number.
-    appUrlFallback: 'https://data-core-console-7474659673789953.aws.databricksapps.com',
-    deckUrl: 'https://docs.google.com/presentation/d/1vXC7SVZUC-23adWG5KTLvSwzzjNGKSskvf1Yq-AXOoc/edit',
-  },
-
-  'semantic-lakehouse': {
-    slug: 'semantic-lakehouse',
-    title: 'Semantic lakehouse',
-    subtitle: 'Bricksurance SE · metric views',
-    blurb:
-      'One governed metric view in Unity Catalog as the single source of semantic truth — Genie, ' +
-      'AI/BI Dashboards, Excel and Power BI all read the same definition, so the same question returns ' +
-      'the same number everywhere. Built as the migration pattern off SSAS cubes, Tabular models and ' +
-      'per-tool BI measures: a star schema with declared relationships (auto ER diagram), the metric ' +
-      'view holding every measure including time intelligence, and thin wrapper views that hand any ' +
-      'SQL client the governed metrics — with guardrails so non-additive ratios cannot be summed ' +
-      'wrongly in a pivot. Open the demo to see the management dashboard; the run doc walks the ' +
-      '"same number in four places" sequence and the three migration waves.',
-    // The "app" for this demo is the published AI/BI dashboard on the dev workspace.
-    appUrlFallback:
-      'https://fevm-lr-dev-aws-us.cloud.databricks.com/dashboardsv3/01f17e9a41c2175e8d9d4cd6838d155a/published',
-    runDocUrl:
-      'https://docs.google.com/document/d/1AfZ3ddIq4f9N2hLpwzx5fiBdIH4_r1Sq-YSkJ6LtLqI/edit',
-    deckUrl:
-      'https://docs.google.com/presentation/d/1CJGAtjRjKipZld-zgILQxti59cD9s8IHfkQvfk4kp5k/edit',
-    deckLabel: 'Playback deck',
-    deckSublabel: 'Target state, two consumer tiers, three migration waves',
+      'Semantics belong next to the data, governed in Unity Catalog — defined once, read by every ' +
+      'consumer. Two worked examples, at two altitudes: the full ACORD-aligned data core that ' +
+      'underpins every workbench, and a deliberately simple metric-views example showing the ' +
+      'migration pattern off SSAS cubes and Tabular / per-BI-tool semantic models.',
+    choices: [
+      {
+        title: 'The data core',
+        sublabel: 'Full example · ACORD · model-as-code',
+        description:
+          'One shared, ACORD-aligned semantic model for insurance data — the common data layer under ' +
+          'every workbench. Entities, attributes, relationships and code lists are defined once as ' +
+          'model-as-code (YAML) and compiled into governed Unity Catalog assets: domain schemas, ' +
+          'tables, tags, comments and a business glossary, with lineage end to end. Browse domains ' +
+          'and entities in the console.',
+        // Lives on the serverless workspace — not derived from apps_domain_number.
+        appUrl: 'https://data-core-console-7474659673789953.aws.databricksapps.com',
+        appLabel: 'Open the console',
+        deckUrl: 'https://docs.google.com/presentation/d/1vXC7SVZUC-23adWG5KTLvSwzzjNGKSskvf1Yq-AXOoc/edit',
+      },
+      {
+        title: 'The semantic lakehouse',
+        sublabel: 'Simple example · migration off SSAS & Tabular',
+        description:
+          'The migration pattern for estates where semantics live in SSAS cubes, Tabular models or ' +
+          'per-BI-tool measures — each a copy of the truth that can disagree. The target state, built ' +
+          'end to end on synthetic data: a star schema with declared relationships (auto ER diagram), ' +
+          'ONE Unity Catalog metric view holding every measure including time intelligence (YTD, ' +
+          'rolling 12m), thin wrapper views so Excel and Power BI read the governed metrics as plain ' +
+          'SQL — with guardrails so non-additive ratios cannot be summed wrongly — and Genie plus ' +
+          'AI/BI dashboards reading the metric view natively. Legacy cubes and Tabular models are ' +
+          'deleted, not replaced. The run doc walks the "same number in four places" sequence and ' +
+          'the three migration waves.',
+        appUrl:
+          'https://fevm-lr-dev-aws-us.cloud.databricks.com/dashboardsv3/01f17e9a41c2175e8d9d4cd6838d155a/published',
+        appLabel: 'Open the target state',
+        runDocUrl:
+          'https://docs.google.com/document/d/1AfZ3ddIq4f9N2hLpwzx5fiBdIH4_r1Sq-YSkJ6LtLqI/edit',
+        deckUrl:
+          'https://docs.google.com/presentation/d/1CJGAtjRjKipZld-zgILQxti59cD9s8IHfkQvfk4kp5k/edit',
+      },
+    ],
   },
 
   reinsurance: {
