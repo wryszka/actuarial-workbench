@@ -93,4 +93,12 @@ export const SMALL_PROJECTS: SmallProject[] = [
       { label: 'Data', href: wsSchema('recon_demo') },
     ],
   },
+  {
+    title: 'WTW Hub demo',
+    description: 'One Databricks foundation under four WTW products (Radar, Igloo, ResQ, RAFM) with an orchestration band and a governance rail — an architect-facing pitch app.',
+    tag: 'Partner / WTW',
+    links: [
+      { label: 'Open app', href: 'https://wtw-hub-demo-7474659673789953.aws.databricksapps.com' },
+    ],
+  },
 ];
