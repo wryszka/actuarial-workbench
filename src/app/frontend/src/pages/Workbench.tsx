@@ -12,7 +12,7 @@
  * Tile metadata lives in workbench-tiles.ts so adding a tile is one file.
  */
 import { Link } from 'react-router-dom';
-import { ArrowRight, GraduationCap } from 'lucide-react';
+import { ArrowRight, GraduationCap, Boxes } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { TILES, type Tile } from '../lib/workbench-tiles';
 import { fetchConfig } from '../lib/config';
@@ -97,6 +97,24 @@ export default function Workbench() {
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 auto-rows-fr gap-3">
         {tiles.map((t) => <TileCard key={t.slug} tile={t} />)}
       </div>
+
+      {/* Small projects — wide band leading to everything without a tile of its own */}
+      <Link to="/small-projects"
+        className="group flex items-center gap-4 rounded-2xl border border-gray-200 bg-white px-5 py-4 hover:border-blue-300 hover:shadow-md hover:shadow-blue-100 transition-all">
+        <div className="w-11 h-11 rounded-xl bg-blue-100 flex items-center justify-center shrink-0">
+          <Boxes className="w-5 h-5 text-blue-700" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="text-sm font-bold text-gray-900">Small projects</div>
+          <div className="text-xs text-gray-500 mt-0.5">
+            Standalone demos, tools and enablement built around the workbenches — SecOps, Genie Code,
+            H&amp;S Hub, bootcamps and more.
+          </div>
+        </div>
+        <div className="text-xs font-bold text-blue-700 inline-flex items-center gap-1 shrink-0">
+          Browse <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+        </div>
+      </Link>
 
       <p className="text-[11px] text-gray-400 leading-relaxed border-t border-gray-200 pt-3">
         <span className="font-semibold text-gray-500">About this demo.</span>{' '}

@@ -154,22 +154,6 @@ export const NEXT_STEPS: Record<string, NextSteps> = {
   pricing: standardNextSteps({
     demoName: 'the pricing workbench',
     archSlideId: ARCH_SLIDES.pricing,
-    understandExtras: [
-      {
-        title: 'Behind the scenes',
-        sublabel: 'Technical deep-dive: every asset, the code that creates it, and how four models plus a rating engine serve millisecond quotes from one endpoint.',
-        href: 'https://docs.google.com/document/d/1PyOMlo8x8yrXC8TLpRcYR480-xk2InlADOklkIcg93g/edit',
-        cta: 'Open doc',
-      },
-    ],
-    scopeExtras: [
-      {
-        title: 'Scoping workshop',
-        sublabel: 'The workshop template we work through together — process mapping, data & ingestion, governance, integration, modelling, first-phase scope.',
-        href: 'https://docs.google.com/document/d/10o--F4lMReF0a3ASXb92hB9ZvFuoB7mpk5Ug1wI8QWs/edit',
-        cta: 'Open doc',
-      },
-    ],
   }),
 
   'solvency-2': standardNextSteps({
