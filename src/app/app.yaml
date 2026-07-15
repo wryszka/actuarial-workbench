@@ -33,3 +33,8 @@ env:
     value: ${var.sas_schema}
   - name: SAS_NOTEBOOK_PATH
     value: ${var.sas_notebook_path}
+  # — Usage tracking (both must be set to enable; empty = disabled) —
+  - name: USAGE_WAREHOUSE_ID
+    value: ${var.usage_warehouse_id}
+  - name: USAGE_TABLE
+    value: ${var.usage_table}

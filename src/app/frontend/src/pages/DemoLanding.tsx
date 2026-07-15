@@ -15,6 +15,7 @@ import { DEMO_PAGES, type DemoChoice } from '../lib/demo-pages';
 import { TILES } from '../lib/workbench-tiles';
 import { NEXT_STEPS } from '../lib/next-steps';
 import { fetchConfig, type HubConfig } from '../lib/config';
+import { track } from '../lib/track';
 import ContactFooter from '../components/ContactFooter';
 
 export default function DemoLanding() {
@@ -67,6 +68,7 @@ export default function DemoLanding() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-stretch">
         {appUrl && demo.previewImage ? (
           <a href={appUrl} target="_blank" rel="noopener noreferrer"
+            onClick={() => track('open_demo', slug ?? '')}
             className="relative rounded-2xl overflow-hidden bg-gray-900 group min-h-[15rem]">
             <img src={demo.previewImage} alt={`${demo.title} demo`}
               className="absolute inset-0 w-full h-full object-cover object-left-top" />
@@ -84,6 +86,7 @@ export default function DemoLanding() {
           </a>
         ) : appUrl ? (
           <a href={appUrl} target="_blank" rel="noopener noreferrer"
+            onClick={() => track('open_demo', slug ?? '')}
             className="rounded-2xl bg-gray-900 text-white hover:bg-gray-800 transition-colors group p-6 flex flex-col justify-between min-h-[15rem]">
             <div className="w-14 h-14 rounded-xl bg-blue-500/20 flex items-center justify-center">
               <Rocket className="w-7 h-7 text-blue-300" />

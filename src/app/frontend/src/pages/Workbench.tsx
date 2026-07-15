@@ -13,6 +13,7 @@
  */
 import { Link } from 'react-router-dom';
 import { ArrowRight, GraduationCap, Boxes } from 'lucide-react';
+import { track } from '../lib/track';
 import { useEffect, useState } from 'react';
 import { TILES, type Tile } from '../lib/workbench-tiles';
 import { fetchConfig } from '../lib/config';
@@ -165,7 +166,8 @@ function TileCard({ tile }: { tile: Tile }) {
       </>
     );
     return isExternal
-      ? <a href={tile.to} target="_blank" rel="noopener noreferrer" className={containerCls}>{inner}</a>
+      ? <a href={tile.to} target="_blank" rel="noopener noreferrer"
+           onClick={() => track('open_demo', tile.slug)} className={containerCls}>{inner}</a>
       : <Link to={tile.to} className={containerCls}>{inner}</Link>;
   }
 
