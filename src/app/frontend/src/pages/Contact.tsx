@@ -16,30 +16,48 @@ interface TeamMember {
   name: string;
   title: string;
   email: string;
-  photo: string;
+  photo?: string;   // omit to render an initials avatar
+  tag?: string;     // small role marker, e.g. "Lead contributor"
 }
 
-const TEAM: TeamMember[] = [
+// The two current core builders.
+const CORE: TeamMember[] = [
   {
     name: 'Alexander Migunov',
     title: 'Sr. Solutions Engineer',
     email: 'alexander.migunov@databricks.com',
     photo: '/aleksander-migunov.png',
+    tag: 'Lead contributor',
   },
   {
     name: 'Pinchu Ye',
     title: 'Senior Solutions Engineer',
     email: 'pinchu.ye@databricks.com',
     photo: '/pinchu-ye.png',
+    tag: 'Lead contributor',
   },
 ];
 
-const EXEC_SUPPORT: TeamMember[] = [
+// The wider building team (#bricksurance-team).
+const TEAM: TeamMember[] = [
+  { name: 'Tom Nash', title: 'Solutions Architect', email: 'tom.nash@databricks.com' },
+  { name: 'Noah Schellenberg', title: 'Solutions Architect', email: 'noah.schellenberg@databricks.com' },
+  { name: 'Suman Misra', title: 'Solutions Architect', email: 'suman.misra@databricks.com' },
+  { name: 'Rubjit Kaur Lalli', title: 'Solutions Engineer', email: 'rubjit.lalli@databricks.com' },
+  { name: 'Itseoritse Omatsuli', title: 'Solutions Engineer', email: 'itse.omatsuli@databricks.com' },
+];
+
+const SPONSORS: TeamMember[] = [
   {
     name: 'Marcela Granados',
     title: 'Principal, Global Head of Insurance GTM',
     email: 'marcela.granados@databricks.com',
     photo: '/marcela-granados.png',
+  },
+  {
+    name: 'Lukas Grubwieser',
+    title: 'Insurance SME · EMEA Lead',
+    email: 'lukas.grubwieser@databricks.com',
   },
   {
     name: 'Anita Yuen',
@@ -49,14 +67,35 @@ const EXEC_SUPPORT: TeamMember[] = [
   },
 ];
 
+function initials(name: string): string {
+  return name.split(' ').filter(Boolean).slice(0, 2).map((p) => p[0]).join('').toUpperCase();
+}
+
+function Avatar({ m, size }: { m: TeamMember; size: string }) {
+  if (m.photo) {
+    return <img src={m.photo} alt={m.name} className={`${size} rounded-xl object-cover shrink-0 ring-2 ring-emerald-100`} />;
+  }
+  return (
+    <div className={`${size} rounded-xl shrink-0 ring-2 ring-emerald-100 bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold`}>
+      {initials(m.name)}
+    </div>
+  );
+}
+
 function MemberCard({ m }: { m: TeamMember }) {
   return (
     <a href={`mailto:${m.email}`}
       className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 bg-white hover:border-emerald-300 hover:bg-emerald-50/40 transition-colors">
-      <img src={m.photo} alt={m.name}
-        className="w-14 h-14 rounded-xl object-cover shrink-0 ring-2 ring-emerald-100" />
+      <Avatar m={m} size="w-14 h-14" />
       <div className="min-w-0">
-        <div className="text-sm font-bold text-gray-900 leading-tight">{m.name}</div>
+        <div className="text-sm font-bold text-gray-900 leading-tight inline-flex items-center gap-1.5 flex-wrap">
+          {m.name}
+          {m.tag && (
+            <span className="text-[9px] uppercase tracking-widest font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800">
+              {m.tag}
+            </span>
+          )}
+        </div>
         <div className="text-[12px] text-gray-500 mt-0.5">{m.title}</div>
         <div className="text-[11px] text-emerald-700 mt-0.5 break-all inline-flex items-center gap-1">
           <Mail className="w-3 h-3 shrink-0" /> {m.email}
@@ -73,25 +112,36 @@ export default function Contact() {
         <ArrowLeft className="w-3.5 h-3.5" /> Back to Workbench
       </Link>
 
-      <header className="flex items-start gap-5 border-b border-gray-200 pb-5">
+      {/* Hero — Laurence, the largest photo, sets the tone */}
+      <header className="flex items-start gap-6 border-b border-gray-200 pb-6">
         <img src="/laurence.png" alt="Laurence Ryszka"
-          className="w-28 h-28 rounded-2xl object-cover shrink-0 ring-2 ring-emerald-100" />
+          className="w-36 h-36 rounded-2xl object-cover shrink-0 ring-4 ring-emerald-100" />
         <div className="flex-1 pt-1">
-          <div className="text-[11px] uppercase tracking-widest text-emerald-700 font-bold">Questions &amp; office hours</div>
-          <h1 className="text-3xl font-bold text-gray-900 tracking-tight mt-1">Laurence Ryszka</h1>
-          <p className="text-base text-gray-500 mt-0.5">Insurance Tech Lead</p>
+          <div className="text-[11px] uppercase tracking-widest text-emerald-700 font-bold">Bricksurance Lead</div>
+          <h1 className="text-4xl font-bold text-gray-900 tracking-tight mt-1">Laurence Ryszka</h1>
           <p className="text-sm text-gray-700 mt-3 leading-relaxed max-w-2xl">
-            The best ways to get help: <strong>Friday office hours</strong> for anything that needs
-            a conversation, <strong>{SLACK_CHANNEL}</strong> for quick questions, and the
-            <strong> requests &amp; feedback form</strong> for bugs and ideas — that way nothing
-            gets lost in one inbox.
+            Building the insurance company that shows what Databricks makes possible — and having
+            far too much fun disrupting the industry along the way.
+          </p>
+          <p className="text-sm text-gray-700 mt-2 leading-relaxed max-w-2xl">
+            Best ways to reach the team: <strong>Friday office hours</strong> for anything that
+            needs a conversation, <strong>{SLACK_CHANNEL}</strong> for quick questions, and the
+            <strong> requests &amp; feedback form</strong> for bugs and ideas.
           </p>
         </div>
         <img src="/bricksurance-logo.png" alt="Bricksurance"
           className="h-28 w-auto object-contain shrink-0 self-center hidden sm:block" />
       </header>
 
-      {/* The team */}
+      {/* Core team — the two current lead builders */}
+      <section>
+        <h2 className="text-base font-bold text-gray-900 mb-2.5">Core team</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          {CORE.map((m) => <MemberCard key={m.email} m={m} />)}
+        </div>
+      </section>
+
+      {/* The wider building team */}
       <section>
         <h2 className="text-base font-bold text-gray-900 mb-2.5">The team</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -103,7 +153,7 @@ export default function Contact() {
       <section>
         <h2 className="text-base font-bold text-gray-900 mb-2.5">Executive sponsors</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-          {EXEC_SUPPORT.map((m) => <MemberCard key={m.email} m={m} />)}
+          {SPONSORS.map((m) => <MemberCard key={m.email} m={m} />)}
         </div>
       </section>
 
