@@ -31,11 +31,16 @@ const DOCS: GtmDoc[] = [
     icon: Table2,
   },
   {
-    title: 'EMEA Insurance — GTM Account Map',
-    sublabel: 'The EMEA-wide companion to the UKI map.',
-    href: '',
-    icon: Map,
-    tag: 'in progress',
+    title: 'EMEA Insurance — GTM Plan & Account Map',
+    sublabel: 'The EMEA-wide companion (ex-UK/Ireland): 511 accounts, per-country weight, priority ranking, the reinsurance cluster. Which demo fits which account.',
+    href: 'https://docs.google.com/document/d/13PV3MOpUksYA8I81EN_TiMbT9CO_ry4zsyueGriPJ10/edit',
+    icon: FileText,
+  },
+  {
+    title: 'EMEA Insurance — GTM Account Map (Sheet)',
+    sublabel: 'Sortable: Priority accounts · By country · All 511 accounts · Demo map. Filter by country, demo, AE or consumption.',
+    href: 'https://docs.google.com/spreadsheets/d/1K8KvQEUYHsSJGJGeq4jQmc4LnSK797pnsLauHLkD6Io/edit',
+    icon: Table2,
   },
 ];
 
