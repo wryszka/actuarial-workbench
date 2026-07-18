@@ -6,7 +6,7 @@
  * hours, and the go/laurence link that carries everything else.
  */
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Mail, Slack, CalendarClock, ExternalLink, ArrowRight, Boxes, MessageSquarePlus } from 'lucide-react';
+import { ArrowLeft, Mail, Slack, CalendarClock, ExternalLink, ArrowRight, Boxes, MessageSquarePlus, Map } from 'lucide-react';
 import { FEEDBACK_FORM_URL } from '../lib/next-steps';
 
 const SLACK_CHANNEL = '#bricksurance';
@@ -217,8 +217,12 @@ export default function Contact() {
         Want one of these in your account, or a tailored version for your line of business? That's exactly what office hours are for.
       </p>
 
-      {/* Quiet corner link to everything without a tile of its own */}
-      <div className="flex justify-end">
+      {/* Quiet corner links — internal-only, not prominent */}
+      <div className="flex justify-end gap-4">
+        <Link to="/gtm"
+          className="inline-flex items-center gap-1 text-[11px] text-gray-400 hover:text-blue-700 transition-colors">
+          <Map className="w-3 h-3" /> GTM planning <ArrowRight className="w-3 h-3" />
+        </Link>
         <Link to="/small-projects"
           className="inline-flex items-center gap-1 text-[11px] text-gray-400 hover:text-blue-700 transition-colors">
           <Boxes className="w-3 h-3" /> Small projects <ArrowRight className="w-3 h-3" />

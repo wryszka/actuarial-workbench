@@ -15,6 +15,7 @@ import Contact from './pages/Contact';
 import DemoLanding from './pages/DemoLanding';
 import NextSteps from './pages/NextSteps';
 import SmallProjects from './pages/SmallProjects';
+import GTM from './pages/GTM';
 
 const USAGE_DASHBOARD_URL =
   'https://fevm-lr-dev-aws-us.cloud.databricks.com/dashboardsv3/01f182d70b79105faa7e32136788f4c2/published?o=7474656169654171';
@@ -65,6 +66,7 @@ export default function App() {
             <Route path="/excel-migration" element={<AcceleratorDetail slug="excel-migration" />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/small-projects" element={<SmallProjects />} />
+            <Route path="/gtm" element={<GTM />} />
             <Route path="/demo/:slug" element={<DemoLanding />} />
             <Route path="/demo/:slug/next-steps" element={<NextSteps />} />
             <Route path="/roadmap/:slug" element={<RoadmapStub />} />
