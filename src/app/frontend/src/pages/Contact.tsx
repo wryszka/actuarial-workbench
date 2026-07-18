@@ -40,11 +40,11 @@ const CORE: TeamMember[] = [
 
 // The wider building team (#bricksurance-team).
 const TEAM: TeamMember[] = [
-  { name: 'Tom Nash', title: 'Solutions Architect', email: 'tom.nash@databricks.com' },
-  { name: 'Noah Schellenberg', title: 'Solutions Architect', email: 'noah.schellenberg@databricks.com' },
-  { name: 'Suman Misra', title: 'Solutions Architect', email: 'suman.misra@databricks.com' },
-  { name: 'Rubjit Kaur Lalli', title: 'Solutions Engineer', email: 'rubjit.lalli@databricks.com' },
-  { name: 'Itseoritse Omatsuli', title: 'Solutions Engineer', email: 'itse.omatsuli@databricks.com' },
+  { name: 'Tom Nash', title: 'Solutions Architect', email: 'tom.nash@databricks.com', photo: '/tom-nash.png' },
+  { name: 'Noah Schellenberg', title: 'Solutions Architect', email: 'noah.schellenberg@databricks.com', photo: '/noah-schellenberg.png' },
+  { name: 'Suman Misra', title: 'Solutions Architect', email: 'suman.misra@databricks.com', photo: '/suman-misra.png' },
+  { name: 'Rubjit Kaur Lalli', title: 'Solutions Engineer', email: 'rubjit.lalli@databricks.com', photo: '/rubjit-lalli.png' },
+  { name: 'Itseoritse Omatsuli', title: 'Solutions Engineer', email: 'itse.omatsuli@databricks.com', photo: '/itse-omatsuli.png' },
 ];
 
 const SPONSORS: TeamMember[] = [
@@ -58,6 +58,7 @@ const SPONSORS: TeamMember[] = [
     name: 'Lukas Grubwieser',
     title: 'Insurance SME · EMEA Lead',
     email: 'lukas.grubwieser@databricks.com',
+    photo: '/lukas-grubwieser.png',
   },
   {
     name: 'Anita Yuen',
