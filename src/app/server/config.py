@@ -52,21 +52,6 @@ def get_ifrs17_app_url() -> str:
     return _env("IFRS17_APP_URL")
 
 
-# — Usage tracking (optional; all three must be set to enable) —
-def get_usage_warehouse_id() -> str:
-    return _env("USAGE_WAREHOUSE_ID")
-
-
-def get_usage_table() -> str:
-    """Fully-qualified Delta table for usage events, e.g.
-    `lr_dev_aws_us_catalog.actuarial_workbench.usage_events`. Empty disables tracking."""
-    return _env("USAGE_TABLE")
-
-
-def usage_tracking_enabled() -> bool:
-    return bool(get_usage_warehouse_id() and get_usage_table())
-
-
 def hub_config() -> dict:
     """Everything the frontend needs at /api/config."""
     return {

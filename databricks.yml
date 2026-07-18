@@ -75,17 +75,6 @@ variables:
     description: Workspace path of the SAS migration demo notebook
     default: ""
 
-  # — Usage tracking —
-  # Records who opens the hub and which demos they launch, into a Delta table via
-  # a SQL warehouse (the app's service principal needs CAN_USE on the warehouse
-  # and USE/SELECT/MODIFY on the schema). Leave both empty to disable tracking.
-  usage_warehouse_id:
-    description: SQL warehouse the app uses to write/read usage events (empty disables tracking)
-    default: ""
-  usage_table:
-    description: Fully-qualified Delta table for usage events, catalog.schema.table (empty disables)
-    default: ""
-
   # — Workspace / auth —
   workspace_host:
     description: Databricks workspace URL — override per target
@@ -130,9 +119,6 @@ targets:
       excel_app_url: "https://excel-accelerator-${var.apps_domain_number}.aws.databricksapps.com"
       sas_schema: sas_migration
       sas_notebook_path: /Workspace/Users/laurence.ryszka@databricks.com/sas_migration/files/sas_migration_demo
-      # Usage tracking (dev) — table + grants provisioned 2026-07-15.
-      usage_warehouse_id: a3b61648ea4809e3
-      usage_table: lr_dev_aws_us_catalog.actuarial_workbench.usage_events
 
   # ─ serverless ─ FEVM serverless workspace. Same app names; only the domain
   # number changes. Accelerator deep-link IDs would need re-capturing if the

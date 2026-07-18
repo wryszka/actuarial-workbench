@@ -15,7 +15,9 @@ import Contact from './pages/Contact';
 import DemoLanding from './pages/DemoLanding';
 import NextSteps from './pages/NextSteps';
 import SmallProjects from './pages/SmallProjects';
-import Usage from './pages/Usage';
+
+const USAGE_DASHBOARD_URL =
+  'https://fevm-lr-dev-aws-us.cloud.databricks.com/dashboardsv3/01f182d70b79105faa7e32136788f4c2/published?o=7474656169654171';
 
 function SignedInUser() {
   const [user, setUser] = useState<string | null>(null);
@@ -27,11 +29,11 @@ function SignedInUser() {
   }, []);
   if (!user) return null;
   return (
-    <Link to="/usage" title={`${user} — view usage`}
+    <a href={USAGE_DASHBOARD_URL} target="_blank" rel="noopener noreferrer" title={`${user} — view portfolio usage`}
       className="text-xs text-gray-400 hover:text-white transition-colors truncate max-w-[200px] inline-flex items-center gap-1.5">
       <Building2 className="w-3.5 h-3.5 shrink-0" />
       {user}
-    </Link>
+    </a>
   );
 }
 
@@ -63,7 +65,6 @@ export default function App() {
             <Route path="/excel-migration" element={<AcceleratorDetail slug="excel-migration" />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/small-projects" element={<SmallProjects />} />
-            <Route path="/usage" element={<Usage />} />
             <Route path="/demo/:slug" element={<DemoLanding />} />
             <Route path="/demo/:slug/next-steps" element={<NextSteps />} />
             <Route path="/roadmap/:slug" element={<RoadmapStub />} />
