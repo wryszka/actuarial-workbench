@@ -58,17 +58,17 @@ export default function Workbench() {
         <div className="flex gap-3 shrink-0 flex-wrap">
           <a href="https://docs.google.com/presentation/d/1u6wyShLPEq8a6hcYC3dCr904GwQ6V7NYtJVUCZGFWzE/edit"
             target="_blank" rel="noopener noreferrer"
-            className="w-56 bg-gradient-to-br from-red-600 to-red-700 text-white rounded-2xl p-3.5 hover:from-red-500 hover:to-red-600 hover:shadow-lg hover:shadow-red-200 transition-all flex flex-col group">
+            className="w-56 bg-white border-2 border-emerald-200 rounded-2xl p-3.5 hover:border-emerald-300 hover:shadow-lg hover:shadow-emerald-100 transition-all flex flex-col group">
             <div className="flex items-center gap-2.5">
-              <div className="w-10 h-10 rounded-lg bg-white/15 flex items-center justify-center shrink-0">
-                <GraduationCap className="w-5 h-5 text-white" />
+              <div className="w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center shrink-0">
+                <GraduationCap className="w-5 h-5 text-emerald-700" />
               </div>
               <div className="min-w-0">
-                <div className="text-[13px] font-bold leading-tight">Databricks internal training</div>
-                <div className="text-[10px] text-red-100 mt-0.5">Learn insurance with Laurence</div>
+                <div className="text-[13px] font-bold text-gray-900 leading-tight">Bricksurance Academy</div>
+                <div className="text-[10px] text-gray-500 mt-0.5">Learn insurance with Laurence</div>
               </div>
             </div>
-            <div className="mt-2.5 inline-flex items-center gap-1 text-xs font-bold text-white">
+            <div className="mt-2.5 inline-flex items-center gap-1 text-xs font-bold text-emerald-700">
               Click for details <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
             </div>
           </a>
