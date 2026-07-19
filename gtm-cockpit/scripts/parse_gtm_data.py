@@ -381,6 +381,21 @@ def main():
                 r"unassigned|to be archived|no bu", f"{ae} {ae_role}", re.I) is not None
             active = has_signal and not ae_unassigned
 
+            # UK-driven = the account is run by a UK/Ireland-based AE team, even
+            # if the group HQ is elsewhere (e.g. Allianz/LV=/AXA UK are UK-driven
+            # despite DE/FR parents). Canada Life = AMER-driven, Athora =
+            # NL-driven → NOT UK-driven. UKI-team roles + the UK-based EMEA
+            # insurance/regulated/banking/PBS/public-sector desks count; AMER /
+            # APJ / France / Benelux / Africa desks do not.
+            role_l = ae_role.lower()
+            uk_driven = ("uki" in role_l) or bool(re.search(
+                r"emea - (insurance|regulated|banking & cap mkts|"
+                r"professional business services|public sector)", role_l))
+            if re.search(r"amer|apj|\bjp\b|france|benelux|beno|africa|manufacturing", role_l):
+                uk_driven = False
+            # active_consuming = UK-driven, real AE, and actually consuming ($>0).
+            active_consuming = uk_driven and not ae_unassigned and list365 > 0
+
             # Software mentions across incumbent + opp names + UCO text.
             incumbent = p.get("incumbent", "")
             opp_text = " ".join(o["name"] for o in opps)
@@ -432,6 +447,8 @@ def main():
                 "has_signal": has_signal,
                 "coverage_gap": coverage_gap,
                 "active": active,
+                "uk_driven": uk_driven,
+                "active_consuming": active_consuming,
                 "software": software,
                 "functions": functions,
                 "_from_plan": norm_name(name) in prio,

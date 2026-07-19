@@ -153,15 +153,6 @@ export const TILES: Tile[] = [
     subtitle: 'Bricksurance SE',
   },
   {
-    slug: 'mrc-intelligence',
-    label: 'MRC policy intelligence',
-    description: "Lloyd's MRC PDFs → an ACORD knowledge graph + multi-agent assistant.",
-    status: 'in_progress',
-    icon: ScrollText,
-    to: '/roadmap/mrc-intelligence',
-    subtitle: "Lloyd's market · ACORD",
-  },
-  {
     slug: 'insurance-ontology',
     label: 'Insurance ontology',
     description: 'An ACORD-based insurance semantic layer, governed in Unity Catalog.',

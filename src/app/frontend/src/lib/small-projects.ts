@@ -41,6 +41,14 @@ export const SMALL_PROJECTS: SmallProject[] = [
     ],
   },
   {
+    title: 'MRC policy intelligence',
+    description: "Lloyd's MRC contract PDFs → an ACORD-aligned knowledge graph and a multi-agent assistant over the London-market wording.",
+    tag: "Lloyd's / ACORD",
+    links: [
+      { label: 'GitHub', href: 'https://github.com/wryszka/insurance-mrc-poc' },
+    ],
+  },
+  {
     title: 'Genie Code demo',
     description: 'An end-to-end motor-claims analytics pipeline built with natural-language prompts — Free Edition friendly.',
     tag: 'Genie',
