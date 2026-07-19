@@ -8,7 +8,7 @@
 import { BrowserRouter, Routes, Route, NavLink, Navigate, Link } from 'react-router-dom';
 import {
   LayoutDashboard, ShieldAlert, Rocket, Grid3x3, Globe2,
-  MessagesSquare, Database, ListChecks, Building2, ArrowUpRight,
+  MessagesSquare, Database, ListChecks, Building2, ArrowUpRight, Info,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import Overview from './pages/Overview';
@@ -19,6 +19,7 @@ import Replicability from './pages/Replicability';
 import Ask from './pages/Ask';
 import DataQuality from './pages/DataQuality';
 import Accounts from './pages/Accounts';
+import AboutModal from './components/AboutModal';
 import { getJSON, type AppConfig } from './lib/api';
 
 const NAV = [
@@ -32,7 +33,7 @@ const NAV = [
   { to: '/data-quality', label: 'Data Quality', icon: Database },
 ];
 
-function Sidebar({ cfg }: { cfg: AppConfig | null }) {
+function Sidebar({ cfg, onAboutClick }: { cfg: AppConfig | null; onAboutClick: () => void }) {
   return (
     <aside className="w-60 shrink-0 bg-[#0f172a] text-gray-300 min-h-screen flex flex-col">
       <div className="px-5 py-4 border-b border-white/10">
@@ -54,7 +55,13 @@ function Sidebar({ cfg }: { cfg: AppConfig | null }) {
           </NavLink>
         ))}
       </nav>
-      <div className="px-4 py-3 border-t border-white/10">
+      <div className="px-4 py-3 border-t border-white/10 space-y-2">
+        <button
+          onClick={onAboutClick}
+          className="w-full text-left text-[11px] text-gray-500 hover:text-gray-300 inline-flex items-center gap-1.5 px-1 py-1 rounded hover:bg-white/5 transition-colors"
+        >
+          <Info className="w-3.5 h-3.5" /> About this demo
+        </button>
         <a href="/gtm" className="text-[11px] text-gray-500 hover:text-gray-300 inline-flex items-center gap-1">
           <ArrowUpRight className="w-3 h-3" /> Back to the hub
         </a>
@@ -66,6 +73,7 @@ function Sidebar({ cfg }: { cfg: AppConfig | null }) {
 export default function App() {
   const [cfg, setCfg] = useState<AppConfig | null>(null);
   const [user, setUser] = useState<string | null>(null);
+  const [aboutOpen, setAboutOpen] = useState(false);
   useEffect(() => {
     getJSON<AppConfig>('/api/config').then(setCfg).catch(() => {});
     getJSON<{ user: string }>('/api/me').then((d) => setUser(d.user)).catch(() => {});
@@ -73,8 +81,9 @@ export default function App() {
 
   return (
     <BrowserRouter>
+      <AboutModal open={aboutOpen} onClose={() => setAboutOpen(false)} />
       <div className="flex min-h-screen bg-gray-100 font-[system-ui]">
-        <Sidebar cfg={cfg} />
+        <Sidebar cfg={cfg} onAboutClick={() => setAboutOpen(true)} />
         <div className="flex-1 min-w-0">
           <header className="h-12 bg-white border-b border-gray-200 flex items-center px-6 gap-3">
             <Link to="/" className="text-sm font-semibold text-gray-700">UKI Insurance GTM Cockpit</Link>
