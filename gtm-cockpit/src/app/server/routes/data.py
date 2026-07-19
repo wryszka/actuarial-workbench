@@ -341,7 +341,9 @@ async def impact():
                    i.what, i.note, i.source,
                    ROUND(a.list_365d) AS list_365d, a.sub_industry
             FROM {IMP} i LEFT JOIN {A} a ON i.account = a.account
-            ORDER BY (a.list_365d IS NULL), a.list_365d DESC, i.meetings DESC""")
+            ORDER BY COALESCE(i.meetings, 0) DESC,
+                     i.clevel DESC,
+                     COALESCE(a.list_365d, 0) DESC""")
         agg = await _one(f"""
             SELECT COUNT(*) AS n_helped,
                    SUM(CASE WHEN clevel THEN 1 ELSE 0 END) AS n_clevel,
