@@ -131,7 +131,10 @@ export default function Impact({ cfg }: { cfg: AppConfig | null }) {
         promo deck, L7 evidence pack, kudos log and a calendar/email/Slack scan. Meeting counts are approximate calendar
         intensity (~15-month window); “—” means not scanned, not zero. Consumption is LIST $ (a proxy, not billed revenue).
         Wider EMEA/APAC wins ({owner} also works Munich Re, Tryg, Vaudoise, Linea Directa, VIG, AIA…) are deliberately out of
-        this UK-driven view. This tab is the deck's evidence base — every claim traces to a source.
+        this UK-driven view. This tab is the deck's evidence base — every claim traces to a source. <strong>On the LIST figures:</strong>
+        they're summed across an account's duplicate SFDC records (so Aon's split records roll up to one number); a “$0” means the
+        book records no consumption under that name yet (e.g. Aviva's spend is fragmented across variant records), not that the
+        engagement wasn't real — meetings + C-level are the truer signal here.
       </Disclaimer>
 
       <div className="mt-4 rounded-lg bg-slate-50 border border-slate-200 p-3 text-[11px] text-slate-500 flex items-center gap-2">

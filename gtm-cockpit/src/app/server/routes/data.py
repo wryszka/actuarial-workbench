@@ -339,11 +339,21 @@ async def impact():
                    ROUND(SUM(CASE WHEN active_consuming THEN list_365d ELSE 0 END)) AS active_list,
                    ROUND(SUM(list_365d)) AS total_list
             FROM {A}""")
+        # The book has duplicate SFDC records under one name (Aon ×2: $5.11M + $0;
+        # L&G Retail ×2). Aggregate the book BY NAME first so the impact join
+        # rolls those up (SUM consumption, MAX flags) instead of matching the $0
+        # record at random. Without this, Aon showed $0 on the impact list.
+        agg_book = f"""
+            (SELECT account,
+                    SUM(list_365d) AS list_365d,
+                    MAX(sub_industry) AS sub_industry,
+                    MAX(CASE WHEN has_signal THEN 1 ELSE 0 END) = 1 AS has_signal
+             FROM {A} GROUP BY account)"""
         helped = await execute_query(f"""
             SELECT i.account, i.meetings, i.clevel, i.clevel_detail, i.keywords,
                    i.what, i.note, i.source,
                    ROUND(a.list_365d) AS list_365d, a.sub_industry
-            FROM {IMP} i LEFT JOIN {A} a ON i.account = a.account
+            FROM {IMP} i LEFT JOIN {agg_book} a ON i.account = a.account
             ORDER BY COALESCE(i.meetings, 0) DESC,
                      i.clevel DESC,
                      COALESCE(a.list_365d, 0) DESC""")
@@ -352,10 +362,10 @@ async def impact():
                    SUM(CASE WHEN clevel THEN 1 ELSE 0 END) AS n_clevel,
                    SUM(COALESCE(meetings,0)) AS total_meetings
             FROM {IMP}""")
-        # consumption of the helped accounts that exist in the book
+        # consumption of the helped accounts that exist in the book (name-aggregated)
         helped_list = await _one(f"""
             SELECT ROUND(SUM(a.list_365d)) AS helped_list
-            FROM {IMP} i JOIN {A} a ON i.account = a.account""")
+            FROM {IMP} i JOIN {agg_book} a ON i.account = a.account""")
         return {"book": book, "helped": helped, "agg": agg, "helped_list": helped_list}
     except Exception as e:
         logger.exception("impact failed")
