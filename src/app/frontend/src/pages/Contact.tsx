@@ -36,6 +36,13 @@ const CORE: TeamMember[] = [
     photo: '/pinchu-ye.png',
     tag: 'Lead contributor',
   },
+  {
+    name: 'Adam Beales',
+    title: 'Strategic Account Executive',
+    email: 'adam.beales@databricks.com',
+    photo: '/adam-beales.png',
+    tag: 'AE tester',
+  },
 ];
 
 // The wider building team (#bricksurance-team).
@@ -121,8 +128,8 @@ export default function Contact() {
           <div className="text-[11px] uppercase tracking-widest text-emerald-700 font-bold">Bricksurance Lead</div>
           <h1 className="text-4xl font-bold text-gray-900 tracking-tight mt-1">Laurence Ryszka</h1>
           <p className="text-sm text-gray-700 mt-3 leading-relaxed max-w-2xl">
-            Building the insurance company that shows what Databricks makes possible — and having
-            far too much fun disrupting the industry along the way.
+            Building the insurance company that shows what Databricks makes possible — because the
+            fastest way to explain it is to build it.
           </p>
           <p className="text-sm text-gray-700 mt-2 leading-relaxed max-w-2xl">
             Best ways to reach the team: <strong>Friday office hours</strong> for anything that

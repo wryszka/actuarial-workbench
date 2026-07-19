@@ -95,17 +95,17 @@ def main():
         uco_total INT, uco_active INT, uco_max_stage STRING,
         u1 INT, u2 INT, u3 INT, u4 INT, u5 INT, u6 INT,
         incumbent STRING, elevate_to STRING, demos STRING, signal_note STRING,
-        has_signal BOOLEAN, coverage_gap BOOLEAN,
+        has_signal BOOLEAN, coverage_gap BOOLEAN, active BOOLEAN,
         seat_chief_actuary BOOLEAN, seat_cdo BOOLEAN, seat_cuo BOOLEAN,
         seat_head_pricing BOOLEAN, seat_cro BOOLEAN, seat_cfo BOOLEAN, seat_cto BOOLEAN
-    ) USING DELTA COMMENT 'One row per UKI insurance account: flattened facts + derived signal/coverage flags.'""")
+    ) USING DELTA COMMENT 'One row per UKI insurance account: flattened facts + derived signal/coverage flags. active = real assigned AE + signal (the honest "accounts we actually talk to" denominator).'""")
     acct_cols = ["rank", "account", "sub_industry", "country", "segment", "tier",
                  "ae", "ae_role", "sa_primary", "sa_count", "has_sa",
                  "list_365d", "list_90d", "open_opp_total", "renewal_total", "n_opps",
                  "uco_total", "uco_active", "uco_max_stage",
                  "u1", "u2", "u3", "u4", "u5", "u6",
                  "incumbent", "elevate_to", "demos", "signal_note",
-                 "has_signal", "coverage_gap",
+                 "has_signal", "coverage_gap", "active",
                  "seat_chief_actuary", "seat_cdo", "seat_cuo",
                  "seat_head_pricing", "seat_cro", "seat_cfo", "seat_cto"]
     acct_rows = []
@@ -119,7 +119,7 @@ def main():
             a["uco_total"], a["uco_active"], a["uco_max_stage"],
             c["U1"], c["U2"], c["U3"], c["U4"], c["U5"], c["U6"],
             a["incumbent"], a["elevate_to"], " · ".join(a["demos"]), a["signal_note"],
-            a["has_signal"], a["coverage_gap"],
+            a["has_signal"], a["coverage_gap"], a["active"],
             s["Chief Actuary"], s["CDO"], s["CUO"], s["Head of Pricing"],
             s["CRO"], s["CFO / Finance"], s["CTO"],
         ])

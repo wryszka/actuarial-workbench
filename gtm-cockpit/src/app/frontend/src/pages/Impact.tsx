@@ -23,35 +23,35 @@ export default function Impact({ cfg }: { cfg: AppConfig | null }) {
   if (!d) return <Loading label="impact" />;
 
   const owner = cfg?.impact_owner ?? 'Laurence Ryszka';
-  const bookList = num(d.book.total_list);
+  const activeList = num(d.book.active_list) || num(d.book.total_list);
   const helpedList = num(d.helped_list.helped_list);
   const maxMtg = Math.max(...d.helped.map((h) => num(h.meetings)), 1);
 
   return (
     <div>
       <PageHeader icon={Award} title="My Impact over UKI"
-        subtitle={`${owner}'s coverage footprint across the UK & Ireland insurance book — accounts materially engaged, the consumption they represent, and where the conversation reached the C-suite. Evidence-based; understated on purpose.`} />
+        subtitle={`${owner}'s footprint across UK & Ireland insurance — the accounts worked directly, the consumption they represent, and where the conversation reached the C-suite (Chief Actuary counts). Evidence-based; a reach view, not a scorecard.`} />
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <StatTile label="Accounts helped" value={num(d.agg.n_helped)}
-          sub={<>of {num(d.book.n_accounts)} in the UK/IE book</>} />
+        <StatTile label="UK/IE accounts engaged" value={num(d.agg.n_helped)}
+          sub="insurers, brokers, MGAs & bancassurers worked directly" />
         <StatTile label="Consumption touched" value={money(helpedList)} accent="text-blue-700"
-          sub={<>{Math.round((helpedList / (bookList || 1)) * 100)}% of the book’s LIST $ (helped accounts in-book)</>} />
-        <StatTile label="C-level engagements" value={num(d.agg.n_clevel)} accent="text-violet-700"
-          sub="accounts where the conversation reached a chief / C-suite seat" />
-        <StatTile label="Meetings logged" value={num(d.agg.total_meetings)}
+          sub="trailing LIST $ across the engaged accounts" />
+        <StatTile label="Reached the C-suite" value={num(d.agg.n_clevel)} accent="text-violet-700"
+          sub="accounts where the conversation reached a chief seat (CDO, Chief Actuary, CUO, Chief Claims, COO, CTO)" />
+        <StatTile label="Meetings" value={num(d.agg.total_meetings)}
           sub="approx across engaged accounts (~12-month window)" />
       </div>
 
-      {/* Coverage bar: helped vs book consumption */}
+      {/* Reach against the active book (the accounts we actually talk to) */}
       <div className="rounded-xl border border-gray-200 bg-white p-5 mt-5">
-        <h3 className="font-bold text-gray-800 text-sm mb-2">Coverage of the book’s consumption</h3>
+        <h3 className="font-bold text-gray-800 text-sm mb-2">Consumption across the accounts {owner} has worked</h3>
         <div className="flex items-center gap-3">
-          <div className="flex-1"><Bar value={helpedList} max={bookList} className="bg-blue-500" /></div>
-          <span className="text-sm font-semibold text-gray-700 whitespace-nowrap">{money(helpedList)} / {money(bookList)}</span>
+          <div className="flex-1"><Bar value={helpedList} max={Math.max(activeList, helpedList)} className="bg-blue-500" /></div>
+          <span className="text-sm font-semibold text-gray-700 whitespace-nowrap">{money(helpedList)} touched</span>
         </div>
         <p className="text-[11px] text-gray-400 mt-2">
-          Accounts {owner} has materially engaged represent {Math.round((helpedList / (bookList || 1)) * 100)}% of the UK/IE book’s trailing consumption (counting only helped accounts that appear in the book).
+          Set against ~{money(activeList)} of trailing consumption across the actively-engaged UK/IE book (accounts with a live AE and signal). A footprint view, not a scorecard.
         </p>
       </div>
 

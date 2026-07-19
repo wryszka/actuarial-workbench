@@ -371,6 +371,16 @@ def main():
 
             coverage_gap = has_signal and (not sa["has_primary"] or sa["dsa_only"])
 
+            # "Active" = a real, assigned AE is engaged now AND there's signal.
+            # Excludes unassigned / to-be-archived / no-BU placeholder rows and
+            # dormant $0/no-opp/no-UCO accounts we don't actually talk to. This
+            # is the honest denominator for coverage/impact, not the full book.
+            ae = (row.get("AE") or "").strip()
+            ae_role = (row.get("AE role") or "").strip()
+            ae_unassigned = (not ae) or re.search(
+                r"unassigned|to be archived|no bu", f"{ae} {ae_role}", re.I) is not None
+            active = has_signal and not ae_unassigned
+
             # Software mentions across incumbent + opp names + UCO text.
             incumbent = p.get("incumbent", "")
             opp_text = " ".join(o["name"] for o in opps)
@@ -421,6 +431,7 @@ def main():
                 "signal_note": p.get("signal", ""),
                 "has_signal": has_signal,
                 "coverage_gap": coverage_gap,
+                "active": active,
                 "software": software,
                 "functions": functions,
                 "_from_plan": norm_name(name) in prio,

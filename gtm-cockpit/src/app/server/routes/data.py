@@ -331,7 +331,10 @@ async def impact():
     and meeting counts. Understated by design."""
     try:
         book = await _one(f"""
-            SELECT COUNT(*) AS n_accounts, ROUND(SUM(list_365d)) AS total_list
+            SELECT COUNT(*) AS n_accounts,
+                   SUM(CASE WHEN active THEN 1 ELSE 0 END) AS n_active,
+                   ROUND(SUM(CASE WHEN active THEN list_365d ELSE 0 END)) AS active_list,
+                   ROUND(SUM(list_365d)) AS total_list
             FROM {A} WHERE country = 'United Kingdom' OR country = 'Ireland'""")
         helped = await execute_query(f"""
             SELECT i.account, i.meetings, i.clevel, i.clevel_detail, i.keywords,
