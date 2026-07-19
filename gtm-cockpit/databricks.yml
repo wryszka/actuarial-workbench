@@ -1,0 +1,85 @@
+bundle:
+  name: gtm_cockpit
+
+# ──────────────────────────────────────────────────────────────────────────────
+# UKI Insurance GTM Cockpit — a data-backed Databricks App.
+#
+# Unlike the actuarial-workbench hub (a pure launcher), this bundle deploys ONE
+# App that reads a governed Unity Catalog model (schema `gtm_cockpit`) via a SQL
+# warehouse and proxies a Genie space. The data model is seeded separately by
+# scripts/seed_uc.py (see Makefile `seed`); this bundle deploys only the app.
+#
+# Portable: override the catalog / schema / warehouse / genie-space per target.
+# ──────────────────────────────────────────────────────────────────────────────
+
+variables:
+  app_name:
+    description: Databricks Apps resource name (URL slug)
+    default: gtm-cockpit
+  app_display_name:
+    description: User-visible app display name
+    default: UKI Insurance GTM Cockpit
+  entity_name:
+    description: Synthetic insurer shown in headers
+    default: "Bricksurance SE"
+  territory:
+    description: GTM territory label
+    default: "UKI"
+  catalog_name:
+    description: Unity Catalog holding the gtm_cockpit schema
+    default: "lr_dev_aws_us_catalog"
+  schema_name:
+    description: Schema holding the governed GTM model + decision writeback
+    default: "gtm_cockpit"
+  warehouse_id:
+    description: SQL warehouse the app queries + Genie uses
+    default: "a3b61648ea4809e3"
+  genie_space_id:
+    description: Genie space over the gtm_cockpit schema
+    default: "01f182fcad1819cf9f8413679c998b54"
+  workspace_host:
+    description: Databricks workspace URL — override per target
+    default: "https://fevm-lr-dev-aws-us.cloud.databricks.com"
+  databricks_profile:
+    description: Databricks CLI profile for deploys
+    default: "DEV"
+
+workspace:
+  host: ${var.workspace_host}
+  profile: ${var.databricks_profile}
+
+sync:
+  # Force-include the built SPA (dist/ is gitignored + rebuilt on deploy).
+  include:
+    - src/app/frontend/dist/**
+  exclude:
+    - src/app/.venv/
+    - .venv/
+    - src/app/frontend/node_modules/
+    - data/
+    - "*.bak"
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      host: https://fevm-lr-dev-aws-us.cloud.databricks.com
+      profile: DEV
+    variables:
+      catalog_name: lr_dev_aws_us_catalog
+      schema_name: gtm_cockpit
+      warehouse_id: "a3b61648ea4809e3"
+      genie_space_id: "01f182fcad1819cf9f8413679c998b54"
+      workspace_host: https://fevm-lr-dev-aws-us.cloud.databricks.com
+      databricks_profile: DEV
+
+  serverless:
+    mode: development
+    workspace:
+      host: https://fevm-lr-serverless-aws-us.cloud.databricks.com
+      profile: sfevm
+    variables:
+      workspace_host: https://fevm-lr-serverless-aws-us.cloud.databricks.com
+      databricks_profile: sfevm
+      # catalog/schema/warehouse/genie would need re-seeding + re-capturing on serverless.

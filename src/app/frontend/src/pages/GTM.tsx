@@ -7,7 +7,12 @@
  * consumption and deal stages — clicking opens Google's own access control.
  */
 import { Link } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, ExternalLink, Map, Table2, FileText, Lock } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { ArrowLeft, ArrowRight, ExternalLink, Map, Table2, FileText, Lock, LayoutDashboard, ShieldAlert, Rocket, MessagesSquare } from 'lucide-react';
+
+// The GTM Cockpit is a separate deployed app; its URL derives from the hub's
+// apps-domain number (same workspace) with a static fallback baked in.
+const COCKPIT_FALLBACK = 'https://gtm-cockpit-7474656169654171.aws.databricksapps.com';
 
 interface GtmDoc {
   title: string;
@@ -45,6 +50,14 @@ const DOCS: GtmDoc[] = [
 ];
 
 export default function GTM() {
+  const [cockpitUrl, setCockpitUrl] = useState(COCKPIT_FALLBACK);
+  useEffect(() => {
+    fetch('/api/config')
+      .then((r) => r.json())
+      .then((d) => { if (d.gtm_cockpit_url) setCockpitUrl(d.gtm_cockpit_url); })
+      .catch(() => {});
+  }, []);
+
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-5">
       <Link to="/contact" className="text-xs text-gray-500 hover:text-gray-800 inline-flex items-center gap-1">
@@ -68,6 +81,36 @@ export default function GTM() {
         </div>
       </header>
 
+      {/* The interactive cockpit — the live, queryable version of the maps below. */}
+      <a href={cockpitUrl} target="_blank" rel="noopener noreferrer"
+        className="block rounded-2xl bg-gradient-to-br from-slate-900 to-slate-800 text-white p-6 hover:from-slate-800 hover:to-slate-700 transition-colors group">
+        <div className="flex items-start gap-4">
+          <div className="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center shrink-0">
+            <LayoutDashboard className="w-6 h-6 text-blue-300" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2">
+              <h2 className="text-xl font-bold tracking-tight">UKI Insurance GTM Cockpit</h2>
+              <span className="text-[10px] uppercase tracking-widest font-bold px-1.5 py-0.5 rounded bg-blue-500/30 text-blue-200">live app</span>
+              <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-white" />
+            </div>
+            <p className="text-sm text-slate-300 mt-1.5 leading-relaxed max-w-2xl">
+              The maps below, made interactive: a governed cockpit over all 182 UKI accounts. Coverage-gap
+              triage, an opp accelerator queue, the demo-fit matrix, EMEA replicability, natural-language
+              Genie Q&A — and record decisions with an audit trail. The territory operating system for the
+              workbench portfolio.
+            </p>
+            <div className="flex flex-wrap gap-2 mt-3 text-[11px] text-slate-300">
+              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-white/5"><ShieldAlert className="w-3 h-3 text-rose-300" /> Coverage gaps</span>
+              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-white/5"><Rocket className="w-3 h-3 text-indigo-300" /> Accelerator queue</span>
+              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-white/5"><MessagesSquare className="w-3 h-3 text-emerald-300" /> Ask (Genie)</span>
+            </div>
+          </div>
+          <ArrowRight className="w-5 h-5 shrink-0 text-blue-300 group-hover:translate-x-1 transition-transform mt-1" />
+        </div>
+      </a>
+
+      <div className="text-[11px] uppercase tracking-wider text-gray-400 font-semibold pt-1">Source maps &amp; plans</div>
       <div className="grid grid-cols-1 gap-3">
         {DOCS.map((d) => <DocCard key={d.title} doc={d} />)}
       </div>

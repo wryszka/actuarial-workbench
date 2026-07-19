@@ -1,0 +1,19 @@
+# Build artifacts
+src/app/frontend/dist/
+src/app/frontend/node_modules/
+node_modules/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Databricks bundle state
+.databricks/
+
+# Sensitive GTM data — real account names, consumption, deal stages.
+# The parser/seed scripts are versioned; the data they read/emit is NOT.
+# To rebuild: export the UKI sheet/plan to data/ then `make parse && make seed`.
+data/
+
+*.bak
