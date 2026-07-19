@@ -29,7 +29,7 @@ export default function Impact({ cfg }: { cfg: AppConfig | null }) {
 
   return (
     <div>
-      <PageHeader icon={Award} title="My Impact over UKI"
+      <PageHeader icon={Award} title="Laurence’s Impact"
         subtitle={`${owner}'s footprint across the UK-driven insurance book — accounts run by UK/Ireland-based AE teams (regardless of where the group is HQ'd), the consumption they represent, and where the conversation reached the C-suite (Chief Actuary counts). Evidence-based; the deck's proof, not a proposal.`} />
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">

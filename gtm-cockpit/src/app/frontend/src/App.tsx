@@ -44,10 +44,9 @@ const NAV_GROUPS: { heading: string; items: { to: string; label: string; icon: R
     { to: '/prep', label: 'Conversation Pack', icon: Sparkles, hero: true },
     { to: '/ask', label: 'Ask (Genie)', icon: MessagesSquare },
   ]},
-  { heading: 'Trust & impact', items: [
+  { heading: 'Trust', items: [
     { to: '/how-it-works', label: 'How it works', icon: HelpCircle },
     { to: '/data-quality', label: 'Data Quality', icon: Database },
-    { to: '/impact', label: 'My Impact', icon: Award },
   ]},
 ];
 
@@ -90,6 +89,13 @@ function Sidebar({ cfg, onAboutClick }: { cfg: AppConfig | null; onAboutClick: (
         <a href="/gtm" className="text-[11px] text-gray-500 hover:text-gray-300 inline-flex items-center gap-1">
           <ArrowUpRight className="w-3 h-3" /> Back to the hub
         </a>
+        {/* Deliberately faint + tucked at the very bottom — a promo aside, not a cockpit function. */}
+        <NavLink to="/impact"
+          className={({ isActive }) =>
+            `block text-[10px] pt-1 inline-flex items-center gap-1 transition-colors ${
+              isActive ? 'text-gray-400' : 'text-gray-600 hover:text-gray-400'}`}>
+          <Award className="w-3 h-3" /> Laurence’s impact
+        </NavLink>
       </div>
     </aside>
   );
