@@ -36,17 +36,11 @@ const CORE: TeamMember[] = [
     photo: '/pinchu-ye.png',
     tag: 'Lead contributor',
   },
-  {
-    name: 'Adam Beales',
-    title: 'Strategic Account Executive',
-    email: 'adam.beales@databricks.com',
-    photo: '/adam-beales.png',
-    tag: 'AE tester',
-  },
 ];
 
 // The wider building team (#bricksurance-team).
 const TEAM: TeamMember[] = [
+  { name: 'Adam Beales', title: 'Strategic Account Executive', email: 'adam.beales@databricks.com', photo: '/adam-beales.png', tag: 'AE tester' },
   { name: 'Suman Misra', title: 'Senior Solutions Architect', email: 'suman.misra@databricks.com', photo: '/suman-misra.png' },
   { name: 'Rubjit Kaur Lalli', title: 'Senior Solutions Engineer', email: 'rubjit.lalli@databricks.com', photo: '/rubjit-lalli.png' },
   { name: 'Tom Nash', title: 'Solutions Architect', email: 'tom.nash@databricks.com', photo: '/tom-nash.png' },
