@@ -13,7 +13,7 @@
  */
 import {
   Shield, TrendingUp, FileSpreadsheet, Network, AlertOctagon, BarChart3,
-  Code2, Table2, ScrollText, HeartPulse, Waypoints, UsersRound, FileInput,
+  Code2, Table2, HeartPulse, Waypoints, UsersRound, FileInput,
   Stamp, GraduationCap,
 } from 'lucide-react';
 

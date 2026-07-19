@@ -330,12 +330,15 @@ async def impact():
     """Coverage footprint: UK book vs accounts materially helped, with C-level
     and meeting counts. Understated by design."""
     try:
+        # Denominator = active CONSUMING UK-DRIVEN accounts (real UK/IE-based AE,
+        # signal, $>0). This is the honest "accounts we actually run and consume"
+        # base, not the full 182 (which includes unassigned / non-UK-driven / $0).
         book = await _one(f"""
             SELECT COUNT(*) AS n_accounts,
-                   SUM(CASE WHEN active THEN 1 ELSE 0 END) AS n_active,
-                   ROUND(SUM(CASE WHEN active THEN list_365d ELSE 0 END)) AS active_list,
+                   SUM(CASE WHEN active_consuming THEN 1 ELSE 0 END) AS n_active,
+                   ROUND(SUM(CASE WHEN active_consuming THEN list_365d ELSE 0 END)) AS active_list,
                    ROUND(SUM(list_365d)) AS total_list
-            FROM {A} WHERE country = 'United Kingdom' OR country = 'Ireland'""")
+            FROM {A}""")
         helped = await execute_query(f"""
             SELECT i.account, i.meetings, i.clevel, i.clevel_detail, i.keywords,
                    i.what, i.note, i.source,

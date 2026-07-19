@@ -96,6 +96,7 @@ def main():
         u1 INT, u2 INT, u3 INT, u4 INT, u5 INT, u6 INT,
         incumbent STRING, elevate_to STRING, demos STRING, signal_note STRING,
         has_signal BOOLEAN, coverage_gap BOOLEAN, active BOOLEAN,
+        uk_driven BOOLEAN, active_consuming BOOLEAN,
         seat_chief_actuary BOOLEAN, seat_cdo BOOLEAN, seat_cuo BOOLEAN,
         seat_head_pricing BOOLEAN, seat_cro BOOLEAN, seat_cfo BOOLEAN, seat_cto BOOLEAN
     ) USING DELTA COMMENT 'One row per UKI insurance account: flattened facts + derived signal/coverage flags. active = real assigned AE + signal (the honest "accounts we actually talk to" denominator).'""")
@@ -105,7 +106,7 @@ def main():
                  "uco_total", "uco_active", "uco_max_stage",
                  "u1", "u2", "u3", "u4", "u5", "u6",
                  "incumbent", "elevate_to", "demos", "signal_note",
-                 "has_signal", "coverage_gap", "active",
+                 "has_signal", "coverage_gap", "active", "uk_driven", "active_consuming",
                  "seat_chief_actuary", "seat_cdo", "seat_cuo",
                  "seat_head_pricing", "seat_cro", "seat_cfo", "seat_cto"]
     acct_rows = []
@@ -120,6 +121,7 @@ def main():
             c["U1"], c["U2"], c["U3"], c["U4"], c["U5"], c["U6"],
             a["incumbent"], a["elevate_to"], " · ".join(a["demos"]), a["signal_note"],
             a["has_signal"], a["coverage_gap"], a["active"],
+            a["uk_driven"], a["active_consuming"],
             s["Chief Actuary"], s["CDO"], s["CUO"], s["Head of Pricing"],
             s["CRO"], s["CFO / Finance"], s["CTO"],
         ])

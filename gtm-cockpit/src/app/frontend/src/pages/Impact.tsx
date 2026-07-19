@@ -30,11 +30,11 @@ export default function Impact({ cfg }: { cfg: AppConfig | null }) {
   return (
     <div>
       <PageHeader icon={Award} title="My Impact over UKI"
-        subtitle={`${owner}'s footprint across UK & Ireland insurance — the accounts worked directly, the consumption they represent, and where the conversation reached the C-suite (Chief Actuary counts). Evidence-based; a reach view, not a scorecard.`} />
+        subtitle={`${owner}'s footprint across the UK-driven insurance book — accounts run by UK/Ireland-based AE teams (regardless of where the group is HQ'd), the consumption they represent, and where the conversation reached the C-suite (Chief Actuary counts). Evidence-based; the deck's proof, not a proposal.`} />
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <StatTile label="UK/IE accounts engaged" value={num(d.agg.n_helped)}
-          sub="insurers, brokers, MGAs & bancassurers worked directly" />
+        <StatTile label="UK-driven accounts engaged" value={<>{num(d.agg.n_helped)} <span className="text-gray-400 text-lg">of {num(d.book.n_active)}</span></>}
+          sub={`of ${num(d.book.n_active)} active consuming UK-driven accounts — insurers, brokers, MGAs & bancassurers worked directly`} />
         <StatTile label="Consumption touched" value={money(helpedList)} accent="text-blue-700"
           sub="trailing LIST $ across the engaged accounts" />
         <StatTile label="Reached the C-suite" value={num(d.agg.n_clevel)} accent="text-violet-700"
@@ -51,7 +51,7 @@ export default function Impact({ cfg }: { cfg: AppConfig | null }) {
           <span className="text-sm font-semibold text-gray-700 whitespace-nowrap">{money(helpedList)} touched</span>
         </div>
         <p className="text-[11px] text-gray-400 mt-2">
-          Set against ~{money(activeList)} of trailing consumption across the actively-engaged UK/IE book (accounts with a live AE and signal). A footprint view, not a scorecard.
+          Set against ~{money(activeList)} of trailing consumption across the {num(d.book.n_active)} active consuming UK-driven accounts (real UK/IE-based AE, signal, live consumption).
         </p>
       </div>
 
@@ -124,11 +124,14 @@ export default function Impact({ cfg }: { cfg: AppConfig | null }) {
       </div>
 
       <Disclaimer>
-        <strong>How to read this.</strong> “Helped” = material, evidenced engagement (built / demoed / enabled), drawn from
-        the promo deck, L7 evidence pack, kudos log and a calendar/email/Slack scan. Meeting counts are approximate over a
-        ~12-month window; “—” means not scanned, not zero. Consumption is LIST $ (a proxy, not billed revenue), and the
-        wider EMEA cohort ({owner} works accounts beyond UK/IE — ERGO/Munich Re, Vaudoise, Linea Directa and others) is
-        deliberately excluded from this UKI view. Shown to frame coverage, not to keep score.
+        <strong>Scope + how to read this.</strong> This is the <strong>UK-driven</strong> book — accounts run by UK/Ireland-based
+        AE teams even where the group is HQ'd abroad (so Allianz UK, LV=, AXA UK count; <strong>Canada Life</strong> (AMER-driven)
+        and <strong>Athora</strong> (Netherlands-driven) are excluded). HSBC is included though outside the formal insurance patch —
+        it's UK-driven, Asia-Life work (Global CTO). “Engaged” = material, evidenced work (built / demoed / enabled), from the
+        promo deck, L7 evidence pack, kudos log and a calendar/email/Slack scan. Meeting counts are approximate calendar
+        intensity (~15-month window); “—” means not scanned, not zero. Consumption is LIST $ (a proxy, not billed revenue).
+        Wider EMEA/APAC wins ({owner} also works Munich Re, Tryg, Vaudoise, Linea Directa, VIG, AIA…) are deliberately out of
+        this UK-driven view. This tab is the deck's evidence base — every claim traces to a source.
       </Disclaimer>
 
       <div className="mt-4 rounded-lg bg-slate-50 border border-slate-200 p-3 text-[11px] text-slate-500 flex items-center gap-2">
