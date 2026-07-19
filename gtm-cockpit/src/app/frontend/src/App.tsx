@@ -9,6 +9,7 @@ import { BrowserRouter, Routes, Route, NavLink, Navigate, Link } from 'react-rou
 import {
   LayoutDashboard, ShieldAlert, Rocket, Grid3x3, Globe2,
   MessagesSquare, Database, ListChecks, Building2, ArrowUpRight, Info,
+  Search, Sparkles, Award, HelpCircle,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import Overview from './pages/Overview';
@@ -19,18 +20,35 @@ import Replicability from './pages/Replicability';
 import Ask from './pages/Ask';
 import DataQuality from './pages/DataQuality';
 import Accounts from './pages/Accounts';
+import FunctionExplorer from './pages/FunctionExplorer';
+import ConversationPack from './pages/ConversationPack';
+import Impact from './pages/Impact';
+import HowItWorks from './pages/HowItWorks';
 import AboutModal from './components/AboutModal';
 import { getJSON, type AppConfig } from './lib/api';
 
-const NAV = [
-  { to: '/', label: 'Territory Overview', icon: LayoutDashboard, end: true },
-  { to: '/coverage', label: 'Coverage Gaps', icon: ShieldAlert, hero: true },
-  { to: '/accelerator', label: 'Accelerator Queue', icon: Rocket, hero: true },
-  { to: '/demo-fit', label: 'Demo-Fit Matrix', icon: Grid3x3 },
-  { to: '/replicability', label: 'EMEA Replicability', icon: Globe2 },
-  { to: '/accounts', label: 'All Accounts', icon: ListChecks },
-  { to: '/ask', label: 'Ask (Genie)', icon: MessagesSquare },
-  { to: '/data-quality', label: 'Data Quality', icon: Database },
+// Grouped nav — act (heroes) · explore · ask · trust.
+const NAV_GROUPS: { heading: string; items: { to: string; label: string; icon: React.ElementType; end?: boolean; hero?: boolean }[] }[] = [
+  { heading: 'Act', items: [
+    { to: '/', label: 'Territory Overview', icon: LayoutDashboard, end: true },
+    { to: '/coverage', label: 'Coverage Gaps', icon: ShieldAlert, hero: true },
+    { to: '/accelerator', label: 'Accelerator Queue', icon: Rocket, hero: true },
+  ]},
+  { heading: 'Explore', items: [
+    { to: '/functions', label: 'Function Explorer', icon: Search },
+    { to: '/demo-fit', label: 'Demo-Fit Matrix', icon: Grid3x3 },
+    { to: '/replicability', label: 'EMEA Replicability', icon: Globe2 },
+    { to: '/accounts', label: 'All Accounts', icon: ListChecks },
+  ]},
+  { heading: 'Prepare & ask', items: [
+    { to: '/prep', label: 'Conversation Pack', icon: Sparkles, hero: true },
+    { to: '/ask', label: 'Ask (Genie)', icon: MessagesSquare },
+  ]},
+  { heading: 'Trust & impact', items: [
+    { to: '/how-it-works', label: 'How it works', icon: HelpCircle },
+    { to: '/data-quality', label: 'Data Quality', icon: Database },
+    { to: '/impact', label: 'My Impact', icon: Award },
+  ]},
 ];
 
 function Sidebar({ cfg, onAboutClick }: { cfg: AppConfig | null; onAboutClick: () => void }) {
@@ -43,16 +61,23 @@ function Sidebar({ cfg, onAboutClick }: { cfg: AppConfig | null; onAboutClick: (
         </div>
         <p className="text-[11px] text-gray-500 mt-1">{cfg?.territory ?? 'UKI'} Insurance · {cfg?.entity_name ?? ''}</p>
       </div>
-      <nav className="flex-1 px-2 py-3 space-y-0.5">
-        {NAV.map((n) => (
-          <NavLink key={n.to} to={n.to} end={n.end}
-            className={({ isActive }) =>
-              `flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-colors ${
-                isActive ? 'bg-blue-600 text-white' : 'hover:bg-white/5 hover:text-white'}`}>
-            <n.icon className="w-4 h-4 shrink-0" />
-            <span className="flex-1">{n.label}</span>
-            {n.hero && <span className="text-[9px] font-bold uppercase tracking-wider text-blue-300">hero</span>}
-          </NavLink>
+      <nav className="flex-1 px-2 py-3 space-y-3 overflow-y-auto">
+        {NAV_GROUPS.map((g) => (
+          <div key={g.heading}>
+            <div className="px-3 pb-1 text-[9px] font-bold uppercase tracking-widest text-gray-600">{g.heading}</div>
+            <div className="space-y-0.5">
+              {g.items.map((n) => (
+                <NavLink key={n.to} to={n.to} end={n.end}
+                  className={({ isActive }) =>
+                    `flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-colors ${
+                      isActive ? 'bg-blue-600 text-white' : 'hover:bg-white/5 hover:text-white'}`}>
+                  <n.icon className="w-4 h-4 shrink-0" />
+                  <span className="flex-1">{n.label}</span>
+                  {n.hero && <span className="text-[9px] font-bold uppercase tracking-wider text-blue-300">hero</span>}
+                </NavLink>
+              ))}
+            </div>
+          </div>
         ))}
       </nav>
       <div className="px-4 py-3 border-t border-white/10 space-y-2">
@@ -74,9 +99,11 @@ export default function App() {
   const [cfg, setCfg] = useState<AppConfig | null>(null);
   const [user, setUser] = useState<string | null>(null);
   const [aboutOpen, setAboutOpen] = useState(false);
+  const [refresh, setRefresh] = useState<{ last_refresh?: string } | null>(null);
   useEffect(() => {
     getJSON<AppConfig>('/api/config').then(setCfg).catch(() => {});
     getJSON<{ user: string }>('/api/me').then((d) => setUser(d.user)).catch(() => {});
+    getJSON<{ last_refresh?: string }>('/api/refresh-status').then(setRefresh).catch(() => {});
   }, []);
 
   return (
@@ -88,22 +115,33 @@ export default function App() {
           <header className="h-12 bg-white border-b border-gray-200 flex items-center px-6 gap-3">
             <Link to="/" className="text-sm font-semibold text-gray-700">UKI Insurance GTM Cockpit</Link>
             <span className="text-[11px] text-gray-400">demo · synthetic-safe internal GTM data</span>
-            {user && (
-              <span className="ml-auto text-xs text-gray-500 inline-flex items-center gap-1.5">
-                <Building2 className="w-3.5 h-3.5" /> {user}
-              </span>
-            )}
+            <div className="ml-auto flex items-center gap-4">
+              {refresh?.last_refresh && (
+                <span className="text-[11px] text-gray-400" title="On-demand refresh from the source GTM sheet">
+                  data refreshed {String(refresh.last_refresh).slice(0, 16).replace('T', ' ')}
+                </span>
+              )}
+              {user && (
+                <span className="text-xs text-gray-500 inline-flex items-center gap-1.5">
+                  <Building2 className="w-3.5 h-3.5" /> {user}
+                </span>
+              )}
+            </div>
           </header>
           <main className="max-w-6xl mx-auto p-6">
             <Routes>
               <Route path="/" element={<Overview cfg={cfg} />} />
               <Route path="/coverage" element={<CoverageGaps />} />
               <Route path="/accelerator" element={<Accelerator />} />
+              <Route path="/functions" element={<FunctionExplorer />} />
               <Route path="/demo-fit" element={<DemoFit />} />
               <Route path="/replicability" element={<Replicability />} />
               <Route path="/accounts" element={<Accounts />} />
+              <Route path="/prep" element={<ConversationPack />} />
               <Route path="/ask" element={<Ask cfg={cfg} />} />
+              <Route path="/how-it-works" element={<HowItWorks />} />
               <Route path="/data-quality" element={<DataQuality />} />
+              <Route path="/impact" element={<Impact cfg={cfg} />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </main>

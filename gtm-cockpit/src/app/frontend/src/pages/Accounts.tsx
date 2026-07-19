@@ -6,7 +6,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ListChecks, Search } from 'lucide-react';
 import { getJSON, money, num, truthy, type Row } from '../lib/api';
-import { PageHeader, SubBadge, Loading, ErrorNote } from '../components/ui';
+import { PageHeader, SubBadge, Loading, ErrorNote, ExplainPanel } from '../components/ui';
 import AccountDrawer from '../components/AccountDrawer';
 
 const SUBS = ['All', 'P&C', "Lloyd's/London Market", 'Life/Pensions', 'Broker', 'Health', 'Reinsurance'];
@@ -43,6 +43,10 @@ export default function Accounts() {
     <div>
       <PageHeader icon={ListChecks} title="All Accounts"
         subtitle={`The full ${rows.length}-account UKI insurance book. Search, filter, and open any account for its 360 view.`} />
+
+      <ExplainPanel>
+        <p>The complete book, unopinionated. Search by account/AE/SA, filter by sub-industry or by <em>Signal / Whitespace / Coverage gaps</em>. A red <strong>GAP</strong> badge = signal but no SA. Click any row for the Account 360 (consumption, opps, UCO funnel, software, contacts, and the “why?” behind each recommended demo).</p>
+      </ExplainPanel>
 
       <div className="flex flex-wrap items-center gap-2 mb-3">
         <div className="relative flex-1 min-w-[220px]">

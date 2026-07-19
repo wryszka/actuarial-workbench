@@ -6,7 +6,7 @@
 import { useEffect, useState } from 'react';
 import { Database, Copy, UserX } from 'lucide-react';
 import { getJSON, money, num, type Row } from '../lib/api';
-import { PageHeader, Loading, ErrorNote, Disclaimer } from '../components/ui';
+import { PageHeader, Loading, ErrorNote, Disclaimer, ExplainPanel } from '../components/ui';
 import DecisionModal, { type DecisionSeed } from '../components/DecisionModal';
 
 interface Data { duplicates: Row[]; coverage_gaps: Row[]; }
@@ -23,6 +23,10 @@ export default function DataQuality() {
     <div>
       <PageHeader icon={Database} title="Data Quality"
         subtitle="The known dirt in the book, tracked. Duplicate SFDC records split a logo's consumption and use-cases across rows; unassigned-signal accounts leak coverage. Fix these before trusting allocation math." />
+
+      <ExplainPanel>
+        <p><strong>Duplicate clusters</strong> are matched from the plan's SFDC-verified list (e.g. Aviva has 5 records) — because consumption and UCOs split across them, flagship logos can read as under-invested until consolidated. <strong>Signal with no specialist</strong> repeats the coverage-gap accounts here as a data-health item. Tracking either records a governed decision; the actual SFDC merge is a sales-ops action outside this tool.</p>
+      </ExplainPanel>
 
       <div className="rounded-xl border border-amber-200 bg-white overflow-hidden mb-5">
         <div className="px-4 py-2.5 bg-amber-50 border-b border-amber-200 text-xs font-bold text-amber-700 uppercase tracking-wider flex items-center gap-2">

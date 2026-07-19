@@ -3,8 +3,8 @@
  * loading/empty states, and the "About this view" disclaimer. Kept
  * dependency-free (Tailwind classes only) to match the hub's styling.
  */
-import type { ReactNode } from 'react';
-import { Info } from 'lucide-react';
+import { useState, type ReactNode } from 'react';
+import { Info, HelpCircle, ChevronDown } from 'lucide-react';
 import { subColor } from '../lib/api';
 
 export function StatTile({ label, value, sub, accent }: {
@@ -45,6 +45,46 @@ export function PageHeader({ title, subtitle, icon: Icon, iconBg }: {
         {subtitle && <p className="text-sm text-gray-600 mt-1 max-w-3xl leading-relaxed">{subtitle}</p>}
       </div>
     </header>
+  );
+}
+
+/** "What am I looking at" — collapsed by default, click to unfold. Every page
+ *  opens with one so a cold visitor knows what the view shows + how to read it. */
+export function ExplainPanel({ children, defaultOpen = false }: { children: ReactNode; defaultOpen?: boolean }) {
+  const [open, setOpen] = useState(defaultOpen);
+  return (
+    <div className="mb-4 rounded-lg border border-blue-100 bg-blue-50/60">
+      <button onClick={() => setOpen((o) => !o)}
+        className="w-full flex items-center gap-2 px-3 py-2 text-left text-xs font-semibold text-blue-800">
+        <HelpCircle className="w-3.5 h-3.5 shrink-0" />
+        What am I looking at?
+        <ChevronDown className={`w-3.5 h-3.5 ml-auto transition-transform ${open ? 'rotate-180' : ''}`} />
+      </button>
+      {open && <div className="px-3 pb-3 pt-0 text-[12px] text-blue-900/80 leading-relaxed space-y-1.5">{children}</div>}
+    </div>
+  );
+}
+
+/** Inline "Why?" popover for a single derived datapoint (e.g. a demo reco).
+ *  Renders the reasons the rules engine produced. */
+export function WhyChip({ reasons }: { reasons: string[] }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <span className="relative inline-block">
+      <button onClick={(e) => { e.stopPropagation(); setOpen((o) => !o); }}
+        className="text-[10px] font-semibold text-blue-600 hover:text-blue-800 inline-flex items-center gap-0.5">
+        <HelpCircle className="w-3 h-3" /> why?
+      </button>
+      {open && (
+        <span className="absolute z-20 left-0 top-5 w-64 rounded-lg border border-gray-200 bg-white shadow-lg p-2.5 text-left"
+          onClick={(e) => e.stopPropagation()}>
+          <span className="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Because</span>
+          <ul className="space-y-0.5">
+            {reasons.map((r, i) => <li key={i} className="text-[11px] text-gray-700 flex gap-1.5"><span className="text-blue-500">•</span>{r}</li>)}
+          </ul>
+        </span>
+      )}
+    </span>
   );
 }
 

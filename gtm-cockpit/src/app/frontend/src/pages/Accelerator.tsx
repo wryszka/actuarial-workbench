@@ -9,7 +9,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Rocket, CalendarClock, PlayCircle } from 'lucide-react';
 import { getJSON, money, num, type Row } from '../lib/api';
-import { PageHeader, SubBadge, Loading, ErrorNote, Disclaimer, StatTile } from '../components/ui';
+import { PageHeader, SubBadge, Loading, ErrorNote, Disclaimer, StatTile, ExplainPanel } from '../components/ui';
 import DecisionModal, { type DecisionSeed } from '../components/DecisionModal';
 import AccountDrawer from '../components/AccountDrawer';
 
@@ -49,6 +49,11 @@ export default function Accelerator() {
     <div>
       <PageHeader icon={Rocket} iconBg="bg-indigo-100" title="Accelerator Queue"
         subtitle="For each open opportunity: the demo to run next and the persona to run it for — ranked by value. Plus the renewal calendar with risk flags. Turns nine demos into a prioritised sell motion." />
+
+      <ExplainPanel>
+        <p>Two tabs. <strong>Next-best-demo queue</strong>: every open new-business opp joined to the account's recommended workbench + the persona to elevate to, ranked by opp value. <strong>Renewal calendar</strong>: open renewals by close date.</p>
+        <p><strong>How the demo is picked:</strong> the same transparent rules as everywhere (sub-industry fit · incumbent in play · persona held · matching use-case) — open any account to see the “why?”. <strong>Risk flags</strong> are derived from close date vs stage (OVERDUE, or ≤90d while in negotiation). Reconcile to Salesforce before acting.</p>
+      </ExplainPanel>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
         <StatTile label="New-business opps" value={newOpps.length} sub={money(totalNew)} />

@@ -18,7 +18,7 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 from server.config import app_config
-from server.routes import data, writeback, genie
+from server.routes import data, writeback, genie, agent
 
 logging.basicConfig(level=logging.INFO,
                     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
@@ -42,6 +42,7 @@ async def config():
 app.include_router(data.router)
 app.include_router(writeback.router)
 app.include_router(genie.router)
+app.include_router(agent.router)
 
 
 if FRONTEND_DIR.is_dir():

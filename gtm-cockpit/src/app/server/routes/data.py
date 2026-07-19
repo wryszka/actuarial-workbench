@@ -21,6 +21,10 @@ C = fqn("4_contacts")
 DM = fqn("5_demo_map")
 DF = fqn("6_demo_fit")
 DUP = fqn("7_duplicates")
+SW = fqn("8_software")
+FN = fqn("9_functions")
+RECO = fqn("10_recommendations")
+IMP = fqn("11_impact")
 DEC = fqn("decisions")
 
 
@@ -196,8 +200,15 @@ async def account_detail(account: str):
             f"SELECT action, value, detail, owner, due_date, status, changed_by, "
             f"CAST(changed_at AS STRING) AS changed_at FROM {DEC} "
             f"WHERE account = '{a}' ORDER BY changed_at DESC")
+        software = await execute_query(
+            f"SELECT software, function, category, displaced_by FROM {SW} WHERE account = '{a}'")
+        rationale = await execute_query(
+            f"SELECT workbench, reasons, score FROM {RECO} WHERE account = '{a}' ORDER BY score DESC")
+        functions = await execute_query(
+            f"SELECT function, seat, connected FROM {FN} WHERE account = '{a}'")
         return {"account": acct, "opps": opps, "ucos": ucos,
-                "contacts": contacts, "decisions": decisions}
+                "contacts": contacts, "decisions": decisions,
+                "software": software, "rationale": rationale, "functions": functions}
     except HTTPException:
         raise
     except Exception as e:
@@ -234,6 +245,112 @@ async def accounts():
         return {"accounts": rows}
     except Exception as e:
         logger.exception("accounts failed")
+        raise HTTPException(500, str(e)[:300])
+
+
+# ── Function Explorer (search by function + persona + software) ────────────
+@router.get("/functions")
+async def functions_summary():
+    """The six business functions with account counts, persona-connection, and
+    the software in play — the landing for the Function Explorer."""
+    try:
+        summary = await execute_query(f"""
+            SELECT function,
+                   COUNT(*) AS n_accounts,
+                   SUM(CASE WHEN connected THEN 1 ELSE 0 END) AS n_connected,
+                   SUM(CASE WHEN has_sa THEN 1 ELSE 0 END) AS n_covered,
+                   ROUND(SUM(list_365d)) AS list_365d
+            FROM {FN} GROUP BY function ORDER BY list_365d DESC""")
+        software = await execute_query(f"""
+            SELECT function, software, COUNT(*) AS n_accounts, ROUND(SUM(list_365d)) AS list_365d
+            FROM {SW} GROUP BY function, software ORDER BY n_accounts DESC""")
+        return {"summary": summary, "software": software}
+    except Exception as e:
+        logger.exception("functions_summary failed")
+        raise HTTPException(500, str(e)[:300])
+
+
+@router.get("/function/{function}")
+async def function_detail(function: str):
+    """Accounts with signal in a function: persona-connected or not, software in play."""
+    from server.sql import esc
+    f = esc(function)
+    try:
+        accounts_ = await execute_query(f"""
+            SELECT fn.account, fn.sub_industry, fn.seat, fn.connected,
+                   fn.from_uco, fn.from_software, ROUND(fn.list_365d) AS list_365d, fn.has_sa,
+                   a.sa_primary, a.uco_total
+            FROM {FN} fn JOIN {A} a ON fn.account = a.account
+            WHERE fn.function = '{f}' ORDER BY fn.list_365d DESC""")
+        software = await execute_query(f"""
+            SELECT software, category, displaced_by, COUNT(*) AS n_accounts,
+                   collect_set(account) AS accounts
+            FROM {SW} WHERE function = '{f}' GROUP BY software, category, displaced_by
+            ORDER BY n_accounts DESC""")
+        return {"function": function, "accounts": accounts_, "software": software}
+    except Exception as e:
+        logger.exception("function_detail failed")
+        raise HTTPException(500, str(e)[:300])
+
+
+@router.get("/software")
+async def software_index():
+    """Full software index — which suites are mentioned, where, how much $."""
+    try:
+        idx = await execute_query(f"""
+            SELECT software, function, category, displaced_by,
+                   COUNT(*) AS n_accounts, ROUND(SUM(list_365d)) AS list_365d,
+                   collect_set(account) AS accounts
+            FROM {SW} GROUP BY software, function, category, displaced_by
+            ORDER BY n_accounts DESC""")
+        return {"software": idx}
+    except Exception as e:
+        logger.exception("software_index failed")
+        raise HTTPException(500, str(e)[:300])
+
+
+# ── How recommendations work (the rules, transparent) ──────────────────────
+@router.get("/recommendations")
+async def recommendations():
+    try:
+        rows = await execute_query(f"""
+            SELECT r.account, a.sub_industry, r.workbench, r.reasons, r.score,
+                   ROUND(a.list_365d) AS list_365d
+            FROM {RECO} r JOIN {A} a ON r.account = a.account
+            WHERE a.has_signal = true ORDER BY r.score DESC, a.list_365d DESC LIMIT 100""")
+        return {"recommendations": rows}
+    except Exception as e:
+        logger.exception("recommendations failed")
+        raise HTTPException(500, str(e)[:300])
+
+
+# ── My Impact over UKI ─────────────────────────────────────────────────────
+@router.get("/impact")
+async def impact():
+    """Coverage footprint: UK book vs accounts materially helped, with C-level
+    and meeting counts. Understated by design."""
+    try:
+        book = await _one(f"""
+            SELECT COUNT(*) AS n_accounts, ROUND(SUM(list_365d)) AS total_list
+            FROM {A} WHERE country = 'United Kingdom' OR country = 'Ireland'""")
+        helped = await execute_query(f"""
+            SELECT i.account, i.meetings, i.clevel, i.clevel_detail, i.keywords,
+                   i.what, i.note, i.source,
+                   ROUND(a.list_365d) AS list_365d, a.sub_industry
+            FROM {IMP} i LEFT JOIN {A} a ON i.account = a.account
+            ORDER BY (a.list_365d IS NULL), a.list_365d DESC, i.meetings DESC""")
+        agg = await _one(f"""
+            SELECT COUNT(*) AS n_helped,
+                   SUM(CASE WHEN clevel THEN 1 ELSE 0 END) AS n_clevel,
+                   SUM(COALESCE(meetings,0)) AS total_meetings
+            FROM {IMP}""")
+        # consumption of the helped accounts that exist in the book
+        helped_list = await _one(f"""
+            SELECT ROUND(SUM(a.list_365d)) AS helped_list
+            FROM {IMP} i JOIN {A} a ON i.account = a.account""")
+        return {"book": book, "helped": helped, "agg": agg, "helped_list": helped_list}
+    except Exception as e:
+        logger.exception("impact failed")
         raise HTTPException(500, str(e)[:300])
 
 

@@ -57,6 +57,7 @@ export interface AppConfig {
   genie_space_id: string;
   catalog: string;
   schema: string;
+  impact_owner?: string;
 }
 
 export const SUBIND_COLORS: Record<string, string> = {

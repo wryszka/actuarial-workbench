@@ -9,7 +9,7 @@
 import { useEffect, useState } from 'react';
 import { ShieldAlert, UserPlus, Users } from 'lucide-react';
 import { getJSON, money, num, truthy, type Row } from '../lib/api';
-import { PageHeader, SubBadge, Bar, Loading, ErrorNote, Disclaimer, Seat } from '../components/ui';
+import { PageHeader, SubBadge, Bar, Loading, ErrorNote, Disclaimer, Seat, ExplainPanel } from '../components/ui';
 import DecisionModal, { type DecisionSeed } from '../components/DecisionModal';
 import AccountDrawer from '../components/AccountDrawer';
 
@@ -33,6 +33,11 @@ export default function CoverageGaps() {
     <div>
       <PageHeader icon={ShieldAlert} iconBg="bg-rose-100" title="Coverage Gaps"
         subtitle="The signal leaking through a coverage gap: accounts with consumption, open opps or active use-cases but no primary SA. Assign a specialist and record it — the decision lands in the governed log." />
+
+      <ExplainPanel>
+        <p>These are accounts that <strong>have signal</strong> (consumption, an open opp, or an active U1–U5 use-case) but <strong>no primary SA</strong> (or DSA-only) — value at risk of going uncovered. Ranked by consumption.</p>
+        <p><strong>Why an account is here:</strong> it passed the rule <em>has-signal AND no-primary-SA</em>. The lower table shows every SA's current load so you can decide who to assign to — “Assign SA” records a governed decision (it doesn't change Salesforce).</p>
+      </ExplainPanel>
 
       <div className="rounded-xl border border-rose-200 bg-white overflow-hidden">
         <div className="px-4 py-2.5 bg-rose-50 border-b border-rose-200 text-xs font-bold text-rose-700 uppercase tracking-wider flex items-center gap-2">

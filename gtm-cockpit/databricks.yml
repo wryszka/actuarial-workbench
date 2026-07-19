@@ -37,6 +37,12 @@ variables:
   genie_space_id:
     description: Genie space over the gtm_cockpit schema
     default: "01f182fcad1819cf9f8413679c998b54"
+  llm_endpoint:
+    description: Claude Foundation-Model serving endpoint for the prep agent
+    default: "databricks-claude-sonnet-4-5"
+  impact_owner:
+    description: Whose UKI impact footprint the 'My Impact' view reflects
+    default: "Laurence Ryszka"
   workspace_host:
     description: Databricks workspace URL — override per target
     default: "https://fevm-lr-dev-aws-us.cloud.databricks.com"

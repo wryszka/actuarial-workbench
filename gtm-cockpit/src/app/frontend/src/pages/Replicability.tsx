@@ -11,7 +11,7 @@
 import { useEffect, useState } from 'react';
 import { Globe2, CheckCircle2 } from 'lucide-react';
 import { getJSON, num, type Row } from '../lib/api';
-import { PageHeader, SubBadge, Loading, ErrorNote, Disclaimer } from '../components/ui';
+import { PageHeader, SubBadge, Loading, ErrorNote, Disclaimer, ExplainPanel } from '../components/ui';
 import DecisionModal, { type DecisionSeed } from '../components/DecisionModal';
 
 interface Data { plays: Row[]; }
@@ -46,6 +46,10 @@ export default function Replicability() {
     <div>
       <PageHeader icon={Globe2} title="EMEA Replicability"
         subtitle="Take a play that works in UKI and size the analogous account population across the wider EMEA book — the decision that turns a territory motion into a region-wide one." />
+
+      <ExplainPanel>
+        <p>Each row is a sub-industry play (e.g. Life/Pensions → LifeCast/IFRS 17 vs FIS Prophet). The UKI columns are live from the model; the <strong>EMEA est.</strong> is an <em>indicative</em> projection = UKI account count × a documented per-sub-industry multiplier from the ~511-account EMEA companion — a planning signal, not a modelled count. “Endorse for scale” records a governed decision.</p>
+      </ExplainPanel>
 
       <div className="rounded-xl border border-gray-200 bg-white overflow-hidden">
         <table className="w-full text-sm">

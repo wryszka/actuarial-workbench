@@ -78,6 +78,79 @@ SEAT_PATTERNS = {
 }
 
 
+# ── Software vocabulary in the insurance-analytics space ─────────────────────
+# Detected across incumbent + opp names + UCO text. Each maps to the function
+# it sits in + the workbench that coexists with / displaces it. This is the
+# "is Radar/Tyche/Python mentioned?" lookup the Function Explorer needs.
+SOFTWARE = {
+    # Pricing / rating
+    "WTW Radar": {"pat": r"\bradar\b", "function": "Pricing", "category": "Rating engine", "displaced_by": "Pricing"},
+    "Earnix": {"pat": r"earnix", "function": "Pricing", "category": "Rating/optimisation", "displaced_by": "Pricing"},
+    "hyperexponential": {"pat": r"hyperexponential|hx\b", "function": "Pricing", "category": "Pricing platform", "displaced_by": "Pricing"},
+    "Akur8": {"pat": r"akur8", "function": "Pricing", "category": "Pricing/ML", "displaced_by": "Pricing"},
+    # Actuarial / reserving / capital
+    "FIS Prophet": {"pat": r"prophet", "function": "Actuarial", "category": "Actuarial modelling", "displaced_by": "LifeCast"},
+    "RAFM": {"pat": r"\brafm\b", "function": "Actuarial", "category": "Actuarial modelling", "displaced_by": "IFRS 17"},
+    "WTW Tyche": {"pat": r"tyche", "function": "Actuarial", "category": "Capital/pricing modelling", "displaced_by": "Reinsurance"},
+    "Moody's AXIS": {"pat": r"\baxis\b(?!\s*capital)", "function": "Actuarial", "category": "Actuarial modelling", "displaced_by": "LifeCast"},
+    "ResQ": {"pat": r"\bresq\b", "function": "Actuarial", "category": "Reserving", "displaced_by": "Solvency II"},
+    "Igloo": {"pat": r"\bigloo\b", "function": "Actuarial", "category": "Capital modelling", "displaced_by": "Reinsurance"},
+    "Tableau": {"pat": r"tableau", "function": "Data/Platform", "category": "BI", "displaced_by": "Insurance ontology / data core"},
+    # Policy / claims admin
+    "Guidewire": {"pat": r"guidewire", "function": "Claims", "category": "Policy/claims admin", "displaced_by": "Claims Intelligence"},
+    "Duck Creek": {"pat": r"duck creek", "function": "Claims", "category": "Policy/claims admin", "displaced_by": "Claims Intelligence"},
+    "Sapiens": {"pat": r"sapiens", "function": "Claims", "category": "Core insurance", "displaced_by": "Claims Intelligence"},
+    # Data / platform / legacy
+    "SAS": {"pat": r"\bsas\b", "function": "Data/Platform", "category": "Legacy analytics", "displaced_by": "Legacy migration (SAS/Excel)"},
+    "Snowflake": {"pat": r"snowflake", "function": "Data/Platform", "category": "Cloud DW", "displaced_by": "Insurance ontology / data core"},
+    "Synapse": {"pat": r"synapse", "function": "Data/Platform", "category": "Legacy DW", "displaced_by": "Legacy migration (SAS/Excel)"},
+    "Redshift": {"pat": r"redshift", "function": "Data/Platform", "category": "Cloud DW", "displaced_by": "Insurance ontology / data core"},
+    "Oracle": {"pat": r"oracle", "function": "Data/Platform", "category": "Legacy DB/reporting", "displaced_by": "Legacy migration (SAS/Excel)"},
+    "Informatica": {"pat": r"informatica", "function": "Data/Platform", "category": "ETL/governance", "displaced_by": "Insurance ontology / data core"},
+    "Collibra": {"pat": r"collibra", "function": "Data/Platform", "category": "Governance", "displaced_by": "Insurance ontology / data core"},
+    "SQL Server": {"pat": r"sql server|ssis|azure sql", "function": "Data/Platform", "category": "Legacy DB", "displaced_by": "Legacy migration (SAS/Excel)"},
+    "Hadoop": {"pat": r"hadoop", "function": "Data/Platform", "category": "Legacy big-data", "displaced_by": "Insurance ontology / data core"},
+    "Excel/VBA": {"pat": r"excel|vba", "function": "Actuarial", "category": "Spreadsheet estate", "displaced_by": "Legacy migration (SAS/Excel)"},
+    "Alteryx": {"pat": r"alteryx", "function": "Data/Platform", "category": "Prep/analytics", "displaced_by": "Insurance ontology / data core"},
+    "LexisNexis": {"pat": r"lexisnexis", "function": "Pricing", "category": "Data enrichment", "displaced_by": "Pricing"},
+    "Verisk": {"pat": r"verisk", "function": "Pricing", "category": "Data enrichment", "displaced_by": "Pricing"},
+    # Languages / ML runtimes (open-source estate — a migration signal)
+    "Python": {"pat": r"\bpython\b", "function": "Data/Platform", "category": "Language", "displaced_by": "Insurance ontology / data core"},
+    "R / Shiny": {"pat": r"\br shiny\b|\bshiny\b|\br\b(?= app| shiny)", "function": "Actuarial", "category": "Language", "displaced_by": "LifeCast"},
+    "Dataiku": {"pat": r"dataiku", "function": "Data/Platform", "category": "DS platform", "displaced_by": "Insurance ontology / data core"},
+    "VertexAI": {"pat": r"vertex ?ai", "function": "Data/Platform", "category": "ML platform", "displaced_by": "Insurance ontology / data core"},
+    "Phinsys": {"pat": r"phinsys", "function": "Finance", "category": "Insurance finance", "displaced_by": "IFRS 17"},
+}
+
+# Business functions the book can be searched by, + which workbenches serve them
+# and which persona seat means "we're connected" to that function.
+FUNCTIONS = {
+    "Pricing": {"workbenches": ["Pricing"], "seat": "Head of Pricing",
+                "uco_kw": r"pricing|rating|rate\b|glm|telematics"},
+    "Underwriting": {"workbenches": ["Underwriting"], "seat": "CUO",
+                     "uco_kw": r"underwrit|submission|exposure|delegated authority|risk scoring"},
+    "Claims": {"workbenches": ["Claims Intelligence"], "seat": "CUO",
+               "uco_kw": r"claim|fnol|fraud|settlement|repair"},
+    "Actuarial": {"workbenches": ["LifeCast", "IFRS 17", "Solvency II", "Reinsurance"], "seat": "Chief Actuary",
+                  "uco_kw": r"actuar|reserv|solvency|ifrs|prophet|capital|chain.?ladder|model point"},
+    "Finance": {"workbenches": ["IFRS 17", "Solvency II"], "seat": "CFO / Finance",
+                "uco_kw": r"finance|ledger|close|reporting|fp&a|disclosure"},
+    "Data/Platform": {"workbenches": ["Insurance ontology / data core", "Legacy migration (SAS/Excel)"], "seat": "CDO",
+                      "uco_kw": r"migrat|lakehouse|lakeflow|unity catalog|genie|platform|data platform|edw|customerlake|semantic"},
+}
+
+
+def detect_software(*texts: str) -> list[dict]:
+    """Find software mentions across the given text blobs."""
+    blob = " ".join(t for t in texts if t)
+    found = []
+    for name, meta in SOFTWARE.items():
+        if re.search(meta["pat"], blob, re.I):
+            found.append({"software": name, "function": meta["function"],
+                          "category": meta["category"], "displaced_by": meta["displaced_by"]})
+    return found
+
+
 def parse_money(s: str) -> float:
     """'$5.11M' → 5110000.0 ; '$545K' → 545000 ; '$60' → 60 ; '$0'/'-'/'' → 0."""
     if not s:
@@ -202,19 +275,22 @@ def parse_contacts(blob: str) -> dict:
 
 
 def load_priority_demos() -> dict:
-    """Map account-name (lowercased) → recommended demo string from priority tab."""
+    """Map normalised account-name → priority-tab detail. Keyed on norm_name so
+    the priority tab's short names ('AXA UK') join to the 182-sheet's legal
+    names ('AXA UK PLC')."""
     out = {}
     path = DATA / "uki_sheet_Priority_accounts.csv"
     with open(path, newline="") as f:
         for row in csv.DictReader(f):
-            acct = (row.get("Account") or "").strip().lower()
-            demo = (row.get("Demo to lead with") or "").strip()
-            elevate = (row.get("Team to elevate to") or "").strip()
-            incumbent = (row.get("Incumbent software") or "").strip()
-            signal = (row.get("Live use-case signal") or "").strip()
-            if acct:
-                out[acct] = {"demo": demo, "elevate": elevate,
-                             "incumbent": incumbent, "signal": signal}
+            acct = (row.get("Account") or "").strip()
+            if not acct:
+                continue
+            out[norm_name(acct)] = {
+                "demo": (row.get("Demo to lead with") or "").strip(),
+                "elevate": (row.get("Team to elevate to") or "").strip(),
+                "incumbent": (row.get("Incumbent software") or "").strip(),
+                "signal": (row.get("Live use-case signal") or "").strip(),
+            }
     return out
 
 
@@ -225,6 +301,44 @@ def norm_name(name: str) -> str:
                r"company|corporation|se|inc|llp|the)\b", "", n)
     n = re.sub(r"[^a-z0-9]", "", n)
     return n
+
+
+def build_rationale(rec: dict, software: list[dict]) -> list[dict]:
+    """Transparent rules engine: for each recommended workbench, the signals
+    that justify it. Makes the 'why this demo?' explainable and auditable."""
+    out = []
+    sw_names = [s["software"] for s in software]
+    sw_by_disp = {}
+    for s in software:
+        sw_by_disp.setdefault(s["displaced_by"], []).append(s["software"])
+    seats = rec["seats"]
+    uco_text = " ".join(u["name"].lower() for u in rec["uco_items"])
+    for wb in rec["demos"]:
+        reasons = []
+        # sub-industry fit
+        if wb in SUBIND_DEMO.get(rec["sub_industry"], []):
+            reasons.append(f"fits {rec['sub_industry']} sub-industry")
+        # incumbent it coexists with / displaces
+        if sw_by_disp.get(wb):
+            reasons.append(f"incumbent in play: {', '.join(sw_by_disp[wb])}")
+        # persona present
+        for fn, meta in FUNCTIONS.items():
+            if wb in meta["workbenches"] and seats.get(meta["seat"]):
+                reasons.append(f"{meta['seat']} contact held")
+                break
+        # live UCO theme
+        for fn, meta in FUNCTIONS.items():
+            if wb in meta["workbenches"] and re.search(meta["uco_kw"], uco_text):
+                reasons.append("matching active use-case(s)")
+                break
+        # source: named in the plan
+        if rec.get("_from_plan"):
+            reasons.append("named in the GTM plan")
+        if not reasons:
+            reasons.append(f"default lead for {rec['sub_industry']}")
+        out.append({"workbench": wb, "reasons": reasons,
+                    "score": len(reasons), "software": sw_names})
+    return out
 
 
 def main():
@@ -251,11 +365,28 @@ def main():
             active_ucos = sum(ucos["counts"][f"U{i}"] for i in range(1, 6))  # U1-U5 = in-flight
 
             # Recommended demo: priority tab wins; else sub-industry default.
-            p = prio.get(name.lower(), {})
+            p = prio.get(norm_name(name), {})
             demo_reco = p.get("demo") or " · ".join(SUBIND_DEMO.get(sub, []))
             demos = [d.strip() for d in re.split(r"·|\+", demo_reco) if d.strip()]
 
             coverage_gap = has_signal and (not sa["has_primary"] or sa["dsa_only"])
+
+            # Software mentions across incumbent + opp names + UCO text.
+            incumbent = p.get("incumbent", "")
+            opp_text = " ".join(o["name"] for o in opps)
+            software = detect_software(incumbent, opp_text, " ".join(u["name"] for u in ucos["items"]),
+                                       " ".join(c["title"] for c in contacts["contacts"]))
+            # Functions the account has signal in (by UCO theme / workbench fit).
+            functions = []
+            uco_text_l = " ".join(u["name"].lower() for u in ucos["items"])
+            for fn, meta in FUNCTIONS.items():
+                hit_uco = bool(re.search(meta["uco_kw"], uco_text_l))
+                hit_demo = any(d in meta["workbenches"] for d in demos)
+                hit_sw = any(s["function"] == fn for s in software)
+                if hit_uco or hit_demo or hit_sw:
+                    functions.append({"function": fn, "connected": contacts["seats"].get(meta["seat"], False),
+                                      "seat": meta["seat"],
+                                      "from_uco": hit_uco, "from_software": hit_sw})
 
             rec = {
                 "rank": int(row.get("Rank") or 0),
@@ -286,11 +417,15 @@ def main():
                 "seats": contacts["seats"],
                 "demos": demos,
                 "elevate_to": p.get("elevate", ""),
-                "incumbent": p.get("incumbent", ""),
+                "incumbent": incumbent,
                 "signal_note": p.get("signal", ""),
                 "has_signal": has_signal,
                 "coverage_gap": coverage_gap,
+                "software": software,
+                "functions": functions,
+                "_from_plan": norm_name(name) in prio,
             }
+            rec["rationale"] = build_rationale(rec, software)
             accounts.append(rec)
             name_groups.setdefault(rec["norm_name"], []).append(name)
 

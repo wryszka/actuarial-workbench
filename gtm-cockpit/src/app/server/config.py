@@ -53,6 +53,16 @@ def get_territory() -> str:
     return os.getenv("TERRITORY", "UKI")
 
 
+def get_impact_owner() -> str:
+    """Whose impact the 'My Impact' view reflects (label only)."""
+    return os.getenv("IMPACT_OWNER", "Laurence Ryszka")
+
+
+def get_llm_endpoint() -> str:
+    """Foundation Model API endpoint for the prep agent (Claude, per standard)."""
+    return os.getenv("LLM_ENDPOINT", "databricks-claude-sonnet-4-5")
+
+
 def fqn(table: str) -> str:
     # Numbered tables need backtick-quoting (1_accounts starts with a digit).
     return f"{get_catalog()}.{get_schema()}.`{table}`"
@@ -65,4 +75,5 @@ def app_config() -> dict:
         "genie_space_id": get_genie_space_id(),
         "catalog": get_catalog(),
         "schema": get_schema(),
+        "impact_owner": get_impact_owner(),
     }

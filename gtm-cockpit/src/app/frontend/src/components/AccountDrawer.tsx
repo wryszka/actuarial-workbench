@@ -4,13 +4,14 @@
  * Opened from any account row across the cockpit.
  */
 import { useEffect, useState } from 'react';
-import { X, TrendingUp, Briefcase, Users, ClipboardList } from 'lucide-react';
+import { X, TrendingUp, Briefcase, Users, ClipboardList, Cpu } from 'lucide-react';
 import { getJSON, money, num, truthy, type Row } from '../lib/api';
-import { SubBadge, Seat } from './ui';
+import { SubBadge, Seat, WhyChip } from './ui';
 import DecisionModal from './DecisionModal';
 
 interface Detail {
   account: Row; opps: Row[]; ucos: Row[]; contacts: Row[]; decisions: Row[];
+  software?: Row[]; rationale?: Row[]; functions?: Row[];
 }
 
 const SEATS: [string, string][] = [
@@ -80,10 +81,36 @@ export default function AccountDrawer({ account, onClose }: { account: string; o
                 <div className="text-[10px] uppercase text-blue-700 font-semibold flex items-center gap-1">
                   <TrendingUp className="w-3 h-3" /> Lead with
                 </div>
-                <div className="text-sm font-semibold text-gray-900 mt-0.5">{String(a.demos)}</div>
-                {a.elevate_to ? <div className="text-xs text-gray-600 mt-0.5">Elevate to: {String(a.elevate_to)}</div> : null}
+                {/* Each recommended demo with its transparent rationale */}
+                {d.rationale && d.rationale.length > 0 ? (
+                  <div className="mt-1 space-y-1">
+                    {d.rationale.map((r) => (
+                      <div key={String(r.workbench)} className="flex items-center gap-1.5">
+                        <span className="text-sm font-semibold text-gray-900">{String(r.workbench)}</span>
+                        <WhyChip reasons={String(r.reasons).split(' · ')} />
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-sm font-semibold text-gray-900 mt-0.5">{String(a.demos)}</div>
+                )}
+                {a.elevate_to ? <div className="text-xs text-gray-600 mt-1">Elevate to: {String(a.elevate_to)}</div> : null}
                 {a.incumbent ? <div className="text-xs text-gray-500 mt-0.5">Incumbent: {String(a.incumbent)}</div> : null}
               </div>
+            ) : null}
+
+            {/* Software in play */}
+            {d.software && d.software.length > 0 ? (
+              <Section icon={Cpu} title="Software detected">
+                <div className="flex flex-wrap gap-1.5">
+                  {d.software.map((s, i) => (
+                    <span key={i} className="text-[11px] px-2 py-1 rounded-full bg-gray-100 text-gray-700"
+                      title={`${String(s.category)} · we coexist/displace with ${String(s.displaced_by)}`}>
+                      {String(s.software)}
+                    </span>
+                  ))}
+                </div>
+              </Section>
             ) : null}
 
             {/* UCO funnel */}

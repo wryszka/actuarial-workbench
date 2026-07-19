@@ -7,7 +7,7 @@
 import { useEffect, useState } from 'react';
 import { LayoutDashboard, TrendingUp } from 'lucide-react';
 import { getJSON, money, num, pct, type AppConfig, type Row } from '../lib/api';
-import { PageHeader, StatTile, SubBadge, Bar, Loading, ErrorNote, Disclaimer } from '../components/ui';
+import { PageHeader, StatTile, SubBadge, Bar, Loading, ErrorNote, Disclaimer, ExplainPanel } from '../components/ui';
 
 interface Data {
   totals: Row; by_sub: Row[]; top_accounts: Row[]; by_country: Row[]; top5: Row;
@@ -29,6 +29,11 @@ export default function Overview({ cfg }: { cfg: AppConfig | null }) {
     <div>
       <PageHeader icon={LayoutDashboard} title="Territory Overview"
         subtitle={`${cfg?.territory ?? 'UKI'} insurance go-to-market at a glance — where consumption concentrates, where the whitespace is, and how well the book is covered. One governed source the whole team reads from.`} />
+
+      <ExplainPanel>
+        <p>This is the top-of-territory picture of the UKI insurance book. The tiles count accounts, trailing consumption, open pipeline and coverage gaps; the charts show where consumption concentrates (a <strong>barbell</strong> — a few big logos + a long $0 tail) and how it splits by sub-industry.</p>
+        <p><strong>How to read it:</strong> “consumption” is a LIST-$ proxy, not billed revenue. “Coverage gaps” = accounts with signal but no primary SA. Use this to see shape; use Coverage Gaps and the Accelerator Queue to act.</p>
+      </ExplainPanel>
 
       {/* Impact strip — the leadership framing */}
       <div className="rounded-xl bg-gradient-to-r from-slate-900 to-slate-800 text-white p-5 mb-5">

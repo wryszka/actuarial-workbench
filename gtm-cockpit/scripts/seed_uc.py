@@ -182,6 +182,63 @@ def main():
     insert_batch("7_duplicates", ["cluster", "records", "record_count", "source"],
                  [[d["cluster"], " | ".join(d["records"]), d["count"], d["source"]] for d in seed["duplicates"]])
 
+    # ── 8_software ──────────────────────────────────────────────────────────
+    run("DROP TABLE IF EXISTS `8_software`")
+    run("""CREATE TABLE `8_software` (
+        account STRING, sub_industry STRING, software STRING, function STRING,
+        category STRING, displaced_by STRING, list_365d DOUBLE
+    ) USING DELTA COMMENT 'One row per (account, software) mention detected across incumbent/opps/UCO text — the "is Radar/Tyche/Python in play?" index.'""")
+    sw_rows = [[a["account"], a["sub_industry"], s["software"], s["function"],
+                s["category"], s["displaced_by"], a["list_365d"]]
+               for a in accounts for s in a["software"]]
+    insert_batch("8_software", ["account", "sub_industry", "software", "function",
+                                "category", "displaced_by", "list_365d"], sw_rows)
+
+    # ── 9_functions ─────────────────────────────────────────────────────────
+    run("DROP TABLE IF EXISTS `9_functions`")
+    run("""CREATE TABLE `9_functions` (
+        account STRING, sub_industry STRING, function STRING, seat STRING,
+        connected BOOLEAN, from_uco BOOLEAN, from_software BOOLEAN,
+        list_365d DOUBLE, has_sa BOOLEAN
+    ) USING DELTA COMMENT 'One row per (account, business function) with persona-connection status — feeds the Function Explorer.'""")
+    fn_rows = [[a["account"], a["sub_industry"], f["function"], f["seat"],
+                f["connected"], f["from_uco"], f["from_software"], a["list_365d"], a["has_sa"]]
+               for a in accounts for f in a["functions"]]
+    insert_batch("9_functions", ["account", "sub_industry", "function", "seat",
+                                 "connected", "from_uco", "from_software", "list_365d", "has_sa"], fn_rows)
+
+    # ── 10_recommendations ────────────────────────────────────────────────────
+    run("DROP TABLE IF EXISTS `10_recommendations`")
+    run("""CREATE TABLE `10_recommendations` (
+        account STRING, workbench STRING, reasons STRING, score INT
+    ) USING DELTA COMMENT 'Transparent per-account demo recommendation rationale — the signals behind each "lead with" call.'""")
+    reco_rows = [[a["account"], r["workbench"], " · ".join(r["reasons"]), r["score"]]
+                 for a in accounts for r in a["rationale"]]
+    insert_batch("10_recommendations", ["account", "workbench", "reasons", "score"], reco_rows)
+
+    # ── 11_impact ─────────────────────────────────────────────────────────────
+    # impact_data.py names real customer accounts + engagement detail, so it's
+    # kept local-only (gitignored). If absent (fresh clone), the table is still
+    # created empty so the app's Impact view degrades gracefully.
+    run("DROP TABLE IF EXISTS `11_impact`")
+    run("""CREATE TABLE `11_impact` (
+        account STRING, helped BOOLEAN, meetings INT, clevel BOOLEAN,
+        clevel_detail STRING, keywords STRING, what STRING, note STRING, source STRING
+    ) USING DELTA COMMENT 'Impact footprint — accounts materially helped, meeting counts, C-level engagement, keywords. Evidence-based (promo deck / evidence pack / kudos / calendar-email-slack). Local-only seed.'""")
+    impact_path = Path(__file__).resolve().parent / "impact_data.py"
+    if impact_path.exists():
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("impact_data", impact_path)
+        impact_mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(impact_mod)
+        imp_rows = [[i["account"], True, i["meetings"], i["clevel"], i["clevel_detail"],
+                     " · ".join(i["keywords"]), i["what"], i["note"], i["source"]]
+                    for i in impact_mod.IMPACT]
+        insert_batch("11_impact", ["account", "helped", "meetings", "clevel",
+                                   "clevel_detail", "keywords", "what", "note", "source"], imp_rows)
+    else:
+        print("  (impact_data.py not present — 11_impact left empty)")
+
     # ── decisions (writeback) — create only if absent ───────────────────────
     run("""CREATE TABLE IF NOT EXISTS decisions (
         decision_id STRING, account STRING, action STRING,
@@ -195,7 +252,8 @@ def main():
 
     # ── verify ──────────────────────────────────────────────────────────────
     for t in ["1_accounts", "2_opps", "3_ucos", "4_contacts", "5_demo_map",
-              "6_demo_fit", "7_duplicates", "decisions"]:
+              "6_demo_fit", "7_duplicates", "8_software", "9_functions",
+              "10_recommendations", "11_impact", "decisions"]:
         r = run(f"SELECT COUNT(*) AS n FROM `{t}`")
         n = r.result.data_array[0][0] if r.result and r.result.data_array else "?"
         print(f"  {SCHEMA}.{t:<14} rows={n}")

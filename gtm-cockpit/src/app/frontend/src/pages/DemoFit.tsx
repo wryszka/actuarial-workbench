@@ -7,7 +7,7 @@
 import { useEffect, useState } from 'react';
 import { Grid3x3 } from 'lucide-react';
 import { getJSON, money, num, type Row } from '../lib/api';
-import { PageHeader, Loading, ErrorNote, Disclaimer, Bar } from '../components/ui';
+import { PageHeader, Loading, ErrorNote, Disclaimer, Bar, ExplainPanel } from '../components/ui';
 
 interface Data { matrix: Row[]; demo_map: Row[]; by_workbench: Row[]; }
 
@@ -30,6 +30,11 @@ export default function DemoFit() {
     <div>
       <PageHeader icon={Grid3x3} title="Demo-Fit Matrix"
         subtitle="Which workbench addresses which slice of the book — and where demand and built assets are out of balance. Rows are the nine workbenches; columns are sub-industries." />
+
+      <ExplainPanel>
+        <p>The matrix counts, per workbench × sub-industry, how many accounts that demo is a recommended lead for (blue = some have active signal). Below it, the supply/demand bars show each workbench's total addressable accounts and whitespace.</p>
+        <p><strong>What to look for:</strong> a workbench addressing very few accounts (e.g. Reinsurance) is over-built for the current UKI book; high whitespace + low signal is unworked runway. Recommendations use the rules on the <em>How it works</em> page.</p>
+      </ExplainPanel>
 
       <div className="rounded-xl border border-gray-200 bg-white p-4 overflow-x-auto">
         <table className="w-full text-sm min-w-[720px]">

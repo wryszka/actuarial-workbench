@@ -12,3 +12,7 @@ env:
     value: ${var.warehouse_id}
   - name: GENIE_SPACE_ID
     value: ${var.genie_space_id}
+  - name: LLM_ENDPOINT
+    value: ${var.llm_endpoint}
+  - name: IMPACT_OWNER
+    value: ${var.impact_owner}
