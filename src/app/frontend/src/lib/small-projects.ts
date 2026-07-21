@@ -101,10 +101,12 @@ export const SMALL_PROJECTS: SmallProject[] = [
   },
   {
     title: 'Recon demo',
-    description: 'SAS-to-Databricks output reconciliation — mapping-driven comparison with row-level verdicts. Customer-specific; code on request.',
+    description: 'SAS-to-Databricks output reconciliation — upload the monthly file, it lands in a UC Volume, a mapping-driven job classifies every field, and the exceptions surface on a cockpit dashboard. Customer-specific; code on request.',
     tag: 'Migration',
     links: [
-      { label: 'Run guide', href: 'https://docs.google.com/document/d/1UJUKsOuCITDKkd7on1bTD5Olr1bUAWV7_3THBLtpRM8/edit' },
+      { label: 'Run guide', href: 'https://docs.google.com/document/d/1VbthGeCrqt79MkQsV8D2oJbssHciWVan6zLItd1oHrQ/edit' },
+      { label: 'Open app', href: 'https://recon-upload-7474656169654171.aws.databricksapps.com' },
+      { label: 'Cockpit', href: 'https://fevm-lr-dev-aws-us.cloud.databricks.com/dashboardsv3/01f184e2492e1a3f924bc78dc2f5efa5/published' },
       { label: 'Notebooks', href: wsFolder('/Workspace/Shared/recon-demo') },
       { label: 'Data', href: wsSchema('recon_demo') },
     ],
