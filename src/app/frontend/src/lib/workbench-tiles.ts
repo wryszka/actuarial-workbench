@@ -155,10 +155,10 @@ export const TILES: Tile[] = [
   {
     slug: 'insurance-ontology',
     label: 'Insurance ontology',
-    description: 'ACORD-based semantic layer on Databricks.',
-    status: 'roadmap',
+    description: 'An ACORD-based insurance semantic layer, governed in Unity Catalog.',
+    status: 'in_progress',
     icon: Waypoints,
-    to: '',   // planned — non-clickable
+    to: '/demo/insurance-ontology',   // landing page → console app + first-steps deck
     subtitle: 'ACORD data core',
   },
   {

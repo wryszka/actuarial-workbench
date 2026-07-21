@@ -176,6 +176,50 @@ export const DEMO_PAGES: Record<string, DemoPage> = {
       'https://docs.google.com/document/d/1-J6OfcRAekJUEwmA3kWD3GpBZx7OoNT0LbDLA7j-jRY/edit',
   },
 
+  'insurance-ontology': {
+    slug: 'insurance-ontology',
+    title: 'Insurance ontology',
+    subtitle: 'Bricksurance data core · ACORD',
+    blurb:
+      'Semantics live next to the data, governed in Unity Catalog. Two examples at two altitudes: ' +
+      'the full insurance semantic layer that powers Genie and every workbench out of the box — ' +
+      'and a small worked example of migrating legacy BI semantics onto it.',
+    choices: [
+      {
+        title: 'The insurance semantic layer',
+        sublabel: 'Data model as code · ACORD · Unity Catalog',
+        description:
+          'The whole of insurance — policies, claims, premiums, parties, reinsurance — modelled once ' +
+          'as code and compiled into governed Unity Catalog schemas, tables, relationships, metrics ' +
+          'and a business glossary. Deploy it and the platform already speaks insurance: point Genie ' +
+          'at it and it answers business questions straight away, with almost no configuration — the ' +
+          'semantics are already there. It’s the common language under every workbench in this ' +
+          'hub, and the foundation for any agent that needs to understand an insurance business.',
+        // Lives on the serverless workspace — not derived from apps_domain_number.
+        appUrl: 'https://data-core-console-7474659673789953.aws.databricksapps.com',
+        appLabel: 'Open the console',
+        deckUrl: 'https://docs.google.com/presentation/d/1vXC7SVZUC-23adWG5KTLvSwzzjNGKSskvf1Yq-AXOoc/edit',
+        primary: true,
+      },
+      {
+        title: 'Migrating legacy semantics',
+        sublabel: 'Simple worked example · SSAS & Tabular → metric views',
+        description:
+          'For estates where the same metric lives in SSAS cubes, Tabular models and BI tools — and ' +
+          'the copies disagree. A small end-to-end example of the destination: one governed metric ' +
+          'view feeding Genie, dashboards, Excel and Power BI, so every tool returns the same number. ' +
+          'Run doc = a 15-minute demo; deck = the migration story in three waves.',
+        appUrl:
+          'https://fevm-lr-dev-aws-us.cloud.databricks.com/dashboardsv3/01f17e9a41c2175e8d9d4cd6838d155a/published',
+        appLabel: 'Example dashboard',
+        runDocUrl:
+          'https://docs.google.com/document/d/1AfZ3ddIq4f9N2hLpwzx5fiBdIH4_r1Sq-YSkJ6LtLqI/edit',
+        deckUrl:
+          'https://docs.google.com/presentation/d/1CJGAtjRjKipZld-zgILQxti59cD9s8IHfkQvfk4kp5k/edit',
+      },
+    ],
+  },
+
   reinsurance: {
     slug: 'reinsurance',
     title: 'Reinsurance',
