@@ -41,6 +41,14 @@ export const SMALL_PROJECTS: SmallProject[] = [
     ],
   },
   {
+    title: 'Semantic lakehouse POC',
+    description: 'A governed semantic layer on Databricks — metric views over the lakehouse, a best-practice pattern for consistent business metrics.',
+    tag: 'Semantic layer',
+    links: [
+      { label: 'GitHub', href: 'https://github.com/wryszka/semantic-lakehouse-poc' },
+    ],
+  },
+  {
     title: 'MRC policy intelligence',
     description: "Lloyd's MRC contract PDFs → an ACORD-aligned knowledge graph and a multi-agent assistant over the London-market wording.",
     tag: "Lloyd's / ACORD",
