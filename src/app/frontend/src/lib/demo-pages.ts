@@ -28,6 +28,7 @@ export interface DemoChoice {
   appLabel?: string;        // label of the Open button (default "Open")
   runDocUrl?: string;
   deckUrl?: string;
+  blueprintUrl?: string;    // solution blueprint (user journey → components → migration)
   primary?: boolean;        // the flagship: rendered wide (2/3) and dark
 }
 
@@ -198,6 +199,8 @@ export const DEMO_PAGES: Record<string, DemoPage> = {
         // Lives on the serverless workspace — not derived from apps_domain_number.
         appUrl: 'https://data-core-console-7474659673789953.aws.databricksapps.com',
         appLabel: 'Open the console',
+        runDocUrl:
+          'https://docs.google.com/document/d/1wQoDuRBpgVd3FM1AIV7MwWpm5PNH1WJ2c9LQZ4l23og/edit',
         deckUrl: 'https://docs.google.com/presentation/d/1vXC7SVZUC-23adWG5KTLvSwzzjNGKSskvf1Yq-AXOoc/edit',
         primary: true,
       },
@@ -212,6 +215,8 @@ export const DEMO_PAGES: Record<string, DemoPage> = {
         appUrl:
           'https://fevm-lr-dev-aws-us.cloud.databricks.com/dashboardsv3/01f17e9a41c2175e8d9d4cd6838d155a/published',
         appLabel: 'Example dashboard',
+        blueprintUrl:
+          'https://docs.google.com/document/d/12sFiZxHesUIMHH3w1j4HHmCkbfccQyGtJ1DOjwG9F6Y/edit',
         runDocUrl:
           'https://docs.google.com/document/d/1AfZ3ddIq4f9N2hLpwzx5fiBdIH4_r1Sq-YSkJ6LtLqI/edit',
         deckUrl:

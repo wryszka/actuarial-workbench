@@ -8,7 +8,7 @@
 import { Link, useParams } from 'react-router-dom';
 import {
   ArrowLeft, ArrowRight, ExternalLink, Rocket, FileText, Clapperboard,
-  GraduationCap, BookOpen, MonitorPlay, Milestone, Presentation,
+  GraduationCap, BookOpen, MonitorPlay, Milestone, Presentation, Map,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { DEMO_PAGES, type DemoChoice } from '../lib/demo-pages';
@@ -213,6 +213,12 @@ function ChoiceCard({ choice }: { choice: DemoChoice }) {
           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-900 text-white text-[13px] font-bold hover:bg-gray-800 transition-colors">
           <Rocket className="w-3.5 h-3.5" /> {choice.appLabel ?? 'Open'}
         </a>
+        {choice.blueprintUrl && (
+          <a href={choice.blueprintUrl} target="_blank" rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-300 text-[13px] font-semibold text-gray-800 hover:border-blue-400 hover:bg-blue-50/40 transition-colors">
+            <Map className="w-3.5 h-3.5 text-blue-700" /> Blueprint
+          </a>
+        )}
         {choice.runDocUrl && (
           <a href={choice.runDocUrl} target="_blank" rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-300 text-[13px] font-semibold text-gray-800 hover:border-blue-400 hover:bg-blue-50/40 transition-colors">
