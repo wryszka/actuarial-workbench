@@ -14,7 +14,7 @@
 import {
   Shield, TrendingUp, FileSpreadsheet, Network, AlertOctagon, BarChart3,
   Code2, Table2, HeartPulse, Waypoints, UsersRound, FileInput,
-  Stamp, GraduationCap,
+  Stamp, GraduationCap, ShieldCheck,
 } from 'lucide-react';
 
 export type TileStatus = 'live' | 'in_progress' | 'roadmap' | 'contact';
@@ -151,6 +151,15 @@ export const TILES: Tile[] = [
     to: DEFAULT_EXCEL_APP_URL,
     accent: 'blue',
     subtitle: 'Bricksurance SE',
+  },
+  {
+    slug: 'agent-control',
+    label: 'Agent Control',
+    description: 'Govern every insurance agent — pricing, claims, reinsurance — under one control plane.',
+    status: 'roadmap',
+    icon: ShieldCheck,
+    to: '',   // in build with Philipp — non-clickable
+    subtitle: 'Agent governance · DORA / Solvency II',
   },
   {
     slug: 'insurance-ontology',
