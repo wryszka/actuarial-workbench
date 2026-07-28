@@ -51,6 +51,8 @@ export const DEFAULT_EXCEL_APP_URL =
   'https://excel-accelerator-7474656169654171.aws.databricksapps.com';
 export const DEFAULT_IFRS17_APP_URL =
   'https://ifrs17-workbench-7474656169654171.aws.databricksapps.com';
+export const DEFAULT_RESERVING_APP_URL =
+  'https://reserving-workbench-7474656169654171.aws.databricksapps.com';
 
 // Tile `description` is the ONE-LINE hook shown on the card. The full write-up
 // lives on the click-through page (demo-pages.ts blurb, or roadmap-content.ts).
@@ -91,6 +93,16 @@ export const TILES: Tile[] = [
     status: 'in_progress',
     icon: FileSpreadsheet,
     to: '/demo/ifrs-17',
+    accent: 'blue',
+    subtitle: 'Bricksurance SE',
+  },
+  {
+    slug: 'reserving',
+    label: 'Reserving',
+    description: 'Triangles to sign-off — methodology library, LDF selection, validation, expert judgement.',
+    status: 'live',
+    icon: Table2,
+    to: '/demo/reserving',
     accent: 'blue',
     subtitle: 'Bricksurance SE',
   },
@@ -154,7 +166,7 @@ export const TILES: Tile[] = [
   },
   {
     slug: 'agent-control',
-    label: 'Agent Control',
+    label: 'Agent Governance',
     description: 'Govern every insurance agent — pricing, claims, reinsurance — under one control plane.',
     status: 'roadmap',
     icon: ShieldCheck,

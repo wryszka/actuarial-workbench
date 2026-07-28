@@ -17,7 +17,7 @@ import type { HubConfig } from './config';
 import {
   DEFAULT_SOLVENCY_APP_URL, DEFAULT_PRICING_APP_URL, DEFAULT_CLAIMS_APP_URL,
   DEFAULT_REINSURANCE_APP_URL, DEFAULT_LIFECAST_APP_URL,
-  DEFAULT_UNDERWRITING_APP_URL, DEFAULT_IFRS17_APP_URL,
+  DEFAULT_UNDERWRITING_APP_URL, DEFAULT_IFRS17_APP_URL, DEFAULT_RESERVING_APP_URL,
 } from './workbench-tiles';
 
 export interface DemoChoice {
@@ -91,6 +91,23 @@ export const DEMO_PAGES: Record<string, DemoPage> = {
     appUrlFallback: DEFAULT_IFRS17_APP_URL,
     runDocUrl:
       'https://docs.google.com/document/d/11dqx4qErSn-yuUtSQElQM8-62V_7QlHAzXOArJBXm7o/edit',
+    learnInApp: true,
+  },
+
+  'reserving': {
+    slug: 'reserving',
+    title: 'Reserving',
+    subtitle: 'Bricksurance SE',
+    blurb:
+      'A day in the life of a reserving actuary on Databricks: the loss-development triangle derived ' +
+      'live from the claim ledger (reconciling to the penny), governed loss-development-factor ' +
+      'selection with a human override when a data anomaly distorts the empirical pick, a methodology ' +
+      'library (chain-ladder, Bornhuetter-Ferguson, Mack, GLM, peer-comparison) each registered in ' +
+      'Unity Catalog, actual-vs-expected validation, an audit-trailed expert-judgement repository, and ' +
+      'a reserving-committee view with a Senior Reserving Actuary agent — every reserve estimate traced ' +
+      'to the QRT cells it produces. The same triangle machinery pricing teams use for rate indications.',
+    appUrlKey: 'reserving_app_url',
+    appUrlFallback: DEFAULT_RESERVING_APP_URL,
     learnInApp: true,
   },
 

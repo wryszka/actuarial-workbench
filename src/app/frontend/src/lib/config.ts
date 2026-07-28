@@ -16,6 +16,7 @@ export interface HubConfig {
   lifecast_app_url: string;
   underwriting_app_url: string;
   ifrs17_app_url: string;
+  reserving_app_url: string;
 
   // Workspace base URL used to build deep links into notebooks / jobs /
   // pipelines / dashboards / Catalog Explorer for the accelerator tiles.

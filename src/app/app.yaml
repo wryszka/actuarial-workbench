@@ -18,6 +18,8 @@ env:
     value: ${var.underwriting_app_url}
   - name: IFRS17_APP_URL
     value: ${var.ifrs17_app_url}
+  - name: RESERVING_APP_URL
+    value: ${var.reserving_app_url}
   - name: GTM_COCKPIT_URL
     value: ${var.gtm_cockpit_url}
   # — Workspace + catalog for accelerator deep links —
