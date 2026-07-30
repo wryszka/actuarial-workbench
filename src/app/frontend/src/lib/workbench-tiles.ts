@@ -165,12 +165,12 @@ export const TILES: Tile[] = [
     subtitle: 'Bricksurance SE',
   },
   {
-    slug: 'agent-control',
+    slug: 'agent-governance',
     label: 'Agent Governance',
     description: 'Govern every insurance agent — pricing, claims, reinsurance — under one control plane.',
-    status: 'roadmap',
+    status: 'in_progress',
     icon: ShieldCheck,
-    to: '',   // in build with Philipp — non-clickable
+    to: '/demo/agent-governance',   // landing page → Agent Atlas app
     subtitle: 'Agent governance · DORA / Solvency II',
   },
   {

@@ -53,6 +53,25 @@ export interface DemoPage {
 }
 
 export const DEMO_PAGES: Record<string, DemoPage> = {
+  'agent-governance': {
+    slug: 'agent-governance',
+    title: 'Agent Governance',
+    subtitle: 'The control plane for insurance AI agents · DORA / Solvency II',
+    blurb:
+      'As agents spread across the business — pricing, claims, underwriting, reinsurance — an insurer ' +
+      'needs one place to see and control them, not fragmented agents scattered across systems. ' +
+      'Agent Atlas is that control plane: a single governance layer over every agent in the ' +
+      'Bricksurance estate. It connects internal and external agents (including ones running outside ' +
+      'Databricks); enforces guardrails and safety policies at the AI gateway; gives observability ' +
+      'over every agent trace in Unity Catalog for GDPR and PII handling; keeps a registry of who ' +
+      'owns each agent, the tools (UC functions) it can call, and what it costs; and maps those ' +
+      'technical controls to the regulations an insurer must answer to — DORA, Solvency II — so a ' +
+      'risk or compliance officer can pull an evidence pack showing exactly how the agents are ' +
+      'controlled. Built with Philipp Tiefenbacher on the Agentic Solutions Hub pattern.',
+    appUrlFallback: 'https://agent-atlas-7474656169654171.aws.databricksapps.com/welcome',
+    learnInApp: true,
+  },
+
   'actuarial-lab': {
     slug: 'actuarial-lab',
     title: 'Actuarial Exam Lab',
