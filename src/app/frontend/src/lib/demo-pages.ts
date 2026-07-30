@@ -56,7 +56,7 @@ export const DEMO_PAGES: Record<string, DemoPage> = {
   'agent-governance': {
     slug: 'agent-governance',
     title: 'Agent Governance',
-    subtitle: 'The control plane for insurance AI agents · DORA / Solvency II',
+    subtitle: 'The control plane for insurance AI agents · DORA / Solvency II · led by Philipp Tiefenbacher',
     blurb:
       'As agents spread across the business — pricing, claims, underwriting, reinsurance — an insurer ' +
       'needs one place to see and control them, not fragmented agents scattered across systems. ' +

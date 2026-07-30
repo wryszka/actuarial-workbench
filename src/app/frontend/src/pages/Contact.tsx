@@ -46,6 +46,7 @@ const TEAM: TeamMember[] = [
   { name: 'Tom Nash', title: 'Solutions Architect', email: 'tom.nash@databricks.com', photo: '/tom-nash.png' },
   { name: 'Noah Schellenberg', title: 'Solutions Architect', email: 'noah.schellenberg@databricks.com', photo: '/noah-schellenberg.png' },
   { name: 'Itseoritse Omatsuli', title: 'Solutions Engineer', email: 'itse.omatsuli@databricks.com', photo: '/itse-omatsuli.png' },
+  { name: 'Philipp Tiefenbacher', title: 'Solutions Architect', email: 'philipp.tiefenbacher@databricks.com', photo: '/philipp-tiefenbacher.png', tag: 'Agent Governance' },
 ];
 
 const SPONSORS: TeamMember[] = [
