@@ -100,10 +100,12 @@ def ask(user: str, question: str) -> dict:
         return {"answer": "The Bricksurance Agent isn't configured in this workspace yet.", "intent": "disabled"}
     intent = _classify(question)
     try:
+        from databricks.sdk.service.serving import ChatMessage, ChatMessageRole
+
         knowledge = _knowledge_block()
         messages = [
-            {"role": "system", "content": SYSTEM + "\n\n--- KNOWLEDGE ---\n" + knowledge},
-            {"role": "user", "content": question},
+            ChatMessage(role=ChatMessageRole.SYSTEM, content=SYSTEM + "\n\n--- KNOWLEDGE ---\n" + knowledge),
+            ChatMessage(role=ChatMessageRole.USER, content=question),
         ]
         resp = _w().serving_endpoints.query(name=FM_ENDPOINT, messages=messages, max_tokens=600)
         answer = resp.choices[0].message.content if resp.choices else "Sorry, no answer."
