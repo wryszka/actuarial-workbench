@@ -15,6 +15,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
+from server import agent
 from server.config import hub_config
 
 logging.basicConfig(
@@ -50,6 +51,24 @@ def _request_user(request: Request) -> str:
 @app.get("/api/me")
 async def me(request: Request):
     return {"user": _request_user(request)}
+
+
+@app.get("/api/agent/enabled")
+async def agent_enabled():
+    return {"enabled": agent.enabled()}
+
+
+@app.post("/api/agent/ask")
+async def agent_ask(request: Request):
+    """Bricksurance Agent — answer a question from the curated corpus and log it."""
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+    question = str(body.get("question", "")).strip()
+    if not question:
+        return {"answer": "Ask me anything about the Bricksurance demos.", "intent": "empty"}
+    return agent.ask(user=_request_user(request), question=question[:2000])
 
 
 @app.get("/api/config")

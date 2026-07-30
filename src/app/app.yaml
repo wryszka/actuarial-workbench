@@ -37,3 +37,12 @@ env:
     value: ${var.sas_schema}
   - name: SAS_NOTEBOOK_PATH
     value: ${var.sas_notebook_path}
+  # — Bricksurance Agent (concierge chatbot) — empty disables it —
+  - name: AGENT_WAREHOUSE_ID
+    value: ${var.agent_warehouse_id}
+  - name: AGENT_CATALOG
+    value: ${var.agent_catalog}
+  - name: AGENT_SCHEMA
+    value: ${var.agent_schema}
+  - name: AGENT_FM_ENDPOINT
+    value: ${var.agent_fm_endpoint}

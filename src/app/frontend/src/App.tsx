@@ -16,6 +16,7 @@ import DemoLanding from './pages/DemoLanding';
 import NextSteps from './pages/NextSteps';
 import SmallProjects from './pages/SmallProjects';
 import GTM from './pages/GTM';
+import AskBricksurance from './components/AskBricksurance';
 
 const USAGE_DASHBOARD_URL =
   'https://fevm-lr-dev-aws-us.cloud.databricks.com/dashboardsv3/01f182d70b79105faa7e32136788f4c2/published?o=7474656169654171';
@@ -73,6 +74,7 @@ export default function App() {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>
+        <AskBricksurance />
       </div>
     </BrowserRouter>
   );
