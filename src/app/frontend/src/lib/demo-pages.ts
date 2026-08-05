@@ -127,6 +127,8 @@ export const DEMO_PAGES: Record<string, DemoPage> = {
       'to the QRT cells it produces. The same triangle machinery pricing teams use for rate indications.',
     appUrlKey: 'reserving_app_url',
     appUrlFallback: DEFAULT_RESERVING_APP_URL,
+    runDocUrl:
+      'https://docs.google.com/document/d/1WRDCfRsK4WIi8jAXJVDJVAXu89ApaVMvNlHOAX6P3ck/edit',
     learnInApp: true,
   },
 

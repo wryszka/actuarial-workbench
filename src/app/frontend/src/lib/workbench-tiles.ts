@@ -100,7 +100,7 @@ export const TILES: Tile[] = [
     slug: 'reserving',
     label: 'Reserving',
     description: 'Triangles to sign-off — methodology library, LDF selection, validation, expert judgement.',
-    status: 'live',
+    status: 'in_progress',
     icon: Table2,
     to: '/demo/reserving',
     accent: 'blue',

@@ -27,6 +27,15 @@ export interface SmallProject {
 
 export const SMALL_PROJECTS: SmallProject[] = [
   {
+    title: 'H&B renewal workbench',
+    description: 'US Health & Benefits underwriting — a fully-insured medical renewal exhibit reproduced as a live engine, with what-if negotiation levers (trend, pooling, credibility) and a Claude-generated deal summary. Fully synthetic data.',
+    tag: 'Underwriting / H&B',
+    links: [
+      { label: 'Open app', href: 'https://hb-renewal-workbench-7474656169654171.aws.databricksapps.com' },
+      { label: 'Data', href: wsSchema('hb_renewal') },
+    ],
+  },
+  {
     title: 'SecOps demo',
     description: 'A SOC operator view — security telemetry medallion pipeline with vector-search runbooks and an operator app.',
     tag: 'Security',
