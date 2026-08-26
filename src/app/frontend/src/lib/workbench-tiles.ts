@@ -12,9 +12,9 @@
  * README.md → "Adding / plumbing a tile".
  */
 import {
-  Shield, TrendingUp, FileSpreadsheet, Network, AlertOctagon, BarChart3,
+  Shield, TrendingUp, FileSpreadsheet, Network, AlertOctagon,
   Code2, Table2, HeartPulse, Waypoints, UsersRound, FileInput,
-  Stamp, GraduationCap, ShieldCheck,
+  Stamp, GraduationCap, ShieldCheck, Building2,
 } from 'lucide-react';
 
 export type TileStatus = 'live' | 'in_progress' | 'roadmap' | 'contact';
@@ -57,6 +57,16 @@ export const DEFAULT_RESERVING_APP_URL =
 // Tile `description` is the ONE-LINE hook shown on the card. The full write-up
 // lives on the click-through page (demo-pages.ts blurb, or roadmap-content.ts).
 export const TILES: Tile[] = [
+  {
+    slug: 'group-control-tower',
+    label: 'Bricksurance Group — Control Tower',
+    description: 'The estate front door — one level above the workbenches: live map, cross-estate AI activity, and an agent wired to every workbench.',
+    status: 'live',
+    icon: Building2,
+    to: '/group',              // internal SPA route (no env var)
+    accent: 'blue',
+    subtitle: 'Bricksurance Group · estate control tower',
+  },
   {
     slug: 'solvency-2',
     label: 'Solvency II',
@@ -134,14 +144,6 @@ export const TILES: Tile[] = [
     icon: HeartPulse,
     to: '/demo/lifecast',
     subtitle: 'Bricksurance Life',
-  },
-  {
-    slug: 'reserving-deep-dive',
-    label: 'Reserving deep dive',
-    description: 'Triangle methods, model validation and a methodology library.',
-    status: 'roadmap',
-    icon: BarChart3,
-    to: '/roadmap/reserving-deep-dive',
   },
   {
     slug: 'sas-migration',

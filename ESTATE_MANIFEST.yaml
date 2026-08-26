@@ -1,0 +1,211 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# ESTATE_MANIFEST.yaml — the single source of truth for the Bricksurance Group
+# Control Tower. The group router loads this at startup; /api/group/manifest
+# serves the parsed form to the SPA. Nothing workbench-specific is hardcoded in
+# code — adding a workbench = adding a node here.
+#
+# Design law (enforced in code): the group tower AGGREGATES and ROUTES; it never
+# recomputes. Every tile metric is read from a view the owning workbench
+# PUBLISHES. Cross-workbench questions go through MCP servers or published views.
+# A `roadmap` node, an absent `published_views.headline`, or a `planned` edge all
+# render honestly (stub / degraded / non-traversable) — never faked.
+#
+# `TODO` = a real gap the owning workbench must close (publish a view / wire a
+# key). Every TODO has an entry in docs/MANIFEST_GAPS.md. The build succeeds with
+# gaps present.
+# ─────────────────────────────────────────────────────────────────────────────
+
+group:
+  warehouse_id_env: GROUP_WAREHOUSE_ID
+  model_endpoint_env: GROUP_MODEL_ENDPOINT
+  # Named principal profiles the operator picks before chatting. Resolved
+  # server-side from secret-scope references (see databricks.yml / GRANTS.md);
+  # the SPA only ever sees the profile name. See docs/GROUP_ARCHITECTURE.md for
+  # the identity mechanism (and the documented app-principal fallback).
+  identities: [group-analyst, underwriter, compliance-readonly, broker-external]
+  # The group tower's own operational activity log — the sink the chat writes
+  # tool-calls and refusals to, so the two-identity-refusal and regulator beats
+  # appear in the audit union. It is an operational log, not business data.
+  activity_log: lr_dev_aws_us_catalog.bricksurance_agent.group_activity
+  catalog: lr_dev_aws_us_catalog
+
+nodes:
+  # ── Live for the group: standard /api/mcp + Agent Interface + real audit source ──
+  - id: reserving
+    name: Reserving Workbench
+    repo: wryszka/reserving-workbench
+    status: live
+    app_url: https://reserving-workbench-7474656169654171.aws.databricksapps.com
+    local_tower_url: https://reserving-workbench-7474656169654171.aws.databricksapps.com/#committee
+    published_views:
+      headline: lr_dev_aws_us_catalog.reserving_workbench.regulatory_landing   # reserve → QRT-cell landing (real published view)
+      health: TODO      # no dedicated anomaly/status view published yet — see MANIFEST_GAPS.md
+    audit_source: lr_dev_aws_us_catalog.reserving_workbench.`5_gov_audit_event`
+    mcp:
+      - name: reserving-workbench
+        kind: custom-app
+        endpoint: https://reserving-workbench-7474656169654171.aws.databricksapps.com/api/mcp
+        profile: internal
+        contracts_url: https://reserving-workbench-7474656169654171.aws.databricksapps.com/#agent
+    spine:
+      keys_published: [lob, accident_year]   # triangle grain; policy/claim keys not yet published — see gaps
+
+  - id: claims
+    name: Claims Intelligence Workbench
+    repo: wryszka/claims_workbench
+    status: live
+    app_url: https://claims-workbench-7474656169654171.aws.databricksapps.com
+    local_tower_url: https://claims-workbench-7474656169654171.aws.databricksapps.com/
+    published_views:
+      headline: lr_dev_aws_us_catalog.claims_workbench.gold_sla_prediction     # SLA/throughput signal (real published view)
+      health: lr_dev_aws_us_catalog.claims_workbench.gold_vulnerability_flags  # vulnerability/fair-outcomes flags
+    audit_source: lr_dev_aws_us_catalog.claims_workbench.agent_audit_payload
+    mcp:
+      - name: claims-workbench
+        kind: custom-app
+        endpoint: https://claims-workbench-7474656169654171.aws.databricksapps.com/api/mcp
+        profile: internal
+        contracts_url: https://claims-workbench-7474656169654171.aws.databricksapps.com/agent-interface
+    spine:
+      keys_published: [claim_public_id, policy_number]
+
+  - id: solvency2
+    name: Solvency II QRT Workbench
+    repo: wryszka/solvency-ii-qrt-demo-pnc-agentic
+    status: live
+    app_url: https://solvency2-workbench-7474656169654171.aws.databricksapps.com
+    local_tower_url: https://solvency2-workbench-7474656169654171.aws.databricksapps.com/#/today
+    published_views:
+      headline: TODO   # solvency landing metric view not published for group consumption yet — see gaps
+      health: TODO
+    audit_source: lr_dev_aws_us_catalog.solvency2_workbench.`5_mon_agent_audit`
+    mcp:
+      - name: solvency2-workbench
+        kind: custom-app
+        endpoint: https://solvency2-workbench-7474656169654171.aws.databricksapps.com/api/mcp
+        profile: internal
+        contracts_url: https://solvency2-workbench-7474656169654171.aws.databricksapps.com/#/agents
+    spine:
+      keys_published: [qrt_id]
+
+  - id: ifrs17
+    name: IFRS 17 Workbench
+    repo: wryszka/ifrs17-workbench
+    status: live
+    app_url: https://ifrs17-workbench-7474656169654171.aws.databricksapps.com
+    local_tower_url: https://ifrs17-workbench-7474656169654171.aws.databricksapps.com/#cockpit
+    published_views:
+      headline: TODO   # IFRS 17 close-cockpit metric view not published for group consumption yet — see gaps
+      health: TODO
+    audit_source: lr_dev_aws_us_catalog.ifrs17_workbench.gld_ai_activity
+    mcp:
+      - name: ifrs17-workbench
+        kind: custom-app
+        endpoint: https://ifrs17-workbench-7474656169654171.aws.databricksapps.com/api/mcp
+        profile: internal
+        contracts_url: https://ifrs17-workbench-7474656169654171.aws.databricksapps.com/#agent
+    spine:
+      keys_published: [group_id]
+
+  # ── Roadmap for the group: app may be deployed, but not yet group-wired ──────
+  # (no standard /api/mcp + published views + audit source consumable by the
+  #  group). Render in the hub's stub treatment. Reasons in MANIFEST_GAPS.md.
+  - id: underwriting
+    name: Underwriting Workbench
+    repo: wryszka/underwriting-workbench
+    status: live   # standard /api/mcp added to the main app (2026-08-26); FastMCP uw-mcp is the second, mutating surface
+    app_url: https://underwriting-workbench-7474656169654171.aws.databricksapps.com
+    local_tower_url: https://underwriting-workbench-7474656169654171.aws.databricksapps.com
+    published_views:
+      headline: TODO   # underwriting control-tower metric view not published for group consumption yet — see gaps
+      health: TODO
+    audit_source: lr_dev_aws_us_catalog.underwriting_workbench.gold_ai_activity
+    mcp:
+      # (1) standard read/ops surface on the main app — JSON-RPC, what the group client speaks natively
+      - name: underwriting-workbench
+        kind: custom-app
+        transport: jsonrpc
+        endpoint: https://underwriting-workbench-7474656169654171.aws.databricksapps.com/api/mcp
+        profile: internal
+        contracts_url: https://underwriting-workbench-7474656169654171.aws.databricksapps.com/api/mcp/manifest
+      # (2) the mutating broker/referral surface — a SEPARATE FastMCP app, different transport
+      #     (streamable-HTTP/SSE at /mcp/). Listed in the directory; the group client needs the
+      #     FastMCP transport to CALL it (follow-up) — see MANIFEST_GAPS.md.
+      - name: uw-mcp
+        kind: custom-app
+        transport: fastmcp
+        endpoint: https://uw-mcp-7474656169654171.aws.databricksapps.com/mcp/
+        profile: external
+        contracts_url: https://uw-mcp-7474656169654171.aws.databricksapps.com/mcp/
+    spine:
+      keys_published: [policy_id, client_id]
+
+  - id: pricing
+    name: Pricing Workbench (gen2)
+    repo: wryszka/pricing-workbench-gen2
+    status: live   # points at gen2 where it currently sits — the pricing-v2 workspace
+    # NOTE: gen2 lives on a DIFFERENT workspace (fevm-lr-pricing-v2-aws-us). Two runtime
+    # caveats the group router handles gracefully (see MANIFEST_GAPS.md / GROUP_ARCHITECTURE.md):
+    #  (1) cross-workspace: the dev-hosted hub SP may not authenticate to the pricing-v2 OAuth
+    #      proxy — if the endpoint is unreachable the node renders healthy-unknown, never faked.
+    #  (2) the deployed gen2 /api/mcp currently exposes the legacy 5-tool surface until the
+    #      owning session redeploys the full optimisation+workbench surface (not touched here).
+    app_url: https://pricing-workbench-7474655676955816.aws.databricksapps.com
+    local_tower_url: https://pricing-workbench-7474655676955816.aws.databricksapps.com/
+    published_views: {headline: TODO, health: TODO}
+    audit_source: TODO
+    mcp:
+      - name: pricing-workbench-gen2
+        kind: custom-app
+        transport: jsonrpc
+        endpoint: https://pricing-workbench-7474655676955816.aws.databricksapps.com/api/mcp
+        profile: internal
+        contracts_url: https://pricing-workbench-7474655676955816.aws.databricksapps.com/api/mcp/manifest
+        cross_workspace: true
+    spine:
+      keys_published: [policy_id]
+
+  - id: reinsurance
+    name: Reinsurance Workbench
+    repo: wryszka/reinsurance_workbench
+    status: live   # standard /api/mcp added 2026-08-26 (36 tools)
+    app_url: https://reinsurance-workbench-7474656169654171.aws.databricksapps.com
+    local_tower_url: https://reinsurance-workbench-7474656169654171.aws.databricksapps.com
+    published_views:
+      headline: TODO   # reinsurance control-tower metric view not published for group consumption yet — see gaps
+      health: TODO
+    audit_source: lr_dev_aws_us_catalog.bricksurance_re.gov_ai_activity
+    mcp:
+      - name: reinsurance-workbench
+        kind: custom-app
+        transport: jsonrpc
+        endpoint: https://reinsurance-workbench-7474656169654171.aws.databricksapps.com/api/mcp
+        profile: internal
+        contracts_url: https://reinsurance-workbench-7474656169654171.aws.databricksapps.com/api/mcp/manifest
+    spine:
+      keys_published: [treaty_id]
+
+  - id: lifecast
+    name: LifeCast Workbench
+    repo: wryszka/lifecast
+    status: roadmap   # no MCP surface yet
+    app_url: https://lifecast-workbench-7474656169654171.aws.databricksapps.com
+    local_tower_url: https://lifecast-workbench-7474656169654171.aws.databricksapps.com
+    published_views: {headline: TODO, health: TODO}
+    audit_source: TODO
+    mcp: []
+    spine:
+      keys_published: [model_point_id]
+
+# ── Spine edges — the value chain. `live` = BOTH ends' views deployed AND
+#    joinable on `via`. None are live yet: the workbenches have not published the
+#    shared-key spine views a real cross-node join needs (see MANIFEST_GAPS.md),
+#    so every edge is `planned` and renders dashed / non-traversable. The map
+#    must never draw a planned edge as live.
+edges:
+  - {from: pricing,      to: claims,     via: policy_id,          status: planned}
+  - {from: claims,       to: reserving,  via: policy_number,      status: planned}
+  - {from: reserving,    to: solvency2,  via: qrt_id,             status: planned}
+  - {from: reserving,    to: ifrs17,     via: accident_year,      status: planned}
+  - {from: underwriting, to: claims,     via: policy_id,          status: planned}
+  - {from: reinsurance,  to: claims,     via: treaty_id,          status: planned}

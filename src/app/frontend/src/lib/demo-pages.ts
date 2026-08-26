@@ -118,13 +118,18 @@ export const DEMO_PAGES: Record<string, DemoPage> = {
     title: 'Reserving',
     subtitle: 'Bricksurance SE',
     blurb:
-      'A day in the life of a reserving actuary on Databricks: the loss-development triangle derived ' +
-      'live from the claim ledger (reconciling to the penny), governed loss-development-factor ' +
-      'selection with a human override when a data anomaly distorts the empirical pick, a methodology ' +
-      'library (chain-ladder, Bornhuetter-Ferguson, Mack, GLM, peer-comparison) each registered in ' +
-      'Unity Catalog, actual-vs-expected validation, an audit-trailed expert-judgement repository, and ' +
-      'a reserving-committee view with a Senior Reserving Actuary agent — every reserve estimate traced ' +
-      'to the QRT cells it produces. The same triangle machinery pricing teams use for rate indications.',
+      'A day in the life of a reserving actuary on Databricks — and specifically the 90% of a close ' +
+      'that is not factor selection. Six data controls before any actuarial work: what changed since ' +
+      'the prior close (including the backdated transactions that silently restate a cell you already ' +
+      'signed off), reconciliation to the general ledger, a data-owner sign-off gate that refuses while ' +
+      'a critical control is red, quality checks tagged with the Solvency II dimensions, completeness ' +
+      'and SLA, and the class-mapping change that breaks a development pattern for reasons no ' +
+      'diagnostic explains. Then the judgement: the triangle derived live from the claim ledger, a ' +
+      'human override when an anomaly distorts the empirical pick, and an AI peer review that ' +
+      'challenges but never decides. Then the narrative: a movement roll-forward that answers "why did ' +
+      'reserves move?" and drafts the committee note. Then sign-off, reproducible as-at months later. ' +
+      'Every method — including a team’s own R/Python model — registered and version-controlled as a ' +
+      'first-class method. The same triangle machinery pricing teams use for rate indications.',
     appUrlKey: 'reserving_app_url',
     appUrlFallback: DEFAULT_RESERVING_APP_URL,
     runDocUrl:

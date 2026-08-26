@@ -21,6 +21,8 @@ dev:
 #    needs registry egress; on a restricted network, pre-populate node_modules). ─
 build:
 	cd src/app/frontend && { [ -d node_modules ] || npm install; } && npm run build
+	@# Ship the estate manifest inside the app source (canonical copy stays at repo root).
+	cp ESTATE_MANIFEST.yaml src/app/ESTATE_MANIFEST.yaml
 
 # ── Deploy: dev ────────────────────────────────────────────────────────────────
 # Databricks Apps does not interpret $${var.X} in app.yaml, so we resolve it

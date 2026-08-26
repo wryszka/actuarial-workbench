@@ -46,3 +46,12 @@ env:
     value: ${var.agent_schema}
   - name: AGENT_FM_ENDPOINT
     value: ${var.agent_fm_endpoint}
+  # — Group Control Tower (server/group/ owns all data access) —
+  - name: GROUP_WAREHOUSE_ID
+    value: ${var.group_warehouse_id}
+  - name: GROUP_MODEL_ENDPOINT
+    value: ${var.group_model_endpoint}
+  - name: GROUP_CATALOG
+    value: ${var.group_catalog}
+  - name: GROUP_IDENTITY_MODE
+    value: ${var.group_identity_mode}

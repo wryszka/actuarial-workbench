@@ -60,9 +60,32 @@ def get_gtm_cockpit_url() -> str:
     return _env("GTM_COCKPIT_URL")
 
 
+def get_group_warehouse_id() -> str:
+    return _env("GROUP_WAREHOUSE_ID")
+
+
+def get_group_model_endpoint() -> str:
+    return _env("GROUP_MODEL_ENDPOINT", "databricks-claude-sonnet-4-5")
+
+
+def get_group_catalog() -> str:
+    return _env("GROUP_CATALOG")
+
+
+def get_group_identity_mode() -> str:
+    return _env("GROUP_IDENTITY_MODE", "app-principal")
+
+
+def group_enabled() -> bool:
+    """The Control Tower's live reads need a warehouse; without one it still
+    renders the manifest-driven map/tiles but marks data unavailable."""
+    return bool(get_group_warehouse_id())
+
+
 def hub_config() -> dict:
     """Everything the frontend needs at /api/config."""
     return {
+        "group_enabled": group_enabled(),
         "app_display_name": get_app_display_name(),
         "entity_name": get_entity_name(),
         "solvency_app_url": get_solvency_app_url(),

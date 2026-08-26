@@ -16,6 +16,7 @@ import DemoLanding from './pages/DemoLanding';
 import NextSteps from './pages/NextSteps';
 import SmallProjects from './pages/SmallProjects';
 import GTM from './pages/GTM';
+import GroupControlTower from './pages/GroupControlTower';
 import AskBricksurance from './components/AskBricksurance';
 
 const USAGE_DASHBOARD_URL =
@@ -68,6 +69,7 @@ export default function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/small-projects" element={<SmallProjects />} />
             <Route path="/gtm" element={<GTM />} />
+            <Route path="/group" element={<GroupControlTower />} />
             <Route path="/demo/:slug" element={<DemoLanding />} />
             <Route path="/demo/:slug/next-steps" element={<NextSteps />} />
             <Route path="/roadmap/:slug" element={<RoadmapStub />} />

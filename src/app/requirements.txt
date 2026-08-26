@@ -1,3 +1,6 @@
 fastapi>=0.115.0
 uvicorn[standard]>=0.30.0
 databricks-sdk>=0.30.0
+# — Group Control Tower only (server/group/): manifest parsing. databricks-sdk
+#   (already above) is used for warehouse queries, MCP calls, and model serving. —
+pyyaml>=6.0

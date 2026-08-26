@@ -96,6 +96,21 @@ variables:
     description: Foundation Model API endpoint (Claude) the agent calls
     default: "databricks-claude-sonnet-4-5"
 
+  # — Group Control Tower (the hub's first data-aware feature; all data access is
+  #   confined to server/group/). Empty warehouse disables the tower's live reads. —
+  group_warehouse_id:
+    description: SQL warehouse the Group Control Tower uses for view passthroughs + audit union (empty disables live reads)
+    default: ""
+  group_model_endpoint:
+    description: Model-serving endpoint the Group chat wires MCP tools to
+    default: "databricks-claude-sonnet-4-5"
+  group_catalog:
+    description: Catalog holding the group activity log + audit-union sources
+    default: ""
+  group_identity_mode:
+    description: "secret-scope | app-principal — identity resolution for chat profiles (fallback = app-principal, documented in GROUP_ARCHITECTURE.md)"
+    default: "app-principal"
+
   # — Workspace / auth —
   workspace_host:
     description: Databricks workspace URL — override per target
@@ -143,6 +158,11 @@ targets:
       # Bricksurance Agent (dev) — schema + tables provisioned 2026-07-28.
       agent_warehouse_id: a3b61648ea4809e3
       agent_catalog: lr_dev_aws_us_catalog
+      # Group Control Tower (dev) — same warehouse; audit union + activity log in lr_dev.
+      group_warehouse_id: a3b61648ea4809e3
+      group_catalog: lr_dev_aws_us_catalog
+      group_model_endpoint: databricks-claude-sonnet-4-5
+      group_identity_mode: app-principal
 
   # ─ serverless ─ FEVM serverless workspace. Same app names; only the domain
   # number changes. Accelerator deep-link IDs would need re-capturing if the

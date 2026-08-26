@@ -6,11 +6,13 @@
  * hours, and the go/laurence link that carries everything else.
  */
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Mail, Slack, CalendarClock, ExternalLink, ArrowRight, Boxes, MessageSquarePlus, Map } from 'lucide-react';
+import { ArrowLeft, Mail, Slack, CalendarClock, ExternalLink, ArrowRight, Boxes, MessageSquarePlus, Map, ListChecks } from 'lucide-react';
 import { FEEDBACK_FORM_URL } from '../lib/next-steps';
 
 const SLACK_CHANNEL = '#bricksurance';
 const GO_LINK = 'http://go/laurence';
+// Bricksurance task tracker (Google Sheet) — internal working backlog.
+const TASK_TRACKER_URL = 'https://docs.google.com/spreadsheets/d/1geVc2W3jjv2Ts4zxbjfUucbkkd_qrevgEPG-3NVR9ts/edit';
 
 interface TeamMember {
   name: string;
@@ -221,6 +223,10 @@ export default function Contact() {
 
       {/* Quiet corner links — internal-only, not prominent */}
       <div className="flex justify-end gap-4">
+        <a href={TASK_TRACKER_URL} target="_blank" rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 text-[11px] text-gray-400 hover:text-blue-700 transition-colors">
+          <ListChecks className="w-3 h-3" /> Task tracker <ArrowRight className="w-3 h-3" />
+        </a>
         <Link to="/gtm"
           className="inline-flex items-center gap-1 text-[11px] text-gray-400 hover:text-blue-700 transition-colors">
           <Map className="w-3 h-3" /> GTM planning <ArrowRight className="w-3 h-3" />

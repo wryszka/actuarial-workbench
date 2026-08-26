@@ -16,3 +16,4 @@ src/app/frontend/dist/
 # OS / editor
 .DS_Store
 *.bak
+src/app/ESTATE_MANIFEST.yaml

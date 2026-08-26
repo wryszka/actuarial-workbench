@@ -147,23 +147,6 @@ export const ROADMAP_CONTENT: Record<string, RoadmapEntry> = {
     ],
   },
 
-  'reserving-deep-dive': {
-    what: "Deeper reserving capability beyond the chain-ladder + BF examples in the " +
-      "Lab: methodology library, model validation framework, expert-judgement repository, " +
-      "actual-vs-expected feedback loop.",
-    workbench_capabilities: [
-      "Methodology library: chain-ladder, Bornhuetter-Ferguson, Mack, GLM-based, peer-comparison — each registered in UC, governed identically.",
-      "Validation framework: actual-vs-expected on a rolling cohort, automated tail-fit assessment, residual diagnostics — surfaces in the Lab Diagnostics tab.",
-      "Expert-judgement repository builds on the Overlays Register — every judgement audit-trailed with rationale + magnitude.",
-      "Quarter-over-quarter reserving committee dashboard with the Senior Reserving Actuary agent surfacing emerging trends.",
-      "Direct lineage from each reserve estimate to the QRT cells it produces, surfaced in the audit panel.",
-    ],
-    adjacent_links: [
-      { label: 'See the worked-example notebooks (chain-ladder, BF)', to: '/lab' },
-      { label: 'See the Senior Reserving Actuary agent', to: '/lab/reserving_pnc' },
-    ],
-  },
-
   'sas-migration': {
     what: "Worked example — translating an actuarial SAS code-base (reserving procedures, " +
       "valuation routines, capital model logic) into PySpark / Spark SQL on the lakehouse. " +

@@ -2,8 +2,15 @@
 
 A standalone **launcher** app: one front door for the actuarial work. The
 landing page is a grid of tiles, each opening the Databricks App that owns that
-workflow. This app holds no data — no catalog, schema, warehouse, or models. It
-is purely the central place to launch the others from.
+workflow. It is the central place to launch the others from.
+
+The hub now also hosts the **Bricksurance Group Control Tower** (`/group`) — the
+estate's front door one level above the workbenches: a live map, cross-estate AI
+activity, and an agent wired to every workbench's MCP endpoint. The Control Tower
+**reads views the workbenches publish and calls their MCP servers, and holds no
+data of its own** — all of that data access is confined to one router package
+(`src/app/server/group/`); the rest of the hub stays dataless. See
+`docs/GROUP_ARCHITECTURE.md`.
 
 ```
 ┌──────────────────────────────────────────────────────────┐
