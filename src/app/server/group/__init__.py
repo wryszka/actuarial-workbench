@@ -479,9 +479,15 @@ def _extract_attention(result) -> list[dict]:
         for f in ("severity", "level", "status", "risk", "rag"):
             if it.get(f) is not None:
                 sev = _SEV.get(str(it[f]).lower(), "info"); break
-        head = next((str(it[f]) for f in ("headline", "title", "label", "name", "check", "message") if it.get(f)), None)
-        detail = next((str(it[f]) for f in ("detail_sentence", "detail", "reason", "description", "note", "message") if it.get(f)), "")
-        if head:
+        def _clean(x):
+            return str(x).strip() if x is not None else ""
+        def _substantive(x):
+            return len(_clean(x).strip(" -–—.·:")) >= 2   # not empty / just punctuation
+        head = next((_clean(it[f]) for f in ("headline", "title", "label", "name", "check", "message", "issue", "finding")
+                     if _substantive(it.get(f))), None)
+        detail = next((_clean(it[f]) for f in ("detail_sentence", "detail", "reason", "description", "note", "message")
+                       if _substantive(it.get(f)) and _clean(it.get(f)) != head), "")
+        if head:   # only real, content-bearing items — skip separator/placeholder rows
             out.append({"severity": sev, "headline": head[:160], "detail": detail[:400],
                         "entity_ref": str(it.get("id") or it.get("entity_ref") or "")})
     return out
