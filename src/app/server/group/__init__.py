@@ -372,6 +372,173 @@ def group_chat(question: str, profile: str, max_hops: int = 4) -> dict:
             "tools_available": len(fm_tools)}
 
 
+# ── Cache + persistence + consumption adapters (the executive view) ──────────
+# Pull executive data from each node's EXISTING MCP tools (manifest `adapters`),
+# extract generically, cache in-memory AND persist a snapshot so the last-warmed
+# view loads instantly on app start. Never blocks a page on a live query.
+_CACHE: dict[str, dict] = {}
+_SNAP_LOADED = False
+
+
+def _snapshot_fqn() -> str:
+    g = manifest().get("group", {}) or {}
+    return g.get("snapshot_table") or f"{get_group_catalog()}.bricksurance_agent.group_snapshot"
+
+
+def _snapshot_ensure() -> None:
+    _sql(f"CREATE TABLE IF NOT EXISTS {_snapshot_fqn()} (key STRING, payload STRING, as_of TIMESTAMP) USING DELTA "
+         f"COMMENT 'Group Control Tower cache snapshot — last warmed executive view, loaded on app start.'", wait="20s")
+
+
+def _snapshot_load() -> None:
+    global _SNAP_LOADED
+    if _SNAP_LOADED:
+        return
+    _SNAP_LOADED = True
+    try:
+        _snapshot_ensure()
+        r = _sql(f"SELECT key, payload, CAST(as_of AS string) FROM {_snapshot_fqn()}")
+        for key, payload, as_of in r.get("rows", []):
+            try:
+                _CACHE[key] = {"data": json.loads(payload), "as_of": as_of}
+            except Exception:
+                pass
+        logger.info("group: loaded %d cache entries from snapshot", len(_CACHE))
+    except Exception as e:
+        logger.info("group: snapshot load skipped: %s", str(e)[:150])
+
+
+def _snapshot_save(key: str, data) -> None:
+    try:
+        _snapshot_ensure()
+        e = json.dumps(data, default=str).replace("'", "''")
+        _sql(f"DELETE FROM {_snapshot_fqn()} WHERE key='{key}'", wait="10s")
+        _sql(f"INSERT INTO {_snapshot_fqn()} VALUES ('{key}', '{e[:900000]}', current_timestamp())", wait="10s")
+    except Exception as ex:
+        logger.info("group: snapshot save skipped for %s: %s", key, str(ex)[:120])
+
+
+def cache_get(key: str):
+    if not _SNAP_LOADED:
+        _snapshot_load()
+    return _CACHE.get(key)
+
+
+def _adapters() -> dict:
+    return (manifest().get("group", {}) or {}).get("adapters", {}) or {}
+
+
+def _node_jsonrpc(node: dict) -> str | None:
+    for s in node.get("mcp", []) or []:
+        if s.get("transport") != "fastmcp" and not _is_todo(s.get("endpoint")):
+            return s["endpoint"]
+    return None
+
+
+def _humanize(k: str) -> str:
+    return k.replace("_", " ").strip().capitalize()
+
+
+def _extract_headline(result) -> list[dict]:
+    """Surface the tool's own top-level numeric fields as posture metrics (no recompute)."""
+    out = []
+    src = result if isinstance(result, dict) else {}
+    # unwrap common envelopes
+    for env in ("kpis", "summary", "headline", "metrics", "overview", "data"):
+        if isinstance(src.get(env), dict):
+            src = src[env]; break
+    for k, v in src.items():
+        if isinstance(v, bool):
+            continue
+        if isinstance(v, (int, float)):
+            out.append({"metric_key": k, "label": _humanize(k), "value": v})
+        if len(out) >= 5:
+            break
+    return out
+
+
+_SEV = {"red": "red", "high": "red", "critical": "red", "amber": "amber", "medium": "amber",
+        "warning": "amber", "info": "info", "low": "info", "ok": "info", "green": "info"}
+
+
+def _extract_attention(result) -> list[dict]:
+    """Find the first list-of-dicts in the tool result and map items to attention rows."""
+    def firstlist(o):
+        if isinstance(o, list) and o and isinstance(o[0], dict):
+            return o
+        if isinstance(o, dict):
+            for v in o.values():
+                r = firstlist(v)
+                if r:
+                    return r
+        return None
+    items = firstlist(result) or []
+    out = []
+    for it in items[:6]:
+        sev = "info"
+        for f in ("severity", "level", "status", "risk", "rag"):
+            if it.get(f) is not None:
+                sev = _SEV.get(str(it[f]).lower(), "info"); break
+        head = next((str(it[f]) for f in ("headline", "title", "label", "name", "check", "message") if it.get(f)), None)
+        detail = next((str(it[f]) for f in ("detail_sentence", "detail", "reason", "description", "note", "message") if it.get(f)), "")
+        if head:
+            out.append({"severity": sev, "headline": head[:160], "detail": detail[:400],
+                        "entity_ref": str(it.get("id") or it.get("entity_ref") or "")})
+    return out
+
+
+def _fetch(node: dict, tool: str, extract) -> list[dict]:
+    ep = _node_jsonrpc(node)
+    if not ep or not tool:
+        return []
+    res = _mcp_call(ep, tool, {}, timeout=90)
+    return extract(res.get("content")) if res.get("ok") else []
+
+
+def warmup() -> dict:
+    """Refresh posture + attention for every live adapter node from its MCP tools,
+    cache + persist. Returns progress. Page stays usable on the old cache meanwhile."""
+    if not group_enabled():
+        return {"ok": False, "error": "data plane not configured"}
+    ad = _adapters(); results = []
+    for n in _live_nodes():
+        a = ad.get(n["id"])
+        if not a:
+            continue
+        try:
+            head = _fetch(n, a.get("headline_tool"), _extract_headline)
+            att = _fetch(n, a.get("attention_tool"), _extract_attention)
+            for row in head:
+                row["node"] = n["id"]; row["deep_link"] = n.get("local_tower_url") or n.get("app_url")
+            for row in att:
+                row["node"] = n["id"]; row["deep_link"] = n.get("local_tower_url") or n.get("app_url")
+            _CACHE[f"posture:{n['id']}"] = {"data": head, "as_of": _now()}
+            _CACHE[f"attention:{n['id']}"] = {"data": att, "as_of": _now()}
+            _snapshot_save(f"posture:{n['id']}", head)
+            _snapshot_save(f"attention:{n['id']}", att)
+            results.append({"node": n["id"], "ok": True, "headline": len(head), "attention": len(att)})
+        except Exception as e:
+            results.append({"node": n["id"], "ok": False, "error": str(e)[:150]})
+    _CACHE["warmed_at"] = {"data": _now(), "as_of": _now()}
+    _snapshot_save("warmed_at", _now())
+    return {"ok": True, "warmed_at": _now(), "results": results}
+
+
+def _now() -> str:
+    import datetime
+    return datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%SZ")
+
+
+def _union_cache(prefix: str) -> list[dict]:
+    if not _SNAP_LOADED:
+        _snapshot_load()
+    rows = []
+    for k, v in _CACHE.items():
+        if k.startswith(prefix + ":"):
+            rows.extend(v.get("data") or [])
+    return rows
+
+
 # ── Routes (/api/group/* + the folded /api/agent/*) ──────────────────────────
 def _user(request: Request) -> str:
     for h in ("X-Forwarded-Email", "X-Forwarded-Preferred-Username", "X-Forwarded-User"):
@@ -437,6 +604,29 @@ async def api_audit(node: str = "", principal: str = "", refusals_only: int = 0,
         return {"enabled": True, "cols": r["cols"], "rows": r["rows"], "sql": q}
     except Exception as e:
         return {"enabled": True, "cols": _FIELDS, "rows": [], "error": str(e)[:200]}
+
+
+@router.get("/api/group/posture")
+async def api_posture():
+    """Posture strip — headline metrics per node, served from the (persisted) cache."""
+    warmed = cache_get("warmed_at")
+    return {"metrics": _union_cache("posture"), "warmed_at": (warmed or {}).get("data"), "enabled": group_enabled()}
+
+
+@router.get("/api/group/attention")
+async def api_attention():
+    """Attention across the estate — each node's own judgement, unioned + sorted."""
+    rows = _union_cache("attention")
+    order = {"red": 0, "amber": 1, "info": 2}
+    rows.sort(key=lambda r: order.get(r.get("severity", "info"), 3))
+    warmed = cache_get("warmed_at")
+    return {"items": rows, "warmed_at": (warmed or {}).get("data"), "enabled": group_enabled()}
+
+
+@router.post("/api/group/warmup")
+async def api_warmup():
+    import asyncio
+    return await asyncio.to_thread(warmup)
 
 
 @router.get("/api/group/identities")

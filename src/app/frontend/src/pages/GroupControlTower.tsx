@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Building2, ArrowLeft, Server, ExternalLink, Bot, Send,
-  Activity, ScrollText, Network, BookOpen,
+  Activity, ScrollText, Network, BookOpen, RefreshCw, Gauge, AlertTriangle,
 } from 'lucide-react';
 
 const j = (u: string) => fetch(u).then((r) => r.json());
@@ -22,20 +22,37 @@ interface Edge { from: string; to: string; via: string; status: string; }
 export default function GroupControlTower() {
   const [manifest, setManifest] = useState<any>(null);
   const [tiles, setTiles] = useState<any>(null);
+  const [posture, setPosture] = useState<any>(null);
+  const [attention, setAttention] = useState<any>(null);
   const [err, setErr] = useState<string | null>(null);
+  const [tab, setTab] = useState<'group' | 'estate'>('group');
+  const [warming, setWarming] = useState(false);
 
+  const loadData = () => {
+    j('/api/group/posture').then(setPosture).catch(() => {});
+    j('/api/group/attention').then(setAttention).catch(() => {});
+    j('/api/group/tiles').then(setTiles).catch(() => {});
+  };
   useEffect(() => {
     j('/api/group/manifest').then(setManifest).catch((e) => setErr(String(e)));
-    j('/api/group/tiles').then(setTiles).catch(() => {});
+    loadData();
   }, []);
+
+  async function warmup() {
+    if (warming) return;
+    setWarming(true);
+    try { await fetch('/api/group/warmup', { method: 'POST' }); loadData(); }
+    catch { /* keep old cache */ } finally { setWarming(false); }
+  }
 
   const nodes: Node[] = manifest?.nodes || [];
   const edges: Edge[] = manifest?.edges || [];
   const live = nodes.filter((n) => n.status === 'live');
   const roadmap = nodes.filter((n) => n.status !== 'live');
+  const warmedAt = posture?.warmed_at || attention?.warmed_at;
 
   return (
-    <div className="max-w-6xl mx-auto p-6 space-y-6">
+    <div className="max-w-6xl mx-auto p-6 space-y-5">
       <Link to="/" className="text-xs text-gray-500 hover:text-gray-800 inline-flex items-center gap-1">
         <ArrowLeft className="w-3.5 h-3.5" /> Back to Workbench
       </Link>
@@ -44,15 +61,21 @@ export default function GroupControlTower() {
         <div className="w-14 h-14 rounded-2xl bg-blue-600/10 flex items-center justify-center shrink-0">
           <Building2 className="w-7 h-7 text-blue-700" />
         </div>
-        <div>
+        <div className="flex-1">
           <div className="text-[11px] uppercase tracking-widest text-blue-700 font-bold">Bricksurance Group</div>
           <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Control Tower</h1>
           <p className="text-sm text-gray-600 mt-1.5 max-w-3xl leading-relaxed">
-            The estate front door, one level above the workbenches. A live map of every workbench and the
-            agents it exposes, cross-estate AI activity, and one assistant wired to every MCP endpoint.
-            It <strong>aggregates and routes — it never recomputes</strong>: every number is read from the
-            owning workbench's published view or returned by its governed tools.
+            Business status across the estate, for the top of the house. It <strong>aggregates and routes —
+            never recomputes</strong>: every number is read from the owning workbench or returned by its
+            governed tools, then cached so this view loads instantly.
           </p>
+        </div>
+        <div className="flex flex-col items-end gap-1 shrink-0">
+          <button onClick={warmup} disabled={warming} title="Refresh every cached panel from the workbenches' tools and re-run the cached questions"
+            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border border-gray-300 text-[12px] font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50">
+            <RefreshCw className={`w-3.5 h-3.5 ${warming ? 'animate-spin' : ''}`} /> {warming ? 'Warming…' : 'Warm up'}
+          </button>
+          {warmedAt && <span className="text-[10px] text-gray-400">warmed {warmedAt}</span>}
         </div>
       </header>
 
@@ -61,14 +84,101 @@ export default function GroupControlTower() {
 
       {manifest && (
         <>
-          <EstateMap nodes={nodes} edges={edges} />
-          <Tiles tiles={tiles} />
-          <AuditUnion nodes={live} />
-          <Chat identities={manifest.group?.identities || []} enabled={manifest.enabled} identityMode={manifest.identity_mode} />
+          <div className="flex gap-1 border-b border-gray-200">
+            {([['group', 'Group view', Gauge], ['estate', 'Estate & agents', Network]] as const).map(([k, label, Icon]) => (
+              <button key={k} onClick={() => setTab(k)}
+                className={`inline-flex items-center gap-1.5 px-3 py-2 text-[13px] font-medium border-b-2 -mb-px transition-colors ${tab === k ? 'border-blue-600 text-blue-800' : 'border-transparent text-gray-500 hover:text-gray-800'}`}>
+                <Icon className="w-3.5 h-3.5" /> {label}
+              </button>
+            ))}
+          </div>
+
+          {tab === 'group' && (
+            <>
+              <PostureStrip posture={posture} />
+              <WhyBanner attention={attention} />
+              <Chat identities={manifest.group?.identities || []} enabled={manifest.enabled} identityMode={manifest.identity_mode} />
+              <AttentionFeed attention={attention} nodes={live} />
+            </>
+          )}
+          {tab === 'estate' && (
+            <>
+              <EstateMap nodes={nodes} edges={edges} />
+              <Tiles tiles={tiles} />
+              <AuditUnion nodes={live} />
+            </>
+          )}
           <Learn liveCount={live.length} roadmapCount={roadmap.length} />
         </>
       )}
     </div>
+  );
+}
+
+/* ── Posture strip — dark hero cards, passthrough numbers from node tools ──── */
+function PostureStrip({ posture }: { posture: any }) {
+  const metrics: any[] = posture?.metrics || [];
+  if (!posture) return <div className="text-sm text-gray-500">Loading posture…</div>;
+  if (!metrics.length) return <div className="text-[12.5px] text-gray-400 italic">No posture metrics cached yet — click <strong>Warm up</strong> to pull them from the workbenches.</div>;
+  const fmt = (v: any) => (typeof v === 'number' ? (Math.abs(v) >= 1000 ? v.toLocaleString() : v) : String(v));
+  return (
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+      {metrics.slice(0, 10).map((m, i) => (
+        <a key={i} href={m.deep_link} target="_blank" rel="noopener noreferrer"
+           className="rounded-xl bg-[#0f172a] text-white p-3.5 hover:bg-[#1e293b] transition-colors">
+          <div className="text-[10px] uppercase tracking-wider text-blue-300 font-semibold truncate">{m.label}</div>
+          <div className="text-2xl font-bold tracking-tight mt-1 leading-none">{fmt(m.value)}</div>
+          <div className="text-[10px] text-gray-400 mt-1.5">{m.node}</div>
+        </a>
+      ))}
+    </div>
+  );
+}
+
+/* ── Why-this-matters banner — verbatim top attention detail, attributed ───── */
+function WhyBanner({ attention }: { attention: any }) {
+  const top = (attention?.items || [])[0];
+  if (!top) return null;
+  const tone = top.severity === 'red' ? 'bg-rose-50 border-rose-200 text-rose-800' : top.severity === 'amber' ? 'bg-amber-50 border-amber-200 text-amber-800' : 'bg-blue-50 border-blue-200 text-blue-800';
+  return (
+    <div className={`rounded-xl border p-3.5 flex items-start gap-3 ${tone}`}>
+      <AlertTriangle className="w-5 h-5 shrink-0 mt-0.5" />
+      <div>
+        <div className="text-[11px] uppercase tracking-wider font-bold">Why this matters · {top.node}</div>
+        <div className="text-[13.5px] font-medium mt-0.5">{top.headline}</div>
+        {top.detail && <div className="text-[12.5px] mt-0.5 opacity-90">{top.detail}</div>}
+      </div>
+    </div>
+  );
+}
+
+/* ── Attention feed — unioned, severity-sorted, node-attributed ────────────── */
+function AttentionFeed({ attention, nodes }: { attention: any; nodes: Node[] }) {
+  const [node, setNode] = useState('');
+  const items: any[] = (attention?.items || []).filter((it: any) => !node || it.node === node);
+  const chip = (s: string) => s === 'red' ? 'bg-rose-100 text-rose-700' : s === 'amber' ? 'bg-amber-100 text-amber-700' : 'bg-blue-100 text-blue-700';
+  return (
+    <section>
+      <div className="flex items-center gap-2 mb-2">
+        <h2 className="text-sm font-bold text-gray-900 flex items-center gap-2"><AlertTriangle className="w-4 h-4 text-blue-600" /> Attention across the estate</h2>
+        <select value={node} onChange={(e) => setNode(e.target.value)} className="ml-auto border border-gray-300 rounded px-2 py-1 text-[12px]">
+          <option value="">all nodes</option>{nodes.map((n) => <option key={n.id} value={n.id}>{n.id}</option>)}
+        </select>
+      </div>
+      {!items.length ? <div className="text-[12.5px] text-gray-400 italic">Nothing needs attention (or not warmed yet).</div> : (
+        <div className="border border-gray-200 rounded-lg divide-y divide-gray-100">
+          {items.map((it, i) => (
+            <a key={i} href={it.deep_link} target="_blank" rel="noopener noreferrer" className="flex items-start gap-3 px-3.5 py-2.5 hover:bg-gray-50">
+              <span className={`text-[10px] font-bold uppercase px-1.5 py-0.5 rounded shrink-0 ${chip(it.severity)}`}>{it.severity}</span>
+              <div className="min-w-0">
+                <div className="text-[13px] font-medium text-gray-900">{it.headline} <span className="text-[11px] text-gray-400 font-normal">· {it.node}</span></div>
+                {it.detail && <div className="text-[12px] text-gray-500 truncate">{it.detail}</div>}
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+    </section>
   );
 }
 

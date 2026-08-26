@@ -28,6 +28,21 @@ group:
   # appear in the audit union. It is an operational log, not business data.
   activity_log: lr_dev_aws_us_catalog.bricksurance_agent.group_activity
   catalog: lr_dev_aws_us_catalog
+  # Snapshot cache: the last warmed executive view is persisted here and loaded on
+  # app start, so /group is instant (no cold MCP calls on first paint).
+  snapshot_table: lr_dev_aws_us_catalog.bricksurance_agent.group_snapshot
+  # Consumption adapters — pull the executive data from each node's EXISTING MCP
+  # tools (no workbench edits). headline_tool = a KPI-returning read; attention_tool
+  # = a read whose result carries items/flags. The router calls these at warm-up,
+  # extracts generically, and caches. A node absent here (or a tool that returns
+  # nothing usable) degrades honestly — never fabricated.
+  adapters:
+    reserving:    {headline_tool: read_estimates,    attention_tool: read_attention}
+    claims:       {headline_tool: ops_control_tower,  attention_tool: ops_monitoring_lens}
+    solvency2:    {headline_tool: mon_sla,            attention_tool: mon_q4_pains}
+    ifrs17:       {headline_tool: cockpit,            attention_tool: recon}
+    underwriting: {headline_tool: control_tower,      attention_tool: ref_discipline}
+    reinsurance:  {headline_tool: ct_overview,        attention_tool: ct_capital}
 
 nodes:
   # ── Live for the group: standard /api/mcp + Agent Interface + real audit source ──
