@@ -53,3 +53,23 @@ Each shipped view is auto-covered by the schema-level SELECT already granted to 
 solvency2 first (highest exec value; re-exposes existing) → claims → reserving → underwriting →
 reinsurance → ifrs17. Ship `vw_group_headline` + `vw_group_attention` for each before the richer
 classes; the group posture strip + attention feed need only those two to be compelling.
+
+
+---
+
+## v2.1 (Board Pack) — the two views each node must ship
+Group schema **created + tagged**: `lr_dev_aws_us_catalog.group_control_tower` (gct_activity_log, gct_cache_snapshot; `bxc_project=group_control_tower`); hub SP granted. Old group tables in `bricksurance_agent` are now orphaned (safe to drop).
+
+Per node, ship `vw_group_headline` (v2.1-extended: +plan_value/trend/status/status_reason) and `vw_group_domain_status` (status + kpis JSON), prefixed `vw_group_*`, tagged `bxc_group_contract=1`, over the node's own gold. **Exit gate: zero degraded same-workspace cards.**
+
+| Node | vw_group_headline v2.1 | vw_group_domain_status |
+|---|---|---|
+| solvency2 | ⬜ | ⬜ |
+| ifrs17 | ⬜ | ⬜ |
+| reserving | ⬜ | ⬜ |
+| claims | ⬜ | ⬜ |
+| underwriting | ⬜ | ⬜ |
+| reinsurance | ⬜ | ⬜ |
+| pricing (gen2, MCP@warm-up) | via MCP | via MCP |
+
+Router: switch same-workspace panel reads to direct-SELECT these views (fallback to v2 MCP adapters until shipped). Then build the strip (4 hero cards) + domain grid + sparklines + AI-cache board chips.

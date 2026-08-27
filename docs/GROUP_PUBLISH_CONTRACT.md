@@ -89,3 +89,43 @@ is NOT a view — it is answered by the chat agent** (cross-node correlation is 
 `/api/group/posture` (headline union), `/api/group/attention`, `/api/group/decisions`,
 `/api/group/calendar`, `/api/group/readiness` — each: union of published views across live nodes,
 served from the data cache (V2-P3), every row carrying node + as_of.
+
+---
+
+# Contract v2.1 additions (the Board Pack)
+
+Richness comes from workbenches publishing MORE (node-owned, verbatim-rendered); the group
+never computes a business metric. Two additions, implemented in each same-workspace workbench
+(small views over its own gold — re-exposing what its local tower already computes). All
+contract views are prefixed `vw_group_*`, tagged `bxc_group_contract=1`, and commented so they
+are identifiable. The group principal already has schema-level SELECT.
+
+## `vw_group_headline` — extended
+Adds: `plan_value` double|null · `trend` string(JSON: ordered array of ≤13 weekly points) ·
+`status` (green|amber|red, node-owned) · `status_reason` string|null (one-line, verbatim).
+Feeds the four hero cards (GWP, combined ratio, solvency ratio, IFRS 17 CSM) with sparkline +
+delta-vs-plan.
+
+## `vw_group_domain_status` — NEW (feeds the domain grid)
+One row per node:
+| column | type | notes |
+|---|---|---|
+| status | string | green\|amber\|red — **the workbench's own RAG**, never derived group-side |
+| status_reason | string\|null | one-line verbatim reason when amber/red |
+| kpis | string (JSON) | array of `{key, label, value, unit, delta, trend, deep_link}` (2–3 per node) |
+| as_of | timestamp | |
+
+## Data path (v2.1)
+Same-workspace nodes: the group router **direct-SELECTs** `vw_group_headline` +
+`vw_group_domain_status` (no MCP hop for panel data), cached + persisted as before. Pricing gen2
+(other workspace): via its MCP at warm-up. Until a node ships these views the tower falls back to
+the v2 MCP-tool adapters (degrade-honest). **Exit gate: zero degraded cards for same-workspace
+nodes** — a genuine exception is listed in CONTRACT_ROLLOUT.md with a reason.
+
+## Per-node domain-grid content (fixed grid order: capital → performance → operations)
+solvency2 (ratio+delta, QRT readiness n/m + days, worst stress) · ifrs17 (CSM movement, close
+status, onerous count) · reserving (booked vs BE margin %, AvE diagonal signal, largest class
+move) · claims (incurred, open+aging, SLA %, large-loss watch) · pricing (rate change vs plan,
+adequacy index, conversion trend) · underwriting (clean rate, referral rate+turnaround, pending
+Referral-Control decisions, top finding) · reinsurance (top-programme utilisation %, ceded ratio,
+recoverables aging flag).

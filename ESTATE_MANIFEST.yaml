@@ -26,11 +26,14 @@ group:
   # The group tower's own operational activity log — the sink the chat writes
   # tool-calls and refusals to, so the two-identity-refusal and regulator beats
   # appear in the audit union. It is an operational log, not business data.
-  activity_log: lr_dev_aws_us_catalog.bricksurance_agent.group_activity
+  # The Control Tower's own dedicated schema (same catalog) — clearly named + tagged
+  # (bxc_project=group_control_tower). Holds ONLY the tower's operational data;
+  # business metrics stay node-owned via each workbench's vw_group_* views.
+  activity_log: lr_dev_aws_us_catalog.group_control_tower.gct_activity_log
   catalog: lr_dev_aws_us_catalog
   # Snapshot cache: the last warmed executive view is persisted here and loaded on
-  # app start, so /group is instant (no cold MCP calls on first paint).
-  snapshot_table: lr_dev_aws_us_catalog.bricksurance_agent.group_snapshot
+  # app start, so /group is instant (no cold reads on first paint).
+  snapshot_table: lr_dev_aws_us_catalog.group_control_tower.gct_cache_snapshot
   # Consumption adapters — pull the executive data from each node's EXISTING MCP
   # tools (no workbench edits). headline_tool = a KPI-returning read; attention_tool
   # = a read whose result carries items/flags. The router calls these at warm-up,
