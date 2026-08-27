@@ -64,7 +64,7 @@ Per node, ship `vw_group_headline` (v2.1-extended: +plan_value/trend/status/stat
 
 | Node | vw_group_headline v2.1 | vw_group_domain_status |
 |---|---|---|
-| solvency2 | ⬜ | ⬜ |
+| solvency2 | ✅ (SCR ratio + trend + worst stress) | ✅ (ratio/readiness/stress KPIs) |
 | ifrs17 | ⬜ | ⬜ |
 | reserving | ⬜ | ⬜ |
 | claims | ⬜ | ⬜ |
