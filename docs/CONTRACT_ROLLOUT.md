@@ -65,11 +65,11 @@ Per node, ship `vw_group_headline` (v2.1-extended: +plan_value/trend/status/stat
 | Node | vw_group_headline v2.1 | vw_group_domain_status |
 |---|---|---|
 | solvency2 | ✅ (SCR ratio + trend + worst stress) | ✅ (ratio/readiness/stress KPIs) |
-| ifrs17 | ⬜ | ⬜ |
-| reserving | ⬜ | ⬜ |
-| claims | ⬜ | ⬜ |
-| underwriting | ⬜ | ⬜ |
-| reinsurance | ⬜ | ⬜ |
+| ifrs17 | ✅ (CSM closing + movement) | ✅ (CSM/close-readiness/onerous) |
+| reserving | ✅ (best-estimate reserves) | ✅ (margin/AvE/largest-move) |
+| claims | ✅ (SLA on-time + trend) | ✅ (reserves/open/SLA/large-loss) |
+| underwriting | ✅ (GWP + plan + rate change) | ✅ (GWP/adequacy/rate/findings) |
+| reinsurance | ✅ (peak-zone utilisation) | ✅ (util/solvency/PML/peak-zones) |
 | pricing (gen2, MCP@warm-up) | via MCP | via MCP |
 
 Router: switch same-workspace panel reads to direct-SELECT these views (fallback to v2 MCP adapters until shipped). Then build the strip (4 hero cards) + domain grid + sparklines + AI-cache board chips.
