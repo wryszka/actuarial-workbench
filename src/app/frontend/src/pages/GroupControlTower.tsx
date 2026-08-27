@@ -414,11 +414,8 @@ function Chat({ identities, enabled, identityMode }: { identities: string[]; ena
   const [q, setQ] = useState('');
   const [busy, setBusy] = useState(false);
   const [res, setRes] = useState<any>(null);
-  const PROMPTS = [
-    'What is the reserving position for commercial property, and how does it feed the QRTs?',
-    'Show recent AI activity across claims and reinsurance.',
-    'Which submissions in reinsurance are close to a capacity limit?',
-  ];
+  const [sugg, setSugg] = useState<any[]>([]);
+  useEffect(() => { fetch('/api/group/chat-suggestions').then((r) => r.json()).then((d) => setSugg(d.questions || [])).catch(() => {}); }, []);
   async function ask(question: string) {
     if (!question.trim() || busy) return;
     setBusy(true); setRes(null);
@@ -444,7 +441,7 @@ function Chat({ identities, enabled, identityMode }: { identities: string[]; ena
           className="flex-1 border border-gray-300 rounded px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-200 disabled:bg-gray-50" />
         <button onClick={() => ask(q)} disabled={!enabled || busy || !q.trim()} className="px-3 py-1.5 bg-blue-700 text-white rounded text-xs font-semibold disabled:opacity-50 inline-flex items-center gap-1"><Send className="w-3.5 h-3.5" /> Ask</button>
       </div>
-      <div className="flex flex-wrap gap-1.5 mt-2">{PROMPTS.map((p) => <button key={p} onClick={() => { setQ(p); ask(p); }} disabled={!enabled || busy} className="text-[11px] px-2 py-0.5 rounded-full border border-gray-200 text-gray-600 hover:border-blue-300 hover:text-blue-700 disabled:opacity-50">{p.slice(0, 46)}…</button>)}</div>
+      <div className="flex flex-wrap gap-1.5 mt-2">{sugg.map((s) => <button key={s.q} onClick={() => { setQ(s.q); ask(s.q); }} disabled={!enabled || busy} title={s.q} className="text-[11px] px-2 py-0.5 rounded-full border border-gray-200 text-gray-600 hover:border-blue-300 hover:text-blue-700 disabled:opacity-50 inline-flex items-center gap-1">{s.cached && <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" title="pre-warmed — answers instantly" />}{s.q.slice(0, 52)}…</button>)}</div>
       {busy && <div className="text-[12px] text-gray-500 mt-3">Planning + calling estate tools…</div>}
       {res && (
         <div className="mt-3 space-y-2">
@@ -460,7 +457,10 @@ function Chat({ identities, enabled, identityMode }: { identities: string[]; ena
             </div>
           )}
           <div className="text-[13px] text-gray-800 leading-relaxed whitespace-pre-wrap bg-slate-50 border border-slate-200 rounded p-2.5">{res.answer}</div>
-          {typeof res.tools_available === 'number' && <div className="text-[10.5px] text-gray-400">{res.tools_available} estate tools available to the agent</div>}
+          <div className="flex items-center gap-2 text-[10.5px] text-gray-400">
+            {res.cached && <span className="px-1.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-semibold">answered from cache</span>}
+            {typeof res.tools_available === 'number' && <span>{res.tools_available} estate tools available to the agent</span>}
+          </div>
         </div>
       )}
     </section>

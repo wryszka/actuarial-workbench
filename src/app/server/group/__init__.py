@@ -317,6 +317,22 @@ def _fm_tools(estate_tools: list[dict]) -> list[dict]:
     return out, {f"{t['node']}__{t['name']}"[:64]: t for t in estate_tools}
 
 
+# Board questions pre-run at warm-up so the chat answers instantly — and stays
+# answerable even when a node's MCP or the analyst model is down (cache fallback).
+WARM_QUESTIONS = [
+    "Give me the group board summary: what is red, amber and green across the estate right now, and why?",
+    "Where is the biggest risk to the plan this quarter, and which workbench owns it?",
+    "Are we regulatory-ready — solvency, IFRS 17 close and reserving — and what's outstanding?",
+]
+
+
+def _chat_key(q: str) -> str:
+    return " ".join((q or "").lower().split())
+
+
+_WARM_KEYS = {_chat_key(q) for q in WARM_QUESTIONS}
+
+
 def group_chat(question: str, profile: str, max_hops: int = 4) -> dict:
     ident = _resolve_identity(profile)
     trace: list[dict] = []
@@ -338,6 +354,9 @@ def group_chat(question: str, profile: str, max_hops: int = 4) -> dict:
             resp = _w().api_client.do("POST", f"/serving-endpoints/{ep}/invocations",
                                       body={"messages": messages, "tools": fm_tools, "max_tokens": 900})
         except Exception as e:
+            cached = cache_get(f"chat:{_chat_key(question)}")
+            if cached and cached.get("data", {}).get("answer"):
+                return {**cached["data"], "identity": ident, "cached": True}
             answer = f"The analyst model is unavailable right now ({str(e)[:120]})."
             break
         msg = ((resp.get("choices") or [{}])[0]).get("message", {}) or {}
@@ -368,8 +387,13 @@ def group_chat(question: str, profile: str, max_hops: int = 4) -> dict:
                           res.get("error") if outcome != "ok" else "", "chat")
             messages.append({"role": "tool", "tool_call_id": call.get("id"),
                              "content": json.dumps(res.get("content") if res.get("ok") else {"error": res.get("error")}, default=str)[:8000]})
-    return {"ok": True, "answer": answer, "identity": ident, "trace": trace,
-            "tools_available": len(fm_tools)}
+    result = {"ok": True, "answer": answer, "identity": ident, "trace": trace,
+              "tools_available": len(fm_tools)}
+    # Persist canned board answers so they survive a later model/MCP outage.
+    if answer and _chat_key(question) in _WARM_KEYS:
+        _CACHE[f"chat:{_chat_key(question)}"] = {"data": result, "as_of": _now()}
+        _snapshot_save(f"chat:{_chat_key(question)}", result)
+    return result
 
 
 # ── Cache + persistence + consumption adapters (the executive view) ──────────
@@ -566,9 +590,19 @@ def warmup() -> dict:
                             "domain": 1 if dom_row else 0, "attention": len(att)})
         except Exception as e:
             results.append({"node": n["id"], "ok": False, "error": str(e)[:150]})
+    # Pre-run the board questions so the chat is instant and stays answerable
+    # from cache if the analyst model or a node's MCP later goes down.
+    chat_warmed = 0
+    for q in WARM_QUESTIONS:
+        try:
+            r = group_chat(q, "group-analyst")
+            if r.get("answer") and _chat_key(q) in _WARM_KEYS and cache_get(f"chat:{_chat_key(q)}"):
+                chat_warmed += 1
+        except Exception:
+            pass
     _CACHE["warmed_at"] = {"data": _now(), "as_of": _now()}
     _snapshot_save("warmed_at", _now())
-    return {"ok": True, "warmed_at": _now(), "results": results}
+    return {"ok": True, "warmed_at": _now(), "results": results, "chat_warmed": chat_warmed}
 
 
 def _now() -> str:
@@ -691,6 +725,13 @@ async def api_warmup():
 async def api_identities():
     g = manifest().get("group", {}) or {}
     return {"identities": g.get("identities", GROUP_IDENTITIES), "mode": get_group_identity_mode()}
+
+
+@router.get("/api/group/chat-suggestions")
+async def api_chat_suggestions():
+    """The board questions pre-warmed at warm-up — chips for the chat."""
+    return {"questions": [{"q": q, "cached": bool(cache_get(f"chat:{_chat_key(q)}"))} for q in WARM_QUESTIONS],
+            "enabled": group_enabled()}
 
 
 @router.post("/api/group/chat")
