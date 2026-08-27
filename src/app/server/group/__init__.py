@@ -501,28 +501,69 @@ def _fetch(node: dict, tool: str, extract) -> list[dict]:
     return extract(res.get("content")) if res.get("ok") else []
 
 
+def _node_schema(node: dict) -> str | None:
+    """catalog.schema for a same-workspace node, derived from its audit_source."""
+    v = node.get("audit_source")
+    if v and not _is_todo(v):
+        parts = v.replace("`", "").split(".")
+        if len(parts) >= 2:
+            return f"{parts[0]}.{parts[1]}"
+    return None
+
+
+def _read_view(node: dict, view: str) -> list[dict]:
+    """Direct-SELECT a node's published contract view (v2.1 data path). [] if absent."""
+    sch = _node_schema(node)
+    if not sch:
+        return []
+    try:
+        r = _sql(f"SELECT * FROM {sch}.{view}")
+    except Exception as e:
+        logger.info("group: contract view %s.%s unavailable: %s", sch, view, str(e)[:110])
+        return []
+    return [dict(zip(r["cols"], row)) for row in r["rows"]]
+
+
 def warmup() -> dict:
-    """Refresh posture + attention for every live adapter node from its MCP tools,
-    cache + persist. Returns progress. Page stays usable on the old cache meanwhile."""
+    """Refresh the board pack: posture (vw_group_headline) + domain grid
+    (vw_group_domain_status) via direct-SELECT of each node's published views, and
+    attention via its MCP tool. Cache + persist. Old cache stays live meanwhile."""
     if not group_enabled():
         return {"ok": False, "error": "data plane not configured"}
     ad = _adapters(); results = []
     for n in _live_nodes():
-        a = ad.get(n["id"])
-        if not a:
-            continue
         try:
-            head = _fetch(n, a.get("headline_tool"), _extract_headline)
-            att = _fetch(n, a.get("attention_tool"), _extract_attention)
+            head = _read_view(n, "vw_group_headline")
+            dom = _read_view(n, "vw_group_domain_status")
+            a = ad.get(n["id"]) or {}
+            try:  # attention is a best-effort MCP call — never let it drop the node's view data
+                att = _fetch(n, a.get("attention_tool"), _extract_attention) if a.get("attention_tool") else []
+            except Exception:
+                att = []
+            dl = n.get("local_tower_url") or n.get("app_url")
             for row in head:
-                row["node"] = n["id"]; row["deep_link"] = n.get("local_tower_url") or n.get("app_url")
+                row["node"] = n["id"]; row.setdefault("deep_link", dl)
             for row in att:
-                row["node"] = n["id"]; row["deep_link"] = n.get("local_tower_url") or n.get("app_url")
+                row["node"] = n["id"]; row["deep_link"] = dl
+            dom_row = None
+            if dom:
+                d0 = dom[0]
+                try:
+                    kpis = json.loads(d0.get("kpis")) if isinstance(d0.get("kpis"), str) else (d0.get("kpis") or [])
+                except Exception:
+                    kpis = []
+                dom_row = {"node": n["id"], "name": n["name"], "status": d0.get("status"),
+                           "status_reason": d0.get("status_reason"), "kpis": kpis,
+                           "as_of": str(d0.get("as_of")), "deep_link": dl}
             _CACHE[f"posture:{n['id']}"] = {"data": head, "as_of": _now()}
             _CACHE[f"attention:{n['id']}"] = {"data": att, "as_of": _now()}
             _snapshot_save(f"posture:{n['id']}", head)
             _snapshot_save(f"attention:{n['id']}", att)
-            results.append({"node": n["id"], "ok": True, "headline": len(head), "attention": len(att)})
+            if dom_row:
+                _CACHE[f"domain:{n['id']}"] = {"data": [dom_row], "as_of": _now()}
+                _snapshot_save(f"domain:{n['id']}", [dom_row])
+            results.append({"node": n["id"], "ok": bool(head or dom_row), "headline": len(head),
+                            "domain": 1 if dom_row else 0, "attention": len(att)})
         except Exception as e:
             results.append({"node": n["id"], "ok": False, "error": str(e)[:150]})
     _CACHE["warmed_at"] = {"data": _now(), "as_of": _now()}
@@ -617,6 +658,17 @@ async def api_posture():
     """Posture strip — headline metrics per node, served from the (persisted) cache."""
     warmed = cache_get("warmed_at")
     return {"metrics": _union_cache("posture"), "warmed_at": (warmed or {}).get("data"), "enabled": group_enabled()}
+
+
+@router.get("/api/group/domain-status")
+async def api_domain_status():
+    """Domain grid — one card per node (node-owned RAG + KPIs), fixed board order
+    (capital → performance → operations), served from the (persisted) cache."""
+    ORDER = ["solvency2", "ifrs17", "reserving", "claims", "pricing", "underwriting", "reinsurance"]
+    rows = _union_cache("domain")
+    rows.sort(key=lambda r: ORDER.index(r.get("node")) if r.get("node") in ORDER else 99)
+    warmed = cache_get("warmed_at")
+    return {"domains": rows, "warmed_at": (warmed or {}).get("data"), "enabled": group_enabled()}
 
 
 @router.get("/api/group/attention")

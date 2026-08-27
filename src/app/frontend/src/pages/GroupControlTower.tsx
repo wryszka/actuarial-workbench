@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Building2, ArrowLeft, Server, ExternalLink, Bot, Send,
-  Activity, ScrollText, Network, BookOpen, RefreshCw, Gauge, AlertTriangle,
+  Activity, ScrollText, Network, BookOpen, RefreshCw, Gauge, AlertTriangle, LayoutGrid,
 } from 'lucide-react';
 
 const j = (u: string) => fetch(u).then((r) => r.json());
@@ -23,6 +23,7 @@ export default function GroupControlTower() {
   const [manifest, setManifest] = useState<any>(null);
   const [tiles, setTiles] = useState<any>(null);
   const [posture, setPosture] = useState<any>(null);
+  const [domain, setDomain] = useState<any>(null);
   const [attention, setAttention] = useState<any>(null);
   const [err, setErr] = useState<string | null>(null);
   const [tab, setTab] = useState<'group' | 'estate'>('group');
@@ -30,6 +31,7 @@ export default function GroupControlTower() {
 
   const loadData = () => {
     j('/api/group/posture').then(setPosture).catch(() => {});
+    j('/api/group/domain-status').then(setDomain).catch(() => {});
     j('/api/group/attention').then(setAttention).catch(() => {});
     j('/api/group/tiles').then(setTiles).catch(() => {});
   };
@@ -97,6 +99,7 @@ export default function GroupControlTower() {
             <>
               <PostureStrip posture={posture} />
               <WhyBanner attention={attention} />
+              <DomainGrid domain={domain} />
               <Chat identities={manifest.group?.identities || []} enabled={manifest.enabled} identityMode={manifest.identity_mode} />
               <AttentionFeed attention={attention} nodes={live} />
             </>
@@ -115,23 +118,111 @@ export default function GroupControlTower() {
   );
 }
 
-/* ── Posture strip — dark hero cards, passthrough numbers from node tools ──── */
+/* ── shared board formatting helpers ───────────────────────────────────────── */
+const fmtNum = (v: any) => {
+  const n = typeof v === 'number' ? v : parseFloat(String(v));
+  if (!isFinite(n)) return String(v ?? '—');
+  const abs = Math.abs(n);
+  return abs >= 1000 ? n.toLocaleString(undefined, { maximumFractionDigits: 0 })
+       : Number.isInteger(n) ? String(n)
+       : n.toLocaleString(undefined, { maximumFractionDigits: 1 });
+};
+const parseTrend = (t: any): number[] => {
+  if (!t) return [];
+  try { const a = typeof t === 'string' ? JSON.parse(t) : t; return Array.isArray(a) ? a.map((x: any) => (typeof x === 'number' ? x : parseFloat(x))).filter((x: number) => isFinite(x)) : []; }
+  catch { return []; }
+};
+const STATUS_DOT: Record<string, string> = { red: 'bg-rose-400', amber: 'bg-amber-400', green: 'bg-emerald-400' };
+const STATUS_CHIP: Record<string, string> = { red: 'bg-rose-100 text-rose-700 border-rose-200', amber: 'bg-amber-100 text-amber-700 border-amber-200', green: 'bg-emerald-100 text-emerald-700 border-emerald-200' };
+// favourable-direction colouring for a signed delta
+const deltaClass = (delta: number, direction: string) => {
+  if (!delta || direction === 'neutral' || !direction) return 'text-gray-400';
+  const good = direction === 'up_good' ? delta > 0 : delta < 0;
+  return good ? 'text-emerald-300' : 'text-rose-300';
+};
+
+/* ── tiny inline sparkline over a numeric trend ─────────────────────────────── */
+function Sparkline({ data, stroke = '#60a5fa' }: { data: number[]; stroke?: string }) {
+  if (!data || data.length < 2) return null;
+  const W = 76, H = 22, lo = Math.min(...data), hi = Math.max(...data), span = hi - lo || 1;
+  const pts = data.map((v, i) => `${(i / (data.length - 1)) * W},${H - ((v - lo) / span) * H}`).join(' ');
+  return (
+    <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} className="mt-1.5 overflow-visible">
+      <polyline points={pts} fill="none" stroke={stroke} strokeWidth={1.4} strokeLinejoin="round" strokeLinecap="round" />
+      <circle cx={W} cy={H - ((data[data.length - 1] - lo) / span) * H} r={1.8} fill={stroke} />
+    </svg>
+  );
+}
+
+/* ── Posture strip — board hero cards: value+unit, favourable-delta, sparkline ─ */
 function PostureStrip({ posture }: { posture: any }) {
   const metrics: any[] = posture?.metrics || [];
   if (!posture) return <div className="text-sm text-gray-500">Loading posture…</div>;
   if (!metrics.length) return <div className="text-[12.5px] text-gray-400 italic">No posture metrics cached yet — click <strong>Warm up</strong> to pull them from the workbenches.</div>;
-  const fmt = (v: any) => (typeof v === 'number' ? (Math.abs(v) >= 1000 ? v.toLocaleString() : v) : String(v));
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-      {metrics.slice(0, 10).map((m, i) => (
-        <a key={i} href={m.deep_link} target="_blank" rel="noopener noreferrer"
-           className="rounded-xl bg-[#0f172a] text-white p-3.5 hover:bg-[#1e293b] transition-colors">
-          <div className="text-[10px] uppercase tracking-wider text-blue-300 font-semibold truncate">{m.label}</div>
-          <div className="text-2xl font-bold tracking-tight mt-1 leading-none">{fmt(m.value)}</div>
-          <div className="text-[10px] text-gray-400 mt-1.5">{m.node}</div>
-        </a>
-      ))}
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+      {metrics.slice(0, 12).map((m, i) => {
+        const delta = (m.delta_qtd ?? m.delta_1d);
+        const trend = parseTrend(m.trend);
+        return (
+          <a key={i} href={m.deep_link} target="_blank" rel="noopener noreferrer"
+             className="rounded-xl bg-[#0f172a] text-white p-3.5 hover:bg-[#1e293b] transition-colors flex flex-col">
+            <div className="flex items-start gap-1.5">
+              <div className="text-[10px] uppercase tracking-wider text-blue-300 font-semibold leading-tight flex-1">{m.label}</div>
+              <span className={`w-2 h-2 rounded-full shrink-0 mt-0.5 ${STATUS_DOT[m.status] || 'bg-gray-500'}`} />
+            </div>
+            <div className="text-2xl font-bold tracking-tight mt-1 leading-none">
+              {fmtNum(m.value)}<span className="text-sm font-semibold text-gray-400 ml-0.5">{m.unit}</span>
+            </div>
+            {typeof delta === 'number' && (
+              <div className={`text-[11px] font-semibold mt-1 ${deltaClass(delta, m.direction)}`}>
+                {delta > 0 ? '▲' : delta < 0 ? '▼' : ''} {Math.abs(delta).toFixed(1)}%{m.delta_qtd != null ? ' QTD' : ''}
+              </div>
+            )}
+            {m.plan_value != null && <div className="text-[10px] text-gray-500 mt-0.5">plan {fmtNum(m.plan_value)}{m.unit}</div>}
+            {trend.length >= 2 && <Sparkline data={trend} />}
+            <div className="text-[10px] text-gray-500 mt-auto pt-1.5">{m.node}</div>
+          </a>
+        );
+      })}
     </div>
+  );
+}
+
+/* ── Domain status grid — verbatim RAG cards, per-node KPI rows ─────────────── */
+function DomainGrid({ domain }: { domain: any }) {
+  const domains: any[] = domain?.domains || [];
+  if (!domain) return null;
+  if (!domains.length) return <div className="text-[12.5px] text-gray-400 italic">No domain status cached yet — click <strong>Warm up</strong>.</div>;
+  return (
+    <section>
+      <h2 className="text-sm font-bold text-gray-900 flex items-center gap-2 mb-2"><LayoutGrid className="w-4 h-4 text-blue-600" /> Domain status</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        {domains.map((d, i) => {
+          const kpis: any[] = d.kpis || [];
+          const link = kpis[0]?.deep_link;
+          return (
+            <div key={i} className="rounded-xl border border-gray-200 bg-white p-3.5 flex flex-col">
+              <div className="flex items-center gap-2">
+                <a href={link} target="_blank" rel="noopener noreferrer" className="text-[13px] font-bold text-gray-900 capitalize hover:text-blue-700">{String(d.node).replace(/_/g, ' ')}</a>
+                <span className={`ml-auto text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${STATUS_CHIP[d.status] || 'bg-gray-100 text-gray-600 border-gray-200'}`}>{d.status}</span>
+              </div>
+              {d.status_reason && <div className="text-[12px] text-gray-600 mt-1 leading-snug">{d.status_reason}</div>}
+              <div className="mt-2.5 pt-2.5 border-t border-gray-100 grid grid-cols-2 gap-x-3 gap-y-2">
+                {kpis.map((k, j) => (
+                  <div key={j}>
+                    <div className="text-[10px] uppercase tracking-wide text-gray-400 truncate">{k.label}</div>
+                    <div className="text-[15px] font-bold text-gray-900 leading-tight">
+                      {fmtNum(k.value)}<span className="text-[11px] font-semibold text-gray-400 ml-0.5">{k.unit !== 'count' ? k.unit : ''}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
   );
 }
 
