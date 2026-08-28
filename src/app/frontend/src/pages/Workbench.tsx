@@ -12,7 +12,7 @@
  * Tile metadata lives in workbench-tiles.ts so adding a tile is one file.
  */
 import { Link } from 'react-router-dom';
-import { ArrowRight, GraduationCap, Boxes } from 'lucide-react';
+import { ArrowRight, GraduationCap, Boxes, Compass } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { TILES, type Tile } from '../lib/workbench-tiles';
 import { fetchConfig } from '../lib/config';
@@ -95,8 +95,28 @@ export default function Workbench() {
       </header>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 auto-rows-fr gap-3">
-        {tiles.map((t) => <TileCard key={t.slug} tile={t} />)}
+        {tiles.filter((t) => t.status !== 'roadmap').map((t) => <TileCard key={t.slug} tile={t} />)}
       </div>
+
+      {/* Roadmap band — candidates, not commitments. Distinct from live/in-progress. */}
+      {tiles.some((t) => t.status === 'roadmap') && (
+        <section>
+          <div className="flex items-center gap-2.5 mb-3">
+            <div className="w-9 h-9 rounded-lg bg-violet-100 flex items-center justify-center shrink-0">
+              <Compass className="w-5 h-5 text-violet-600" />
+            </div>
+            <div className="min-w-0">
+              <h2 className="text-lg font-bold text-gray-900 leading-tight">Roadmap</h2>
+              <p className="text-[11.5px] text-gray-500 leading-snug">
+                Candidates, not commitments — each sited where an incumbent is structurally weak. Click any tile for the thinking: the question it answers, the parity posture, and the questions it lets us hand back.
+              </p>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 auto-rows-fr gap-3">
+            {tiles.filter((t) => t.status === 'roadmap').map((t) => <TileCard key={t.slug} tile={t} />)}
+          </div>
+        </section>
+      )}
 
       {/* Small projects — wide band leading to everything without a tile of its own */}
       <Link to="/small-projects"
@@ -204,33 +224,34 @@ function TileCard({ tile }: { tile: Tile }) {
       : <Link to={tile.to} className={linkCls}>{inner}</Link>;
   }
 
-  // Roadmap tile — de-emphasised. Empty `to` = non-clickable; external opens in a tab.
+  // Roadmap tile — its own colour (violet) + dashed border: a candidate, openly not
+  // yet built. Empty `to` = non-clickable; external opens in a tab.
   const roadHasLink = Boolean(tile.to);
   const roadExternal = roadHasLink && /^https?:\/\//.test(tile.to);
   const roadInner = (
     <>
       <div className="flex items-start gap-2.5 mb-2">
-        <div className="w-9 h-9 rounded-lg bg-slate-200 flex items-center justify-center shrink-0">
-          <Icon className="w-5 h-5 text-slate-500" />
+        <div className={`w-9 h-9 rounded-lg bg-violet-100 ${roadHasLink ? 'group-hover:bg-violet-200' : ''} flex items-center justify-center transition-colors shrink-0`}>
+          <Icon className="w-5 h-5 text-violet-600" />
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5 flex-wrap">
-            <h3 className="text-[15px] font-bold text-slate-700 tracking-tight leading-tight">{tile.label}</h3>
-            <span className="text-[9px] uppercase tracking-widest font-bold px-1 py-0.5 rounded bg-slate-200 text-slate-600">soon</span>
+            <h3 className="text-[15px] font-bold text-violet-900 tracking-tight leading-tight">{tile.label}</h3>
+            <span className="text-[9px] uppercase tracking-widest font-bold px-1 py-0.5 rounded bg-violet-100 text-violet-700 border border-violet-200">roadmap</span>
           </div>
-          <p className="text-[10px] text-slate-400 mt-0.5">{tile.subtitle ?? 'Roadmap'}</p>
+          <p className="text-[10px] text-violet-700/70 mt-0.5">{tile.subtitle ?? 'Candidate, not a commitment'}</p>
         </div>
       </div>
       <TileDescription description={tile.description} tone="muted" />
       {roadHasLink && (
-        <div className="mt-2 inline-flex items-center gap-1 text-xs text-slate-500">
-          {roadExternal ? 'Open' : 'Read more'} <ArrowRight className="w-3 h-3" />
+        <div className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-violet-700">
+          {roadExternal ? 'Open' : 'See the thinking'} <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
         </div>
       )}
     </>
   );
-  const roadBase = 'block bg-slate-50 border border-slate-200 rounded-xl p-4 transition-all flex flex-col';
-  const roadLink = `${roadBase} hover:bg-white hover:shadow-md`;
+  const roadBase = 'block bg-white border-2 border-dashed border-violet-200 rounded-xl p-4 transition-all flex flex-col';
+  const roadLink = `${roadBase} hover:border-violet-300 hover:shadow-lg hover:shadow-violet-100 group`;
   if (!roadHasLink) return <div className={roadBase}>{roadInner}</div>;
   return roadExternal
     ? <a href={tile.to} target="_blank" rel="noopener noreferrer" className={roadLink}>{roadInner}</a>

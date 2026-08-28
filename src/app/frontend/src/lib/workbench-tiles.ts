@@ -13,8 +13,10 @@
  */
 import {
   Shield, TrendingUp, FileSpreadsheet, Network, AlertOctagon,
-  Code2, Table2, HeartPulse, Waypoints, UsersRound, FileInput,
+  Code2, Table2, HeartPulse, Waypoints, UsersRound,
   Stamp, GraduationCap, ShieldCheck, Building2,
+  CloudLightning, ClipboardCheck, Scale, Share2, Landmark,
+  Layers, CalendarClock, Fingerprint, Leaf,
 } from 'lucide-react';
 
 export type TileStatus = 'live' | 'in_progress' | 'roadmap' | 'contact';
@@ -193,14 +195,90 @@ export const TILES: Tile[] = [
     to: '/roadmap/customer-lake',
     subtitle: 'Agentic CDP · policyholder 360',
   },
+  // ── Roadmap band: candidates, not commitments. Each sited where incumbents are
+  // structurally weak (between-the-boxes / speed / economics / self-governance).
+  // Full thinking (canonical question, parity posture, reverse kill-shots) lives
+  // on the click-through page (roadmap-content.ts). See the playbook roadmap.
   {
-    slug: 'bordereaux-ingestion',
-    label: 'Bordereaux ingestion',
-    description: 'Messy delegated-authority bordereaux → a governed, validated pipeline.',
+    slug: 'exposure-management',
+    label: 'Exposure & Event Response',
+    description: 'The live cross-line exposure picture — gross, net of treaty, by coverholder — that no point solution owns.',
     status: 'roadmap',
-    icon: FileInput,
-    to: '/roadmap/bordereaux-ingestion',
-    subtitle: 'Delegated authority · premium & claims',
+    icon: CloudLightning,
+    to: '/roadmap/exposure-management',
+    subtitle: 'Between the boxes · cat + treaty + coverholder',
+  },
+  {
+    slug: 'delegated-authority',
+    label: 'Delegated Authority',
+    description: 'Binders outside authority and coverholder books going bad — computed from bordereaux, not attested.',
+    status: 'roadmap',
+    icon: ClipboardCheck,
+    to: '/roadmap/delegated-authority',
+    subtitle: 'Binders & bordereaux · breach as analytics',
+  },
+  {
+    slug: 'conduct',
+    label: 'Customer & Conduct',
+    description: 'Consumer Duty fair value computed from actual premium and claims — not an attestation spreadsheet.',
+    status: 'roadmap',
+    icon: Scale,
+    to: '/roadmap/conduct',
+    subtitle: 'Consumer Duty · fair value computed',
+  },
+  {
+    slug: 'distribution',
+    label: 'Distribution & Broker Analytics',
+    description: 'Rank brokers by the ultimate loss ratio of what they placed three years ago — and what commission rewards.',
+    status: 'roadmap',
+    icon: Share2,
+    to: '/roadmap/distribution',
+    subtitle: 'Broker outcomes, not activity',
+  },
+  {
+    slug: 'investments-alm',
+    label: 'Investments & ALM',
+    description: 'Duration gap against the actual annuity book — the asset–liability join nobody’s platform owns.',
+    status: 'roadmap',
+    icon: Landmark,
+    to: '/roadmap/investments-alm',
+    subtitle: 'The asset–liability join',
+  },
+  {
+    slug: 'capital-model-governance',
+    label: 'Capital & Model Governance',
+    description: 'Reproduce last quarter’s capital run and diff model versions — governance the incumbent can’t show.',
+    status: 'roadmap',
+    icon: Layers,
+    to: '/roadmap/capital-model-governance',
+    subtitle: 'Reproduce & diff the internal model',
+  },
+  {
+    slug: 'planning-reforecasting',
+    label: 'Planning & Reforecasting',
+    description: 'Reforecast the year under a new assumption while you’re still in the meeting.',
+    status: 'roadmap',
+    icon: CalendarClock,
+    to: '/roadmap/planning-reforecasting',
+    subtitle: 'Replan on live actuals',
+  },
+  {
+    slug: 'financial-crime-siu',
+    label: 'Financial Crime / SIU',
+    description: 'The fraud ring across quote, claim and payee — the network point solutions never join.',
+    status: 'roadmap',
+    icon: Fingerprint,
+    to: '/roadmap/financial-crime-siu',
+    subtitle: 'The cross-domain fraud ring',
+  },
+  {
+    slug: 'climate-orsa',
+    label: 'Climate & CSRD',
+    description: 'Re-run last year’s climate ORSA on this year’s book, today — not a PDF from March.',
+    status: 'roadmap',
+    icon: Leaf,
+    to: '/roadmap/climate-orsa',
+    subtitle: 'A living climate ORSA',
   },
   {
     slug: 'actuarial-lab',

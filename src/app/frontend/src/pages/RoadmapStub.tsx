@@ -6,7 +6,7 @@
  * app, rendered as external deep links onto its configured base URL.
  */
 import { Link, useParams } from 'react-router-dom';
-import { ArrowLeft, Compass, ExternalLink, ChevronRight, Presentation, ArrowRight } from 'lucide-react';
+import { ArrowLeft, Compass, ExternalLink, ChevronRight, Presentation, ArrowRight, Target, Scale, Database, Layers } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { ROADMAP_CONTENT } from '../lib/roadmap-content';
 import { TILES, DEFAULT_SOLVENCY_APP_URL } from '../lib/workbench-tiles';
@@ -48,8 +48,8 @@ export default function RoadmapStub() {
       </Link>
 
       <header className="flex items-start gap-4 border-b border-gray-200 pb-5">
-        <div className={`w-14 h-14 rounded-xl ${isInProgress ? 'bg-amber-100' : 'bg-slate-100'} flex items-center justify-center shrink-0`}>
-          <Icon className={`w-7 h-7 ${isInProgress ? 'text-amber-700' : 'text-slate-600'}`} />
+        <div className={`w-14 h-14 rounded-xl ${isInProgress ? 'bg-amber-100' : 'bg-violet-100'} flex items-center justify-center shrink-0`}>
+          <Icon className={`w-7 h-7 ${isInProgress ? 'text-amber-700' : 'text-violet-600'}`} />
         </div>
         <div className="flex-1 pt-1">
           <div className="flex items-center gap-2">
@@ -60,18 +60,28 @@ export default function RoadmapStub() {
                 in progress
               </span>
             ) : (
-              <span className="text-[10px] uppercase tracking-widest font-bold px-1.5 py-0.5 rounded bg-slate-200 text-slate-600 border border-slate-300">
-                coming soon
+              <span className="text-[10px] uppercase tracking-widest font-bold px-1.5 py-0.5 rounded bg-violet-100 text-violet-700 border border-violet-200">
+                roadmap
               </span>
             )}
           </div>
           <p className="text-sm text-gray-500 mt-1">
             {isInProgress
               ? 'In progress · being built — here’s what it covers and where it’s heading.'
-              : 'Roadmap · same platform, different workflow.'}
+              : 'Roadmap · a candidate, not a commitment — the thinking, ready to deliver on an ask.'}
           </p>
+          {content.persona && (
+            <p className="text-xs text-violet-700 font-semibold mt-1.5">For: {content.persona}</p>
+          )}
         </div>
       </header>
+
+      {content.canonical_question && (
+        <section className="bg-gradient-to-br from-violet-50 to-white border border-violet-200 rounded-lg p-5">
+          <div className="text-[10px] uppercase tracking-widest font-bold text-violet-700 mb-1.5">The question this answers</div>
+          <p className="text-lg text-gray-900 font-semibold leading-snug italic">“{content.canonical_question}”</p>
+        </section>
+      )}
 
       <section className="bg-white border border-gray-200 rounded-lg p-5">
         <h2 className="text-base font-bold text-gray-900 mb-2">What this workflow covers</h2>
@@ -108,6 +118,49 @@ export default function RoadmapStub() {
           ))}
         </ul>
       </section>
+
+      {content.reverse_kill_shots && content.reverse_kill_shots.length > 0 && (
+        <section className="bg-gray-900 text-white rounded-lg p-5">
+          <div className="flex items-center gap-2 mb-1">
+            <Target className="w-4 h-4 text-violet-300" />
+            <h2 className="text-base font-bold">Questions we hand back across the table</h2>
+          </div>
+          <p className="text-[12px] text-gray-400 mb-3 leading-relaxed">
+            Not a feature list against a strong incumbent — the questions this asset lets us ask, sited where the incumbent is structurally weak.
+          </p>
+          <ul className="space-y-2.5">
+            {content.reverse_kill_shots.map((k, i) => (
+              <li key={i} className="text-[13.5px] leading-relaxed flex items-start gap-2.5">
+                <span className="text-violet-400 font-bold shrink-0">{i + 1}.</span>
+                <span className="text-gray-100">“{k}”</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {(content.parity_posture || content.data_dependency || content.stub_grade) && (
+        <section className="grid sm:grid-cols-3 gap-3">
+          {content.parity_posture && (
+            <div className="bg-white border border-gray-200 rounded-lg p-4">
+              <div className="flex items-center gap-1.5 mb-1.5"><Scale className="w-3.5 h-3.5 text-gray-500" /><h3 className="text-[11px] uppercase tracking-wider font-bold text-gray-500">Parity posture</h3></div>
+              <p className="text-[12.5px] text-gray-700 leading-relaxed">{content.parity_posture}</p>
+            </div>
+          )}
+          {content.data_dependency && (
+            <div className="bg-white border border-gray-200 rounded-lg p-4">
+              <div className="flex items-center gap-1.5 mb-1.5"><Database className="w-3.5 h-3.5 text-gray-500" /><h3 className="text-[11px] uppercase tracking-wider font-bold text-gray-500">Data-core dependency</h3></div>
+              <p className="text-[12.5px] text-gray-700 leading-relaxed">{content.data_dependency}</p>
+            </div>
+          )}
+          {content.stub_grade && (
+            <div className="bg-white border border-gray-200 rounded-lg p-4">
+              <div className="flex items-center gap-1.5 mb-1.5"><Layers className="w-3.5 h-3.5 text-gray-500" /><h3 className="text-[11px] uppercase tracking-wider font-bold text-gray-500">Stub grade &amp; trigger</h3></div>
+              <p className="text-[12.5px] text-gray-700 leading-relaxed">{content.stub_grade}</p>
+            </div>
+          )}
+        </section>
+      )}
 
       {content.adjacent_links.length > 0 && (
         <section className="bg-white border border-gray-200 rounded-lg p-5">
