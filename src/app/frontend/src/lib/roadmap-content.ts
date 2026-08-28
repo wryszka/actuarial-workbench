@@ -4,6 +4,12 @@
  * Adding a tile stub = (1) entry in workbench-tiles.ts, (2) entry here. No
  * per-tile component file needed.
  *
+ * Language here is customer- and vendor-facing: it describes what a workflow
+ * does and how it works alongside the systems an insurer already runs. It never
+ * names or disparages another vendor and never frames this as replacing one —
+ * value is shown through the workflow itself. Internal positioning lives only in
+ * the playbook roadmap doc, never in the app.
+ *
  * `adjacent_links.to` values are paths *inside the Solvency II app*. The
  * RoadmapStub renders them as external deep links, prefixing the configured
  * Solvency app base URL — so "already-live" patterns open in that app.
@@ -13,14 +19,10 @@ export interface RoadmapEntry {
   workbench_capabilities: string[];                // Bullets — how it extends the platform
   adjacent_links: { label: string; to: string }[]; // Live patterns to point at (Solvency app paths)
   firstStepsDeckUrl?: string;                      // optional "first steps" deck (full-width card under the description)
-  // ── Roadmap-doctrine fields (optional; rendered when present) — the memory of
-  // what was discussed so it's never forgotten and can be delivered on an ask.
-  persona?: string;                                // who asks the question
-  canonical_question?: string;                     // in the persona's own words
-  reverse_kill_shots?: string[];                   // questions we hand back across the table
-  parity_posture?: string;                         // what we concede vs where we win
-  data_dependency?: string;                        // data-core WP dependency
-  stub_grade?: string;                             // S0 / S1 / S2 + escalation trigger
+  // Optional context shown when present — who the workflow is for and the
+  // question it answers, in the customer's own terms.
+  persona?: string;
+  canonical_question?: string;
 }
 
 export const ROADMAP_CONTENT: Record<string, RoadmapEntry> = {
@@ -73,225 +75,156 @@ export const ROADMAP_CONTENT: Record<string, RoadmapEntry> = {
   },
 
 
-  // ── Roadmap band (candidates, not commitments) ─────────────────────────────
+  // ── Roadmap band ───────────────────────────────────────────────────────────
   'exposure-management': {
-    what: "The live, cross-line, cross-source exposure picture that no point solution owns. " +
-      "Accumulation lives as a property lane inside underwriting; cat machinery lives inside " +
-      "reinsurance — this joins them into one governed view of gross and net exposure, by treaty " +
-      "and by coverholder, refreshed in hours not weeks. It sits between the boxes: it threatens " +
-      "no incumbent's cat-model science, and it owns the join they can't.",
-    persona: "Head of Exposure Management / CUO",
+    what: "A live, cross-line view of exposure — gross, net of treaty and by coverholder — " +
+      "brought together from underwriting accumulation and the reinsurance catastrophe view " +
+      "into one governed picture, refreshed in hours. It works alongside the catastrophe models " +
+      "an insurer already runs, bringing their outputs together with the book so the whole " +
+      "position is visible in one place when an event is developing.",
+    persona: "Head of Exposure Management / Chief Underwriting Officer",
     canonical_question: "A named storm makes landfall in 36 hours. What is my exposure — gross, net of treaty, by coverholder — right now, and how sure am I?",
     workbench_capabilities: [
-      "A live exposure map over the existing underwriting accumulation grain + the reinsurance cat curves — one view, cross-line, cross-source.",
-      "An event-footprint selector (seeded synthetic footprints) that recomputes exposure inside the meeting, not the week.",
-      "A gross → net waterfall through the existing treaty structures, by treaty and by coverholder.",
-      "A governed multi-vendor blend — who chose the weights, when, and the number under the alternative — recorded and auditable.",
-      "Model-version diff on your own book: when the vendor ships a new version, see line-by-line what moved and why.",
+      "A live exposure map that brings together the underwriting accumulation grain and the reinsurance catastrophe view — one picture, across lines and sources.",
+      "An event-footprint selector (illustrative synthetic footprints) that recomputes exposure quickly as a situation develops.",
+      "A gross → net waterfall through the treaty structures, by treaty and by coverholder.",
+      "A place to bring more than one model's view together under governance, with the chosen weights and the alternative recorded and auditable.",
+      "Model-version transparency: when a catastrophe model updates, see clearly what moved on the book and why.",
     ],
-    reverse_kill_shots: [
-      "Landfall is tonight — can your current process give the board a net exposure number by treaty and coverholder tomorrow morning, with the workings?",
-      "When your vendor shipped the new model version, what happened to your booked PMLs — can you diff the two versions on your own book, line by line?",
-      "You have two vendors' views. Show me the governed blend — who chose the weights, when, and what the number was under the alternative.",
-    ],
-    parity_posture: "Concede: the cat-model science (theirs, permanently — the seam is ELT/YLT import). Win: event-response speed, multi-vendor blending, model-version transparency, and licence economics.",
-    data_dependency: "None to start — reads the existing underwriting + reinsurance schemas. Richer with WP1 (in-force by version) and WP6 (coverholder books).",
-    stub_grade: "S1 candidate — the only Tier A stub with zero data-core dependency, so it ships first. → S2 on the first CUO room that runs past 30 minutes on this screen.",
     adjacent_links: [],
   },
 
   'delegated-authority': {
-    what: "Delegated authority as analytics, not workflow. Incumbent DA platforms move files and " +
-      "track tasks; they don't compute. This computes every line-size breach from the latest " +
-      "bordereaux, spots the coverholder book deteriorating before its bordereau admits it, and " +
-      "links it back to claims and reserving on the same book. Bordereaux ingestion — messy " +
-      "per-sender files rescued into a governed, validated pipeline — is the foundation underneath " +
-      "it. The MGA flip (the coverholder's own cockpit of the same data) is a second persona tab: " +
-      "one dataset, two sides of the seam, itself a Delta Share demo beat.",
-    persona: "Head of Delegated Authority / DUM",
-    canonical_question: "Which of my forty binders is outside authority right now, and which coverholder's book went bad before their bordereau admitted it?",
+    what: "Delegated authority brought to life as live analytics on top of the systems already in " +
+      "place. It computes line-size breaches from the latest bordereaux, highlights coverholder " +
+      "books whose performance is drifting, and links them back to claims and reserving on the same " +
+      "book. Turning each sender's bordereau into clean, validated, governed data is the foundation " +
+      "underneath it — and the same governed view can be shared back to the coverholder as their own, " +
+      "via Delta Sharing.",
+    persona: "Head of Delegated Authority / Delegated Underwriting Manager",
+    canonical_question: "Which of my binders is outside authority right now, and which coverholder's book is drifting before the next audit would catch it?",
     workbench_capabilities: [
-      "A binder status board + breach queue over WP6 views — every line-size breach as of the latest bordereaux, computed not attested.",
-      "Drill from breach → the bordereau row that caused it → the governed waiver trail.",
-      "Per-sender column mapping to a canonical, ACORD-aligned schema; drift is rescued rather than silently dropped (Document AI / ai_query for messy headers).",
-      "Data-quality expectations quarantine failing rows to a review queue with the rule that fired — never mixed into the clean book.",
-      "Early-warning on deteriorating coverholder loss ratios — quarters before the audit calendar would catch them; MGA-flip persona tab via Delta Share.",
+      "A binder status board and breach queue — every line-size breach as of the latest bordereaux, computed live.",
+      "Drill from a breach to the bordereau row behind it, with the governed waiver trail.",
+      "Per-sender column mapping into one canonical, ACORD-aligned schema; format drift is rescued rather than dropped (Document AI / ai_query for messy headers).",
+      "Data-quality expectations quarantine rows that fail, with the rule that fired — kept out of the clean book.",
+      "Early sight of coverholder loss-ratio drift, with the option to share the same governed view back to the coverholder via Delta Sharing.",
     ],
-    reverse_kill_shots: [
-      "Across all binders, show me every line-size breach as of the latest bordereaux — computed, not attested.",
-      "Which coverholder's loss ratio deteriorated two quarters before your audit calendar would have caught it?",
-      "Your bordereau column layout drifted in March. Who noticed, and what did it cost?",
-    ],
-    parity_posture: "Concede: workflow / task management (theirs). Win: breach detection computed not attested, early-warning from bordereau data, and the cross-link to claims / reserving they can't make.",
-    data_dependency: "WP6 (hard) — this stub is the reason WP6 can be pulled forward in the data-core build.",
-    stub_grade: "S1 candidate, highest external pull on the list (Howden adjacency, Lloyd's / Blueprint Two). → S2 on the first market-side room that asks for it by name.",
     adjacent_links: [],
   },
 
   'conduct': {
-    what: "Consumer Duty fair value computed, not attested. The whole GRC category fills in a form; " +
-      "this runs a governed function over the twin's own premium and claims data — acceptance rates, " +
-      "settlement times — and shows which cohorts sit amber and whether renewal pricing walked them " +
-      "there. It's the natural home for the FCA pricing-rules questions that today only get a nod " +
-      "inside pricing.",
-    persona: "Chief Customer Officer / CRO / Board",
-    canonical_question: "Prove fair value by product from actual premium and claims experience — not from an attestation spreadsheet.",
+    what: "Consumer Duty fair value computed from actual premium and claims experience — acceptance " +
+      "rates, settlement times — rather than summarised by hand. It shows which customer cohorts sit " +
+      "in the amber zone and how renewal pricing relates to their outcomes, drawing on the same " +
+      "governed data as pricing and claims, and it's a natural home for FCA pricing-rules evidence.",
+    persona: "Chief Customer Officer / Chief Risk Officer / Board",
+    canonical_question: "Can we show fair value by product from our actual premium and claims experience?",
     workbench_capabilities: [
-      "A fair-value board over WP4 (with the seeded MONITOR amber) — the number computed from actual claims acceptance rates and settlement times.",
-      "A complaints-ratio tile and a drill from an amber product to the underlying premium / claims evidence.",
-      "The cross-domain join no point solution can make: renewal price-walks (WP5) against outcomes (WP4).",
-      "A vulnerability flag raised in claims that surfaces at renewal — one governed customer view.",
+      "A fair-value board computed from actual claims acceptance rates and settlement times, with an illustrative amber cohort.",
+      "A complaints-ratio view and a drill from an amber product to the underlying premium and claims evidence.",
+      "The link between renewal pricing and customer outcomes, on one governed view.",
+      "A vulnerability flag raised in claims that carries through to renewal.",
     ],
-    reverse_kill_shots: [
-      "Show me fair value computed from your actual claims acceptance rates and settlement times — can your process produce the number, or only the attestation that someone looked?",
-      "Which customer cohorts sit in your amber zone, and did your renewal pricing walk them there?",
-      "A vulnerability flag was raised in claims. Where does it surface at renewal?",
-    ],
-    parity_posture: "Concede: workflow / attestation management and board-pack polish (theirs). Win: the numbers being real — computed from actual experience, not attested.",
-    data_dependency: "WP4 (hard), WP2 (premium side), WP5 (the price-walk cross-link).",
-    stub_grade: "S1 candidate. → S2 on the first CCO / CRO room, or the first time a pricing demo gets the FCA question twice.",
     adjacent_links: [],
   },
 
   'distribution': {
-    what: "Broker analytics that follow the outcome, not the activity. CRM knows activity, BI knows " +
-      "aggregates; neither follows a broker's book through loss development, renewal behaviour and " +
-      "payment discipline, because those live in four systems. This ranks brokers by the ultimate " +
-      "loss ratio of what they placed three years ago — and asks what the commission ladder is " +
-      "actually rewarding. Also the natural home for the If P&C agentic-distribution thread.",
+    what: "Broker analytics that follow outcomes through the cycle — loss development, renewal " +
+      "behaviour and payment discipline — brought together from the systems where they live today. " +
+      "It ranks brokers by the ultimate loss ratio of the business they placed and shows how the " +
+      "commission structure relates to the risk being written. It's also a natural home for agentic " +
+      "distribution journeys built on Genie and MCP.",
     persona: "Chief Distribution Officer",
-    canonical_question: "Which brokers write business that looks profitable in year one and toxic by year three — and what is my commission ladder rewarding?",
+    canonical_question: "Which brokers write business that looks profitable in year one and develops adversely by year three — and what is the commission structure rewarding?",
     workbench_capabilities: [
-      "A broker scorecard over the existing underwriting broker entities + claims outcomes + WP1 renewal chains + WP2 receivables.",
-      "Drill from a broker → the book they placed → its loss development three years on.",
-      "Risk-mix shift detection tied to commission-tier changes — what the ladder quietly rewards.",
-      "The receivables-ageing signal joined from billing — the number that lives in nobody's CRM dashboard.",
+      "A broker scorecard bringing together broker records, claims outcomes, renewal chains and receivables.",
+      "Drill from a broker to the book they placed and its loss development over time.",
+      "How risk-mix relates to commission structure across the cycle.",
+      "The receivables-ageing signal, brought in from billing alongside the rest.",
     ],
-    reverse_kill_shots: [
-      "Rank brokers by the ultimate loss ratio of the business they placed three years ago — not by GWP this quarter.",
-      "Which broker's submissions have quietly shifted risk-mix since their commission tier changed?",
-      "Broker X's receivables age 2× the panel average. Where does that show up in your CRM?",
-    ],
-    parity_posture: "Concede: CRM activity capture and BI dashboards (theirs). Win: the outcome joins across loss development, renewal and billing that no point solution can make.",
-    data_dependency: "WP1 + WP2 (medium — a degraded version runs on existing schemas).",
-    stub_grade: "S1, deliberately thin — a strong supporting screen more than a headline act. → S2 on a named distribution-transformation account.",
     adjacent_links: [],
   },
 
   'investments-alm': {
-    what: "The asset–liability join. Asset platforms don't know the liabilities exist; liability " +
-      "systems return the favour — the gap between them is literally the workbench's name. Duration " +
-      "gap against the actual annuity book, own-funds sensitivity with both sides moving. This is " +
-      "not asset management (theirs, inside-the-box) — it's the asset-liability join (ours).",
-    persona: "CIO / Chief Actuary",
+    what: "Assets and liabilities in one governed view. It shows the duration gap against the actual " +
+      "annuity book and own-funds sensitivity with both sides of the balance sheet moving together, " +
+      "reusing the liability projections already modelled on the same lakehouse. It complements the " +
+      "asset-management platform an insurer already runs — the focus is the asset-liability " +
+      "relationship.",
+    persona: "Chief Investment Officer / Chief Actuary",
     canonical_question: "What is my duration gap against the actual annuity book — tonight's positions, this quarter's liabilities?",
     workbench_capabilities: [
-      "Duration gap over WP3 asset positions against the actual liability cashflows — not a benchmark someone emailed in.",
-      "Own-funds sensitivity to ±100bps with both sides of the balance sheet moving together.",
-      "Reuses the LifeCast liability projections — the liabilities are already modelled on the same twin.",
-      "Governed as-of positioning: tonight's positions, this quarter's liabilities, reproducible.",
+      "Duration gap computed against the actual liability cashflows, not a static benchmark.",
+      "Own-funds sensitivity to rate moves with assets and liabilities moving together.",
+      "Reuses the LifeCast liability projections on the same lakehouse.",
+      "Governed, reproducible as-of positioning.",
     ],
-    reverse_kill_shots: [
-      "Your asset system's 'liability benchmark' is a duration number someone emailed in March — show me it computed against tonight's book.",
-      "Show me own-funds sensitivity to 100bps with both sides moving, reproduced today.",
-    ],
-    parity_posture: "Concede: asset management (Aladdin-class, inside-the-box). Win: the asset-liability join.",
-    data_dependency: "WP3 — its views already serve LifeCast + the Solvency screens; the standalone app waits for a CIO room.",
-    stub_grade: "S0 (spec only). → S1 alongside a CIO room.",
     adjacent_links: [],
   },
 
   'capital-model-governance': {
-    what: "Not a Tyche / Igloo / ReMetrica rival — their stochastic machinery is strong and we say " +
-      "so. Sited on their two real weaknesses: run economics (grid licences + overnight windows vs " +
-      "serverless GPU burst) and model-change governance (can they reproduce last quarter's run, " +
-      "diff model versions, show approval lineage? almost never). The LifeCast JAX nested-MC engine " +
-      "is the reusable compute.",
-    persona: "Chief Actuary / Head of Capital / validation",
-    canonical_question: "Show me your last major model change — inputs, code, approvals — reproduced today.",
+    what: "Governance and economics around the capital model, working alongside the internal-model " +
+      "tooling an insurer already uses. It focuses on two things that are often hard to do elsewhere: " +
+      "reproducing a prior capital run — inputs, code and approvals — on demand, and running the heavy " +
+      "nested Monte Carlo on serverless compute that scales to zero. The stochastic modelling itself " +
+      "stays where it is; this adds reproducibility, version diffing and lineage on top.",
+    persona: "Chief Actuary / Head of Capital / Model Validation",
+    canonical_question: "Can we reproduce our last major model change — inputs, code, approvals — on demand?",
     workbench_capabilities: [
-      "The Solvency II major / minor change process with reproducible runs — inputs, code and approvals reproduced on demand.",
-      "Model-version diff on your own book: what changed between this run and the last, line by line.",
-      "Approval lineage in Unity Catalog — every change traceable end to end.",
-      "Serverless GPU burst for nested Monte Carlo (the LifeCast JAX engine) instead of grid licences + overnight windows; pairs with the Just Group governance scope on file.",
+      "Reproduce a prior capital run — inputs, code and approvals — on demand.",
+      "Diff one model version against another on the same book.",
+      "Approval lineage captured in Unity Catalog, traceable end to end.",
+      "Serverless GPU compute for nested Monte Carlo (the LifeCast JAX engine), scaling to zero between runs.",
     ],
-    reverse_kill_shots: [
-      "Reproduce last quarter's capital run — inputs, code, approvals — today.",
-      "Diff this model version against the last, line by line, on your own book.",
-      "What did your last overnight grid run cost, and could it burst on demand instead?",
-    ],
-    parity_posture: "Concede: the heavy stochastic machinery and structure libraries (theirs, strong). Win: run economics and model-change governance.",
-    data_dependency: "Reuses the LifeCast capital engine + existing Solvency schemas.",
-    stub_grade: "S0. → S1 only alongside a LifeCast-led room where capital comes up.",
     adjacent_links: [],
   },
 
   'planning-reforecasting': {
-    what: "Reforecasting on the same twin as the engines. Planning suites run on offline extracts of " +
-      "actuarial output; a replan is a two-week email chain. Here the plan sits on the same " +
-      "lakehouse — the what-if levers already exist in the Solvency and IFRS 17 screens, so this is " +
-      "largely orchestration + presentation of machinery already built.",
-    persona: "CFO / FP&A",
-    canonical_question: "Reforecast the year under the new loss-ratio assumption — while we're still in the meeting.",
+    what: "Reforecasting on the same lakehouse as the actuarial engines, so a replan can happen while " +
+      "the assumption is still being discussed. The what-if levers already exist in the Solvency II " +
+      "and IFRS 17 screens; this brings them together into a planning view that stays close to live " +
+      "actuals, complementing the existing planning process.",
+    persona: "Chief Financial Officer / FP&A",
+    canonical_question: "Can we reforecast the year under a new loss-ratio assumption while we're still in the meeting?",
     workbench_capabilities: [
-      "Reforecast on live actuals, not offline extracts — the plan knows the moment actuals move.",
-      "What-if levers reused from the Solvency II and IFRS 17 screens — no new engine to build.",
-      "Plan-vs-actual variance surfaced continuously; governed scenario versions with lineage.",
+      "Reforecast on live actuals rather than offline extracts.",
+      "What-if levers reused from the Solvency II and IFRS 17 screens.",
+      "Plan-versus-actual variance kept close to the source, with governed scenario versions.",
     ],
-    reverse_kill_shots: [
-      "When actuals moved last month, how long until your plan knew?",
-      "Replan under a new loss-ratio assumption now, in this meeting, with the workings.",
-    ],
-    parity_posture: "Concede: the planning-suite workflow and the CFO champions who love it (hostile terrain). Win: the plan living on the same twin as the engines.",
-    data_dependency: "Existing Solvency + IFRS 17 what-if machinery.",
-    stub_grade: "S0 — not a core persona, but the ask ('can you do planning?') is common and the honest answer is strong, so the spec should exist.",
     adjacent_links: [],
   },
 
   'financial-crime-siu': {
-    what: "The cross-domain fraud ring. The claims fraud agent already exists; a standalone SIU " +
-      "workbench is only justified by the story point solutions can't tell — the ring that lives " +
-      "across quote manipulation, claims patterns, payee networks and (WP6) coverholder anomalies, " +
-      "in one graph. AML / KYC screening depth stays out (specialist ground, conceded).",
-    persona: "Head of Counter-Fraud / SIU",
-    canonical_question: "Your tool scores a claim; show me the network that scored the claim, the quote, and the payee together.",
+    what: "A cross-domain view of financial-crime risk, connecting signals that usually sit in " +
+      "separate places — quote patterns, claims patterns, payee networks and coverholder anomalies — " +
+      "into one governed graph. It builds on the existing claims fraud detection rather than replacing " +
+      "it, adding the network picture across products and lifecycle stages. Specialist AML / KYC " +
+      "screening stays with the dedicated tools an insurer already uses.",
+    persona: "Head of Counter-Fraud / Special Investigations",
+    canonical_question: "Can we see the network behind a claim — the quote, the payee, the connected parties — not just a score on the single claim?",
     workbench_capabilities: [
-      "A cross-domain ring graph — quote × claim × payee × coverholder — in one governed view.",
-      "Builds on the existing claims fraud agent rather than replacing it.",
-      "Network scoring, not single-claim scoring: the ring across products and lifecycle stages.",
-      "Governed under Unity Catalog — every link traceable.",
+      "A ring graph connecting quote, claim, payee and coverholder in one governed view.",
+      "Builds on the existing claims fraud detection.",
+      "Network-level scoring across products and lifecycle stages, alongside single-claim scoring.",
+      "Governed under Unity Catalog, every link traceable.",
     ],
-    reverse_kill_shots: [
-      "Your tool scores a claim; show me the network behind the claim, the quote and the payee together.",
-      "Which ring spans products and lifecycle stages your point solution never joins?",
-    ],
-    parity_posture: "Concede: AML / KYC screening depth (specialist, conceded). Win: the cross-domain ring the claims-only tools never see.",
-    data_dependency: "Existing claims + quote data; richer with WP6 coverholder anomalies.",
-    stub_grade: "S0. → S1 on a counter-fraud-led ask.",
     adjacent_links: [],
   },
 
   'climate-orsa': {
-    what: "A living climate scenario, not a PDF. Consultancies sell static deliverables — the " +
-      "scenario dies the day the deck lands. This is a scenario layer over exposure (the Exposure & " +
-      "Event Response machinery) + assets (WP3) + a transition-risk overlay on the corporate book, " +
-      "re-runnable on this year's book today. Exposure shipping first makes this a scenario pack " +
-      "before it's an app.",
-    persona: "CRO / Chief Actuary / Sustainability",
-    canonical_question: "Re-run last year's climate ORSA on this year's book — today.",
+    what: "A climate scenario that stays current rather than fixed at a point in time — a scenario " +
+      "layer over the exposure view and the asset side, with a transition-risk overlay on the " +
+      "corporate book, re-runnable on the current book on demand. It complements consultancy-led " +
+      "climate work by keeping the numbers up to date between engagements.",
+    persona: "Chief Risk Officer / Chief Actuary / Head of Sustainability",
+    canonical_question: "Can we re-run last year's climate ORSA on this year's book, on demand?",
     workbench_capabilities: [
-      "A scenario layer over the Exposure & Event Response machinery + WP3 assets.",
+      "A scenario layer over the exposure view and the asset side.",
       "A transition-risk overlay on the corporate book.",
-      "A re-runnable climate ORSA — this year's book, today, not last March's PDF.",
-      "CSRD-aligned governed outputs with lineage.",
+      "A climate ORSA that can be re-run on the current book on demand.",
+      "CSRD-aligned, governed outputs with lineage.",
     ],
-    reverse_kill_shots: [
-      "Re-run last year's climate ORSA on this year's book — today.",
-      "Your climate scenario is a PDF from March; where does it update when the book moves?",
-    ],
-    parity_posture: "Concede: nothing structural — consultancy PDF scenarios are the incumbent. Win: the scenario being live and re-runnable.",
-    data_dependency: "The Exposure & Event Response machinery + WP3 assets; EMEA regulatory tailwind is real but asks are consultancy-mediated and slow.",
-    stub_grade: "S0 — Exposure first makes this a scenario pack before it's an app.",
     adjacent_links: [],
   },
 

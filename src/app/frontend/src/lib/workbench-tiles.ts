@@ -195,32 +195,31 @@ export const TILES: Tile[] = [
     to: '/roadmap/customer-lake',
     subtitle: 'Agentic CDP · policyholder 360',
   },
-  // ── Roadmap band: candidates, not commitments. Each sited where incumbents are
-  // structurally weak (between-the-boxes / speed / economics / self-governance).
-  // Full thinking (canonical question, parity posture, reverse kill-shots) lives
-  // on the click-through page (roadmap-content.ts). See the playbook roadmap.
+  // ── Roadmap band: candidate workflows, shown as ideas the platform could grow
+  // into. Copy is customer- and vendor-facing — additive and cooperative, never
+  // positioned against another vendor. Detail lives in roadmap-content.ts.
   {
     slug: 'exposure-management',
     label: 'Exposure & Event Response',
-    description: 'The live cross-line exposure picture — gross, net of treaty, by coverholder — that no point solution owns.',
+    description: 'A live, cross-line view of exposure — gross, net of treaty and by coverholder — in one place.',
     status: 'roadmap',
     icon: CloudLightning,
     to: '/roadmap/exposure-management',
-    subtitle: 'Between the boxes · cat + treaty + coverholder',
+    subtitle: 'Cat, treaty & coverholder in one view',
   },
   {
     slug: 'delegated-authority',
     label: 'Delegated Authority',
-    description: 'Binders outside authority and coverholder books going bad — computed from bordereaux, not attested.',
+    description: 'Binders, breaches and coverholder performance — monitored live from the bordereaux.',
     status: 'roadmap',
     icon: ClipboardCheck,
     to: '/roadmap/delegated-authority',
-    subtitle: 'Binders & bordereaux · breach as analytics',
+    subtitle: 'Binders & bordereaux, monitored live',
   },
   {
     slug: 'conduct',
     label: 'Customer & Conduct',
-    description: 'Consumer Duty fair value computed from actual premium and claims — not an attestation spreadsheet.',
+    description: 'Consumer Duty fair value, computed from actual premium and claims experience.',
     status: 'roadmap',
     icon: Scale,
     to: '/roadmap/conduct',
@@ -229,16 +228,16 @@ export const TILES: Tile[] = [
   {
     slug: 'distribution',
     label: 'Distribution & Broker Analytics',
-    description: 'Rank brokers by the ultimate loss ratio of what they placed three years ago — and what commission rewards.',
+    description: 'Rank brokers by the ultimate loss ratio of the business they placed — and what the commission structure rewards.',
     status: 'roadmap',
     icon: Share2,
     to: '/roadmap/distribution',
-    subtitle: 'Broker outcomes, not activity',
+    subtitle: 'Broker performance through the cycle',
   },
   {
     slug: 'investments-alm',
     label: 'Investments & ALM',
-    description: 'Duration gap against the actual annuity book — the asset–liability join nobody’s platform owns.',
+    description: 'Duration gap against the actual annuity book — assets and liabilities in one view.',
     status: 'roadmap',
     icon: Landmark,
     to: '/roadmap/investments-alm',
@@ -247,7 +246,7 @@ export const TILES: Tile[] = [
   {
     slug: 'capital-model-governance',
     label: 'Capital & Model Governance',
-    description: 'Reproduce last quarter’s capital run and diff model versions — governance the incumbent can’t show.',
+    description: 'Reproduce any capital run and diff model versions, with full lineage.',
     status: 'roadmap',
     icon: Layers,
     to: '/roadmap/capital-model-governance',
@@ -265,7 +264,7 @@ export const TILES: Tile[] = [
   {
     slug: 'financial-crime-siu',
     label: 'Financial Crime / SIU',
-    description: 'The fraud ring across quote, claim and payee — the network point solutions never join.',
+    description: 'The fraud ring across quote, claim and payee — connected in one graph.',
     status: 'roadmap',
     icon: Fingerprint,
     to: '/roadmap/financial-crime-siu',
@@ -274,7 +273,7 @@ export const TILES: Tile[] = [
   {
     slug: 'climate-orsa',
     label: 'Climate & CSRD',
-    description: 'Re-run last year’s climate ORSA on this year’s book, today — not a PDF from March.',
+    description: 'Re-run your climate ORSA on this year’s book, on demand.',
     status: 'roadmap',
     icon: Leaf,
     to: '/roadmap/climate-orsa',
