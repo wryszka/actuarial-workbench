@@ -12,7 +12,7 @@
  * Tile metadata lives in workbench-tiles.ts so adding a tile is one file.
  */
 import { Link } from 'react-router-dom';
-import { ArrowRight, GraduationCap, Boxes, Compass } from 'lucide-react';
+import { ArrowRight, GraduationCap, Boxes, Compass, ChevronDown } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { TILES, type Tile } from '../lib/workbench-tiles';
 import { fetchConfig } from '../lib/config';
@@ -24,6 +24,7 @@ export default function Workbench() {
   // needs the entity name for the header.
   const [entity, setEntity] = useState<string>('Bricksurance SE');
   const [tiles, setTiles] = useState<Tile[]>(TILES);
+  const [roadmapOpen, setRoadmapOpen] = useState(false);
 
   useEffect(() => {
     fetchConfig()
@@ -98,24 +99,28 @@ export default function Workbench() {
         {tiles.filter((t) => t.status !== 'roadmap').map((t) => <TileCard key={t.slug} tile={t} />)}
       </div>
 
-      {/* Roadmap band — candidates, not commitments. Distinct from live/in-progress. */}
+      {/* Roadmap — a collapsible wide bar; unfold to see the candidate tiles. */}
       {tiles.some((t) => t.status === 'roadmap') && (
-        <section>
-          <div className="flex items-center gap-2.5 mb-3">
-            <div className="w-9 h-9 rounded-lg bg-violet-100 flex items-center justify-center shrink-0">
-              <Compass className="w-5 h-5 text-violet-600" />
+        <div>
+          <button
+            onClick={() => setRoadmapOpen((o) => !o)}
+            aria-expanded={roadmapOpen}
+            className="w-full group flex items-center gap-4 rounded-2xl border border-gray-200 bg-white px-5 py-4 hover:border-violet-300 hover:shadow-md hover:shadow-violet-100 transition-all">
+            <div className="w-11 h-11 rounded-xl bg-violet-100 flex items-center justify-center shrink-0">
+              <Compass className="w-5 h-5 text-violet-700" />
             </div>
-            <div className="min-w-0">
-              <h2 className="text-lg font-bold text-gray-900 leading-tight">Roadmap</h2>
-              <p className="text-[11.5px] text-gray-500 leading-snug">
-                Candidates, not commitments — each sited where an incumbent is structurally weak. Click any tile for the thinking: the question it answers, the parity posture, and the questions it lets us hand back.
-              </p>
+            <div className="flex-1 min-w-0 text-left">
+              <div className="text-sm font-bold text-gray-900">Roadmap</div>
+              <div className="text-xs text-gray-500 mt-0.5">Where the workbench could go next.</div>
             </div>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 auto-rows-fr gap-3">
-            {tiles.filter((t) => t.status === 'roadmap').map((t) => <TileCard key={t.slug} tile={t} />)}
-          </div>
-        </section>
+            <ChevronDown className={`w-5 h-5 text-gray-400 shrink-0 transition-transform ${roadmapOpen ? 'rotate-180' : ''}`} />
+          </button>
+          {roadmapOpen && (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 auto-rows-fr gap-3 mt-3">
+              {tiles.filter((t) => t.status === 'roadmap').map((t) => <TileCard key={t.slug} tile={t} />)}
+            </div>
+          )}
+        </div>
       )}
 
       {/* Small projects — wide band leading to everything without a tile of its own */}
