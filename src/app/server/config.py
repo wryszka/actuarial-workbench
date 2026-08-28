@@ -56,6 +56,10 @@ def get_reserving_app_url() -> str:
     return _env("RESERVING_APP_URL")
 
 
+def get_document_gateway_app_url() -> str:
+    return _env("DOCUMENT_GATEWAY_APP_URL")
+
+
 def get_gtm_cockpit_url() -> str:
     return _env("GTM_COCKPIT_URL")
 
@@ -96,6 +100,7 @@ def hub_config() -> dict:
         "underwriting_app_url": get_underwriting_app_url(),
         "ifrs17_app_url": get_ifrs17_app_url(),
         "reserving_app_url": get_reserving_app_url(),
+        "document_gateway_app_url": get_document_gateway_app_url(),
         "gtm_cockpit_url": get_gtm_cockpit_url(),
         # Workspace base + catalog for accelerator deep links.
         "workspace_host": _env("WORKSPACE_HOST"),

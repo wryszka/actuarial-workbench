@@ -55,6 +55,8 @@ export const DEFAULT_IFRS17_APP_URL =
   'https://ifrs17-workbench-7474656169654171.aws.databricksapps.com';
 export const DEFAULT_RESERVING_APP_URL =
   'https://reserving-workbench-7474656169654171.aws.databricksapps.com';
+export const DEFAULT_DOCUMENT_GATEWAY_APP_URL =
+  'https://document-gateway-7474656169654171.aws.databricksapps.com';
 
 // Tile `description` is the ONE-LINE hook shown on the card. The full write-up
 // lives on the click-through page (demo-pages.ts blurb, or roadmap-content.ts).
@@ -97,6 +99,15 @@ export const TILES: Tile[] = [
     icon: Stamp,
     to: '/demo/underwriting-workbench',
     subtitle: 'Commercial lines',
+  },
+  {
+    slug: 'bordereaux-ingestion',
+    label: 'Bordereaux Ingestion',
+    description: 'A counterparty file arrives — trust it, use it, and never map it twice. One governed loop for bordereaux, slips and exhibits.',
+    status: 'in_progress',
+    icon: Fingerprint,
+    to: '/demo/bordereaux-ingestion',
+    subtitle: 'Bordereaux, MRCs & exhibits — one gateway',
   },
   {
     slug: 'ifrs-17',

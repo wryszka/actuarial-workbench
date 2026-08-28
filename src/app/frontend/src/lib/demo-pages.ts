@@ -18,6 +18,7 @@ import {
   DEFAULT_SOLVENCY_APP_URL, DEFAULT_PRICING_APP_URL, DEFAULT_CLAIMS_APP_URL,
   DEFAULT_REINSURANCE_APP_URL, DEFAULT_LIFECAST_APP_URL,
   DEFAULT_UNDERWRITING_APP_URL, DEFAULT_IFRS17_APP_URL, DEFAULT_RESERVING_APP_URL,
+  DEFAULT_DOCUMENT_GATEWAY_APP_URL,
 } from './workbench-tiles';
 
 export interface DemoChoice {
@@ -53,6 +54,29 @@ export interface DemoPage {
 }
 
 export const DEMO_PAGES: Record<string, DemoPage> = {
+  'bordereaux-ingestion': {
+    slug: 'bordereaux-ingestion',
+    title: 'Bordereaux Ingestion',
+    subtitle: 'Document Gateway',
+    blurb:
+      'The front door for any counterparty document. A file lands and is fingerprinted against a ' +
+      'template registry into one of four states: known-and-unchanged sails straight through; a ' +
+      'drifted layout is quarantined with an AI-proposed remap you confirm once (the template ' +
+      'learns the new column and every future drop passes); a brand-new coverholder is recognised — ' +
+      'a full template proposed as mappings into the shared dictionary, confirmed field by field; ' +
+      'anything unreadable is quarantined with a reason. Extraction runs two ways in-platform — ' +
+      'deterministic anchors and a dictionary-constrained AI pass — and is reconciled field by ' +
+      'field, so nothing lands on one source’s word. Every assertion is captured with provenance ' +
+      '(source document, path, confidence, template and dictionary version, and the exact cell), ' +
+      'typed projections are materialised in the canonical exchange shape, and you can trace any ' +
+      'number back to the cell it came from. A completeness view shows who has and hasn’t reported; ' +
+      'an advise-only review agent triages the queue; and Genie answers over the whole book. The ' +
+      'same pipeline ingests a different document family with only a config change.',
+    appUrlKey: 'document_gateway_app_url',
+    appUrlFallback: DEFAULT_DOCUMENT_GATEWAY_APP_URL,
+    learnInApp: true,
+  },
+
   'agent-governance': {
     slug: 'agent-governance',
     title: 'Agent Governance',

@@ -57,6 +57,9 @@ variables:
   reserving_app_url:
     description: Deployed Reserving workbench Databricks App URL (derived from apps_domain_number)
     default: "https://reserving-workbench-${var.apps_domain_number}.aws.databricksapps.com"
+  document_gateway_app_url:
+    description: Deployed Document Gateway Databricks App URL (derived from apps_domain_number)
+    default: "https://document-gateway-${var.apps_domain_number}.aws.databricksapps.com"
   gtm_cockpit_url:
     description: Deployed UKI Insurance GTM Cockpit Databricks App URL (derived from apps_domain_number)
     default: "https://gtm-cockpit-${var.apps_domain_number}.aws.databricksapps.com"
