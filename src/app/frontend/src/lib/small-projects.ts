@@ -27,6 +27,19 @@ export interface SmallProject {
 
 export const SMALL_PROJECTS: SmallProject[] = [
   {
+    title: 'Finance Analytics Accelerator',
+    description: "A finance team's whole quote-to-renewal book on one governed platform — 43 real questions answered in plain English (Genie), on a live AI/BI dashboard, built with no code (Lakeflow Designer) and forecast forward (ai_forecast). The desktop-ETL / Alteryx displacement story. Fully synthetic data.",
+    tag: 'Finance / Designer + Genie',
+    links: [
+      { label: 'Run doc', href: 'https://docs.google.com/document/d/14gR9Jcq2w4oq6wRJSe9DF8WFMydw_Ent-OcjfdRcScg/edit' },
+      { label: 'Genie', href: `${DEV_HOST}/genie/rooms/01f1aab1c4a61419b71907e4d2618cd5` },
+      { label: 'Dashboard', href: `${DEV_HOST}/dashboardsv3/01f1aab47e1e1476995836e3ed6757f1/published` },
+      { label: 'Notebooks', href: wsFolder('/Workspace/Shared/finance-analytics-accelerator') },
+      { label: 'Data', href: wsSchema('finance_analytics_demo') },
+      { label: 'GitHub', href: 'https://github.com/wryszka/finance-analytics-accelerator' },
+    ],
+  },
+  {
     title: 'H&B renewal workbench',
     description: 'US Health & Benefits underwriting — a fully-insured medical renewal exhibit reproduced as a live engine, with what-if negotiation levers (trend, pooling, credibility) and a Claude-generated deal summary. Fully synthetic data.',
     tag: 'Underwriting / H&B',
