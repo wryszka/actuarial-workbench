@@ -31,7 +31,7 @@ export const SMALL_PROJECTS: SmallProject[] = [
     description: "A finance team's whole quote-to-renewal book on one governed platform — 43 real questions answered in plain English (Genie), on a live AI/BI dashboard, built with no code (Lakeflow Designer) and forecast forward (ai_forecast). The desktop-ETL / Alteryx displacement story. Fully synthetic data.",
     tag: 'Finance / Designer + Genie',
     links: [
-      { label: 'Run doc', href: 'https://docs.google.com/document/d/14gR9Jcq2w4oq6wRJSe9DF8WFMydw_Ent-OcjfdRcScg/edit' },
+      { label: 'Run doc', href: 'https://docs.google.com/document/d/12ivRWfHLrkZ--Gs1FIXvwX5BZy_t3vSD35VvTTK3snA/edit' },
       { label: 'Genie', href: `${DEV_HOST}/genie/rooms/01f1aab1c4a61419b71907e4d2618cd5` },
       { label: 'Dashboard', href: `${DEV_HOST}/dashboardsv3/01f1aab47e1e1476995836e3ed6757f1/published` },
       { label: 'Notebooks', href: wsFolder('/Workspace/Shared/finance-analytics-accelerator') },
