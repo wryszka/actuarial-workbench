@@ -133,4 +133,12 @@ export const SMALL_PROJECTS: SmallProject[] = [
       { label: 'Open app', href: 'https://wtw-hub-demo-7474659673789953.aws.databricksapps.com' },
     ],
   },
+  {
+    title: 'Videos',
+    description: 'Demo video scripts and run-throughs for the workbenches — talk track, step-by-step click-path and pre-flight per video, numbered so the order holds. Optimization Parts 1 & 2 scripted; more to come.',
+    tag: 'Enablement',
+    links: [
+      { label: 'Scripts doc', href: 'https://docs.google.com/document/d/1cJ9Y2TjwRocLTv4vR1CmwdbsYeZTFIII2Ju2sBDwL8I/edit' },
+    ],
+  },
 ];
