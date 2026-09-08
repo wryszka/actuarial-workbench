@@ -189,6 +189,23 @@ function TileCard({ tile }: { tile: Tile }) {
         </div>
       </>
     );
+    // With a secondary "beta" link we can't nest two anchors — use a stretched
+    // primary link (invisible overlay covering the card) with the beta pill on top.
+    if (tile.beta) {
+      const stretched = isExternal
+        ? <a href={tile.to} target="_blank" rel="noopener noreferrer" className="absolute inset-0 rounded-xl" aria-label={`Open ${tile.label}`} />
+        : <Link to={tile.to} className="absolute inset-0 rounded-xl" aria-label={`Open ${tile.label}`} />;
+      return (
+        <div className={`${containerCls} relative`}>
+          {stretched}
+          <div className="relative z-10 pointer-events-none flex flex-col flex-1">{inner}</div>
+          <a href={tile.beta.to} target="_blank" rel="noopener noreferrer"
+             className="relative z-10 mt-2 self-start inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200 hover:bg-amber-200 transition-colors">
+            {tile.beta.label} <ArrowRight className="w-3 h-3" />
+          </a>
+        </div>
+      );
+    }
     return isExternal
       ? <a href={tile.to} target="_blank" rel="noopener noreferrer" className={containerCls}>{inner}</a>
       : <Link to={tile.to} className={containerCls}>{inner}</Link>;

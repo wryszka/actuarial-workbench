@@ -16,7 +16,7 @@ import {
   Code2, Table2, HeartPulse, Waypoints, UsersRound,
   Stamp, GraduationCap, ShieldCheck, Building2,
   CloudLightning, ClipboardCheck, Scale, Share2, Landmark,
-  Layers, CalendarClock, Fingerprint, Leaf, FlaskConical,
+  Layers, CalendarClock, Fingerprint, Leaf,
 } from 'lucide-react';
 
 export type TileStatus = 'live' | 'in_progress' | 'roadmap' | 'contact';
@@ -31,6 +31,7 @@ export interface Tile {
   accent?: 'blue';                 // live tile colour palette
   subtitle?: string;               // optional small line under the title (e.g. entity)
   photo?: string;                  // contact tile — path to a headshot in public/
+  beta?: { label: string; to: string };  // optional secondary link inside the card (e.g. a gen2 preview app)
 }
 
 // Static fallback URLs for the live tiles. These are overridden at runtime by
@@ -94,16 +95,7 @@ export const TILES: Tile[] = [
     to: '/demo/pricing',
     accent: 'blue',
     subtitle: 'Commercial motor',
-  },
-  {
-    slug: 'pricing-gen2',
-    label: 'gen2 Beta',
-    description: 'Next-gen pricing workbench — governed optimiser, MCP tool surface and platform-native gates. Preview build.',
-    status: 'live',
-    icon: FlaskConical,
-    to: PRICING_GEN2_APP_URL,   // direct external link (separate pricingv2 workspace)
-    accent: 'blue',
-    subtitle: 'Pricing workbench · preview',
+    beta: { label: 'gen2 Beta', to: PRICING_GEN2_APP_URL },
   },
   {
     slug: 'underwriting-workbench',
