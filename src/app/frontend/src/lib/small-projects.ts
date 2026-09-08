@@ -40,6 +40,17 @@ export const SMALL_PROJECTS: SmallProject[] = [
     ],
   },
   {
+    title: 'Designer Recon Accelerator',
+    description: 'Finance & audit reconciliation off the desktop ETL tool: cash matching (bank rec that nets to zero, exceptions flagged) and a control sheet (branches that tie back to the whole with 0.00 variance) built no-code on Lakeflow Designer with parity to the penny, plus scheduled automation (file staging + fixed-width/contra) via Jobs, Autoloader and Unity Catalog audit. Fully synthetic data.',
+    tag: 'Finance / Designer',
+    links: [
+      { label: 'Run doc', href: 'https://docs.google.com/document/d/1xZPZCOJQ802SGWm5k6B6DSqmkaBiOfKThu4ZeME_vF8/edit' },
+      { label: 'Notebooks', href: wsFolder('/Workspace/Shared/designer-recon-accelerator') },
+      { label: 'Data', href: wsSchema('designer_recon_demo') },
+      { label: 'GitHub', href: 'https://github.com/wryszka/designer-recon-accelerator' },
+    ],
+  },
+  {
     title: 'H&B renewal workbench',
     description: 'US Health & Benefits underwriting — a fully-insured medical renewal exhibit reproduced as a live engine, with what-if negotiation levers (trend, pooling, credibility) and a Claude-generated deal summary. Fully synthetic data.',
     tag: 'Underwriting / H&B',
