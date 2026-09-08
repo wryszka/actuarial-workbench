@@ -16,7 +16,7 @@ import {
   Code2, Table2, HeartPulse, Waypoints, UsersRound,
   Stamp, GraduationCap, ShieldCheck, Building2,
   CloudLightning, ClipboardCheck, Scale, Share2, Landmark,
-  Layers, CalendarClock, Fingerprint, Leaf,
+  Layers, CalendarClock, Fingerprint, Leaf, FlaskConical,
 } from 'lucide-react';
 
 export type TileStatus = 'live' | 'in_progress' | 'roadmap' | 'contact';
@@ -41,6 +41,10 @@ export const DEFAULT_SOLVENCY_APP_URL =
   'https://solvency2-workbench-7474656169654171.aws.databricksapps.com';
 export const DEFAULT_PRICING_APP_URL =
   'https://pricing-workbench-7474656169654171.aws.databricksapps.com/';
+// gen2 is a separate FEVM workspace (pricingv2) with a fixed deployment — a
+// direct external link, not env-driven per hub workspace.
+export const PRICING_GEN2_APP_URL =
+  'https://pricing-workbench-gen2-7474655676955816.aws.databricksapps.com';
 export const DEFAULT_CLAIMS_APP_URL =
   'https://claims-workbench-7474656169654171.aws.databricksapps.com';
 export const DEFAULT_REINSURANCE_APP_URL =
@@ -90,6 +94,16 @@ export const TILES: Tile[] = [
     to: '/demo/pricing',
     accent: 'blue',
     subtitle: 'Commercial motor',
+  },
+  {
+    slug: 'pricing-gen2',
+    label: 'gen2 Beta',
+    description: 'Next-gen pricing workbench — governed optimiser, MCP tool surface and platform-native gates. Preview build.',
+    status: 'live',
+    icon: FlaskConical,
+    to: PRICING_GEN2_APP_URL,   // direct external link (separate pricingv2 workspace)
+    accent: 'blue',
+    subtitle: 'Pricing workbench · preview',
   },
   {
     slug: 'underwriting-workbench',
