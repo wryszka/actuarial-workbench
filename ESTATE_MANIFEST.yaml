@@ -46,6 +46,7 @@ group:
     ifrs17:       {headline_tool: cockpit,            attention_tool: recon}
     underwriting: {headline_tool: control_tower,      attention_tool: ref_discipline}
     reinsurance:  {headline_tool: ct_overview,        attention_tool: ct_capital}
+    claim-to-confidence: {headline_tool: read_estimates, attention_tool: read_flagged_items}
 
 nodes:
   # ── Live for the group: standard /api/mcp + Agent Interface + real audit source ──
@@ -124,6 +125,27 @@ nodes:
         contracts_url: https://ifrs17-workbench-7474656169654171.aws.databricksapps.com/#agent
     spine:
       keys_published: [group_id]
+
+  # ── Connected journey: one claim correction → reserve → reinsurance → finance ──
+  - id: claim-to-confidence
+    name: Claim to Confidence
+    repo: wryszka/claim-to-confidence
+    status: live
+    app_url: https://claim-to-confidence-7474656169654171.aws.databricksapps.com
+    local_tower_url: https://claim-to-confidence-7474656169654171.aws.databricksapps.com
+    published_views:
+      headline: lr_dev_aws_us_catalog.claim_to_confidence.vw_group_headline   # journey KPIs (real published view)
+      health: lr_dev_aws_us_catalog.claim_to_confidence.vw_group_health       # control/quality status
+    audit_source: lr_dev_aws_us_catalog.claim_to_confidence.`7_gov_audit_event`
+    mcp:
+      - name: claim-to-confidence
+        kind: custom-app
+        transport: jsonrpc
+        endpoint: https://claim-to-confidence-7474656169654171.aws.databricksapps.com/api/mcp
+        profile: internal
+        contracts_url: https://claim-to-confidence-7474656169654171.aws.databricksapps.com/api/mcp/manifest
+    spine:
+      keys_published: [claim_id, policy_number, accident_year]
 
   # ── Roadmap for the group: app may be deployed, but not yet group-wired ──────
   # (no standard /api/mcp + published views + audit source consumable by the
@@ -227,3 +249,5 @@ edges:
   - {from: reserving,    to: ifrs17,     via: accident_year,      status: planned}
   - {from: underwriting, to: claims,     via: policy_id,          status: planned}
   - {from: reinsurance,  to: claims,     via: treaty_id,          status: planned}
+  - {from: claims,       to: claim-to-confidence, via: claim_id,   status: planned}
+  - {from: claim-to-confidence, to: reinsurance,  via: treaty_id,  status: planned}
