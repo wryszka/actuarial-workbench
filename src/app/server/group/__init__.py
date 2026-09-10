@@ -452,6 +452,79 @@ def _adapters() -> dict:
     return (manifest().get("group", {}) or {}).get("adapters", {}) or {}
 
 
+# ── Regulatory & Resilience lens (DORA + EU AI Act) ──────────────────────────
+# AGGREGATE and ROUTE, never recompute. AI Act + Solvency II posture is READ from
+# Agent Atlas (the agent-compliance cockpit; never modified) and rolled up here;
+# the DORA register / functions / incidents are manifest declarations + a scan of
+# the audit union. Everything is cached (warm-first) so the page is instant and
+# stays answerable if Atlas is briefly unreachable; deep-links to Atlas always work.
+def _regulatory() -> dict:
+    return manifest().get("regulatory", {}) or {}
+
+
+def _atlas_base() -> str:
+    a = _regulatory().get("atlas", {}) or {}
+    env = a.get("base_url_env")
+    return ((os.getenv(env) if env else None) or a.get("default_url") or "").rstrip("/")
+
+
+def _atlas_get(path: str, timeout: int = 20):
+    base = _atlas_base()
+    if not base:
+        raise RuntimeError("atlas not configured")
+    _, token = _host_token()
+    req = urllib.request.Request(base + path, headers={**token})
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        return json.loads(r.read().decode())
+
+
+def _cache_put(key: str, data) -> None:
+    _CACHE[key] = {"data": data, "as_of": _now()}
+    _snapshot_save(key, data)
+
+
+def _scan_incidents() -> list[dict]:
+    """DORA Pillar 2 — advise-only candidate incidents from the audit union: non-OK
+    outcomes over the last 30 days, grouped, with a PROPOSED severity from the
+    manifest thresholds. Never auto-reported; a human confirms."""
+    thr = _regulatory().get("incident_thresholds", {}) or {}
+    maj = (thr.get("major") or {}).get("clients_affected", 5000)
+    sig = (thr.get("significant") or {}).get("clients_affected", 500)
+    sql = (f"WITH u AS ({_audit_union_sql()}) "
+           "SELECT node, outcome, count(*) AS n, CAST(max(ts) AS string) AS last_ts FROM u "
+           "WHERE lower(coalesce(outcome,'')) NOT IN ('ok','success','allowed','pass','') "
+           "AND ts >= current_timestamp() - INTERVAL 30 DAYS "
+           "GROUP BY node, outcome ORDER BY n DESC LIMIT 50")
+    rows = _sql(sql).get("rows", [])
+    out = []
+    for node, outcome, n, last_ts in rows:
+        n = int(n or 0)
+        sev = "major" if n >= maj else "significant" if n >= sig else "minor"
+        out.append({"node": node, "outcome": outcome, "count": n, "last_ts": last_ts,
+                    "proposed_severity": sev, "status": "unconfirmed"})
+    return out
+
+
+def regulatory_warm() -> dict:
+    """Best-effort: cache Atlas posture (read-only) + the DORA incident scan."""
+    got = {"atlas_summary": False, "posture": False, "incidents": False}
+    if not _regulatory():
+        return got
+    try:
+        _cache_put("regulatory:atlas_summary", _atlas_get("/api/estate/summary")); got["atlas_summary"] = True
+    except Exception as e:
+        logger.info("group: atlas summary unreachable: %s", str(e)[:120])
+    try:
+        _cache_put("regulatory:posture", _atlas_get("/api/compliance/posture")); got["posture"] = True
+    except Exception as e:
+        logger.info("group: atlas posture unreachable: %s", str(e)[:120])
+    try:
+        _cache_put("regulatory:incidents", _scan_incidents()); got["incidents"] = True
+    except Exception as e:
+        logger.info("group: incident scan failed: %s", str(e)[:120])
+    return got
+
+
 def _node_jsonrpc(node: dict) -> str | None:
     for s in node.get("mcp", []) or []:
         if s.get("transport") != "fastmcp" and not _is_todo(s.get("endpoint")):
@@ -600,9 +673,15 @@ def warmup() -> dict:
                 chat_warmed += 1
         except Exception:
             pass
+    # Regulatory & Resilience: cache Atlas posture (read-only) + the DORA incident scan.
+    try:
+        reg_warm = regulatory_warm()
+    except Exception:
+        reg_warm = {}
     _CACHE["warmed_at"] = {"data": _now(), "as_of": _now()}
     _snapshot_save("warmed_at", _now())
-    return {"ok": True, "warmed_at": _now(), "results": results, "chat_warmed": chat_warmed}
+    return {"ok": True, "warmed_at": _now(), "results": results,
+            "chat_warmed": chat_warmed, "regulatory": reg_warm}
 
 
 def _now() -> str:
@@ -692,6 +771,42 @@ async def api_posture():
     """Posture strip — headline metrics per node, served from the (persisted) cache."""
     warmed = cache_get("warmed_at")
     return {"metrics": _union_cache("posture"), "warmed_at": (warmed or {}).get("data"), "enabled": group_enabled()}
+
+
+@router.get("/api/group/regulatory")
+async def api_regulatory():
+    """Regulatory & Resilience lens (DORA + EU AI Act). AI Act + Solvency II posture
+    is rolled up from Agent Atlas (read-only, deep-linked); DORA register / functions
+    / incidents come from the manifest + a scan of the audit union. Cache-served."""
+    if not group_enabled():
+        return {"enabled": False}
+    reg = _regulatory()
+    atlas_url = _atlas_base()
+    posture = (cache_get("regulatory:posture") or {}).get("data")
+    summary = (cache_get("regulatory:atlas_summary") or {}).get("data")
+    incidents = (cache_get("regulatory:incidents") or {}).get("data") or []
+    warmed = cache_get("warmed_at")
+    frameworks = []
+    for f in (posture or []):
+        frameworks.append({k: f.get(k) for k in
+                           ("id", "short", "name", "authority", "scope",
+                            "inScope", "governed", "atRisk", "ready", "state")}
+                          | {"deep_link": atlas_url})
+    return {
+        "enabled": True,
+        "warmed_at": (warmed or {}).get("data"),
+        "atlas_url": atlas_url,
+        "atlas_reachable": posture is not None,
+        "frameworks": frameworks,               # EU AI Act + Solvency II, rolled up from Atlas
+        "estate_summary": summary,              # Atlas estate coverage (governed/shadow/dark)
+        "dora": {
+            "register": reg.get("ict_register", []),           # Register of Information (Pillar 4)
+            "critical_functions": reg.get("critical_functions", []),  # RTO/RPO/BIA (Pillar 1)
+            "incidents": incidents,                            # advise-only scan (Pillar 2)
+            "resilience_testing": (reg.get("ai_act_notes", {}) or {}).get("resilience_testing", "roadmap"),
+        },
+        "ai_act_notes": reg.get("ai_act_notes", {}),
+    }
 
 
 @router.get("/api/group/domain-status")

@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import {
   Building2, ArrowLeft, Server, ExternalLink, Bot, Send,
   Activity, ScrollText, Network, BookOpen, RefreshCw, Gauge, AlertTriangle, LayoutGrid,
+  ShieldCheck,
 } from 'lucide-react';
 
 const j = (u: string) => fetch(u).then((r) => r.json());
@@ -26,7 +27,7 @@ export default function GroupControlTower() {
   const [domain, setDomain] = useState<any>(null);
   const [attention, setAttention] = useState<any>(null);
   const [err, setErr] = useState<string | null>(null);
-  const [tab, setTab] = useState<'group' | 'estate'>('group');
+  const [tab, setTab] = useState<'group' | 'estate' | 'regulatory'>('group');
   const [warming, setWarming] = useState(false);
 
   const loadData = () => {
@@ -87,7 +88,7 @@ export default function GroupControlTower() {
       {manifest && (
         <>
           <div className="flex gap-1 border-b border-gray-200">
-            {([['group', 'Group view', Gauge], ['estate', 'Estate & agents', Network]] as const).map(([k, label, Icon]) => (
+            {([['group', 'Group view', Gauge], ['estate', 'Estate & agents', Network], ['regulatory', 'Regulatory', ShieldCheck]] as const).map(([k, label, Icon]) => (
               <button key={k} onClick={() => setTab(k)}
                 className={`inline-flex items-center gap-1.5 px-3 py-2 text-[13px] font-medium border-b-2 -mb-px transition-colors ${tab === k ? 'border-blue-600 text-blue-800' : 'border-transparent text-gray-500 hover:text-gray-800'}`}>
                 <Icon className="w-3.5 h-3.5" /> {label}
@@ -111,6 +112,7 @@ export default function GroupControlTower() {
               <AuditUnion nodes={live} />
             </>
           )}
+          {tab === 'regulatory' && <RegulatoryLens />}
           <Learn liveCount={live.length} roadmapCount={roadmap.length} />
         </>
       )}
@@ -464,6 +466,148 @@ function Chat({ identities, enabled, identityMode }: { identities: string[]; ena
         </div>
       )}
     </section>
+  );
+}
+
+/* ── Regulatory & Resilience lens (DORA + EU AI Act) ─────────────────────────
+   Aggregate-and-route: AI Act + Solvency II posture is rolled up from Agent Atlas
+   (read-only, deep-linked); DORA register/functions/incidents come from the
+   manifest + a scan of the audit union. Advisory, illustrative, cite-the-asset. */
+function RegulatoryLens() {
+  const [d, setD] = useState<any>(null);
+  const [err, setErr] = useState('');
+  useEffect(() => {
+    fetch('/api/group/regulatory').then((r) => r.json()).then(setD).catch((e) => setErr(String(e)));
+  }, []);
+  if (err) return <div className="text-[13px] text-red-700 bg-red-50 border border-red-200 rounded p-3">Regulatory API unavailable — {err}</div>;
+  if (!d) return <div className="text-sm text-gray-500">Loading regulatory posture…</div>;
+  if (!d.enabled) return <div className="text-[12.5px] text-gray-400 italic">Regulatory lens not configured in this workspace.</div>;
+  const dora = d.dora || {};
+  const es = d.estate_summary;
+  const crit = (v: string) => v === 'high' ? 'text-rose-700' : v === 'medium' ? 'text-amber-700' : 'text-gray-600';
+  const fwState = (s: string) => s === 'attention' ? STATUS_CHIP.amber : s === 'ready' || s === 'ok' ? STATUS_CHIP.green : 'bg-gray-100 text-gray-600 border-gray-200';
+  return (
+    <div className="space-y-5">
+      <div className="rounded-xl border border-amber-200 bg-amber-50 p-3 text-[12px] text-amber-800 leading-snug">
+        <strong>Advisory, illustrative posture.</strong> Synthetic demo estate. Not a legal determination — classifications are proposed for a human to confirm. This assembles evidence the estate already produces and works alongside your governance/risk/compliance tooling; it evidences and supports the legal steps (conformity assessment, fundamental-rights impact assessment, incident reporting) — it does not discharge them.
+      </div>
+
+      {/* EU AI Act + Solvency II — rolled up from Agent Atlas */}
+      <section>
+        <h2 className="text-sm font-bold text-gray-900 flex items-center gap-2 mb-2"><ShieldCheck className="w-4 h-4 text-blue-600" /> EU AI Act &amp; Solvency II — agent posture</h2>
+        {d.frameworks?.length ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {d.frameworks.map((f: any, i: number) => (
+              <a key={i} href={f.deep_link} target="_blank" rel="noopener noreferrer" className="rounded-xl border border-gray-200 bg-white p-3.5 hover:border-blue-300 hover:shadow-md transition-all flex flex-col">
+                <div className="flex items-center gap-2">
+                  <span className="text-[13px] font-bold text-gray-900">{f.short}</span>
+                  {f.state && <span className={`ml-auto text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${fwState(f.state)}`}>{f.state}</span>}
+                </div>
+                <div className="text-[11px] text-gray-500 mt-0.5">{f.authority} · {f.name}</div>
+                <div className="mt-2 flex items-end gap-3">
+                  <div><div className="text-2xl font-bold tracking-tight leading-none">{f.ready ?? '—'}<span className="text-sm text-gray-400">%</span></div><div className="text-[10px] text-gray-400 mt-0.5">ready</div></div>
+                  <div className="text-[11px] text-gray-600 mb-0.5">{f.governed ?? '—'} governed · {f.atRisk ?? 0} at risk · {f.inScope ?? '—'} in scope</div>
+                </div>
+                <div className="mt-2 inline-flex items-center gap-1 text-[11px] font-bold text-blue-700">Open in Agent Atlas <ExternalLink className="w-3 h-3" /></div>
+              </a>
+            ))}
+          </div>
+        ) : (
+          <div className="text-[12.5px] text-gray-600 border border-gray-200 rounded-xl bg-white p-3.5">
+            Agent Atlas runs the EU AI Act and Solvency II frameworks for the agent layer. The tower's server-to-server read isn't wired yet — {d.atlas_url ? <a href={d.atlas_url} target="_blank" rel="noopener noreferrer" className="text-blue-700 font-semibold inline-flex items-center gap-1">open in Agent Atlas <ExternalLink className="w-3 h-3" /></a> : 'link unavailable'}.
+          </div>
+        )}
+        {es && (
+          <div className="flex flex-wrap gap-1.5 mt-2 text-[11px]">
+            <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-200 font-semibold">{es.governed} governed</span>
+            <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 border border-amber-200 font-semibold">{es.shadow} shadow</span>
+            <span className="px-2 py-0.5 rounded-full bg-rose-100 text-rose-700 border border-rose-200 font-semibold">{es.dark} dark</span>
+            <span className="px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 border border-gray-200">{es.governedPct}% governed · {es.total} systems</span>
+          </div>
+        )}
+      </section>
+
+      {/* DORA */}
+      <section>
+        <h2 className="text-sm font-bold text-gray-900 flex items-center gap-2 mb-2"><Server className="w-4 h-4 text-blue-600" /> DORA — operational resilience</h2>
+
+        <div className="text-[11px] uppercase tracking-wider font-bold text-gray-500 mb-1">Register of Information · ICT third parties</div>
+        <div className="overflow-x-auto border border-gray-200 rounded-lg mb-3">
+          <table className="w-full text-[12px]">
+            <thead className="bg-gray-50 text-gray-500"><tr>
+              {['Provider', 'Service', 'Criticality', 'CTPP', 'Exit strategy'].map((h) => <th key={h} className="text-left font-semibold px-2.5 py-1.5">{h}</th>)}
+            </tr></thead>
+            <tbody className="divide-y divide-gray-100">
+              {(dora.register || []).map((r: any, i: number) => (
+                <tr key={i}>
+                  <td className="px-2.5 py-1.5 font-semibold text-gray-900">{r.provider}</td>
+                  <td className="px-2.5 py-1.5 text-gray-600">{r.service}</td>
+                  <td className={`px-2.5 py-1.5 font-semibold ${crit(r.criticality)}`}>{r.criticality}</td>
+                  <td className="px-2.5 py-1.5">{r.is_ctpp ? <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-blue-100 text-blue-700">CTPP</span> : '—'}</td>
+                  <td className="px-2.5 py-1.5 text-gray-500">{r.exit_strategy}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="text-[11px] uppercase tracking-wider font-bold text-gray-500 mb-1">Critical or important functions · recovery objectives</div>
+        <div className="overflow-x-auto border border-gray-200 rounded-lg mb-3">
+          <table className="w-full text-[12px]">
+            <thead className="bg-gray-50 text-gray-500"><tr>
+              {['Function', 'Workbenches', 'RTO', 'RPO', 'BIA'].map((h) => <th key={h} className="text-left font-semibold px-2.5 py-1.5">{h}</th>)}
+            </tr></thead>
+            <tbody className="divide-y divide-gray-100">
+              {(dora.critical_functions || []).map((f: any, i: number) => (
+                <tr key={i}>
+                  <td className="px-2.5 py-1.5 font-semibold text-gray-900">{f.function}</td>
+                  <td className="px-2.5 py-1.5 text-gray-500 font-mono text-[11px]">{(f.nodes || []).join(', ')}</td>
+                  <td className="px-2.5 py-1.5 text-gray-700">{f.rto}</td>
+                  <td className="px-2.5 py-1.5 text-gray-700">{f.rpo}</td>
+                  <td className="px-2.5 py-1.5"><span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${f.bia === 'documented' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>{f.bia}</span></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="flex flex-wrap gap-3 items-start">
+          <div className="flex-1 min-w-[220px]">
+            <div className="text-[11px] uppercase tracking-wider font-bold text-gray-500 mb-1">Incidents · advise-only scan (30d)</div>
+            {(dora.incidents || []).length ? (
+              <div className="border border-gray-200 rounded-lg divide-y divide-gray-100">
+                {dora.incidents.map((x: any, i: number) => (
+                  <div key={i} className="px-2.5 py-1.5 text-[12px] flex items-center gap-2">
+                    <span className={`text-[10px] font-bold uppercase px-1.5 py-0.5 rounded ${x.proposed_severity === 'major' ? 'bg-rose-100 text-rose-700' : x.proposed_severity === 'significant' ? 'bg-amber-100 text-amber-700' : 'bg-gray-100 text-gray-600'}`}>{x.proposed_severity}</span>
+                    <span className="font-mono text-slate-700">{x.node}·{x.outcome}</span>
+                    <span className="text-gray-400 ml-auto">{x.count}× · unconfirmed</span>
+                  </div>
+                ))}
+              </div>
+            ) : <div className="text-[12px] text-gray-400 italic border border-gray-200 rounded-lg p-2.5">No candidate incidents in the audit union over the last 30 days.</div>}
+          </div>
+          <div className="min-w-[180px]">
+            <div className="text-[11px] uppercase tracking-wider font-bold text-gray-500 mb-1">Resilience testing</div>
+            <div className="text-[12px] border border-gray-200 rounded-lg p-2.5">
+              TLPT / scenario testing <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-violet-100 text-violet-700 ml-1">{dora.resilience_testing || 'roadmap'}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* EU AI Act classification notes */}
+      {d.ai_act_notes && (
+        <section>
+          <h2 className="text-sm font-bold text-gray-900 flex items-center gap-2 mb-2"><ScrollText className="w-4 h-4 text-blue-600" /> EU AI Act — classification notes</h2>
+          <div className="text-[12px] text-gray-700 flex flex-wrap gap-2 items-center">
+            <span className="text-gray-500">High-risk candidates (Annex III 5c):</span>
+            {(d.ai_act_notes.high_risk_candidates || []).map((x: string) => <span key={x} className="px-2 py-0.5 rounded-full bg-rose-100 text-rose-700 border border-rose-200 font-semibold capitalize">{x}</span>)}
+            <span className="text-gray-500 ml-2">Limited-risk (Art 50 transparency):</span>
+            {(d.ai_act_notes.limited_risk || []).map((x: string) => <span key={x} className="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 capitalize">{x}</span>)}
+          </div>
+        </section>
+      )}
+    </div>
   );
 }
 

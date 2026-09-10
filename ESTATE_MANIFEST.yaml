@@ -48,6 +48,90 @@ group:
     reinsurance:  {headline_tool: ct_overview,        attention_tool: ct_capital}
     claim-to-confidence: {headline_tool: read_estimates, attention_tool: read_flagged_items}
 
+# ── Regulatory & Resilience lens (DORA + EU AI Act) ──────────────────────────
+# The tower AGGREGATES posture; it does not re-run compliance. Two sources:
+#  1. Agent Atlas — the estate's agent-compliance cockpit — already runs the
+#     EU AI Act and Solvency II frameworks for the AGENT layer. The tower READS
+#     its posture (read-only — Atlas is never modified) and deep-links into it.
+#  2. This block — the estate/operational declarations Atlas does NOT hold: the
+#     DORA ICT third-party register, critical-or-important functions with
+#     recovery objectives, and incident-classification thresholds.
+# Tower-owned regulatory state persists in the dedicated group_regulatory schema
+# (tagged bxc_project=group_regulatory). Nothing here is a legal determination —
+# classifications are illustrative and human-confirmed.
+regulatory:
+  store_schema: lr_dev_aws_us_catalog.group_regulatory
+  # Agent Atlas — read-only source of truth for the agent layer; deep-links use
+  # the same base. Framework ids match Atlas /api/frameworks.
+  atlas:
+    base_url_env: GROUP_ATLAS_URL
+    default_url: https://agent-atlas-7474656169654171.aws.databricksapps.com
+    frameworks: [eu-ai-act, solvency-2]         # surfaced (rolled up) from Atlas
+    reads: ["/api/estate/summary", "/api/compliance/posture", "/api/agents"]
+  # DORA Pillar 4 — Register of Information on ICT third-party dependencies.
+  # Declarations, not computed. is_ctpp = designated Critical ICT Third-Party
+  # Provider under the ESAs oversight framework.
+  ict_register:
+    - provider: Databricks
+      service: Data Intelligence Platform (Unity Catalog, compute, apps, model serving)
+      criticality: high
+      is_ctpp: true
+      exit_strategy: Open formats (Delta / Iceberg) + code-as-source; portable to another engine
+      concentration: primary
+    - provider: Amazon Web Services
+      service: Cloud infrastructure (compute, storage, network)
+      criticality: high
+      is_ctpp: true
+      exit_strategy: Data in open formats in customer-owned storage; multi-cloud portable
+      concentration: primary
+    - provider: Anthropic (via Databricks Foundation Model API)
+      service: Foundation-model inference (Claude) powering the estate's agents
+      criticality: medium
+      is_ctpp: false
+      exit_strategy: Model-agnostic gateway; swap to another served endpoint
+      concentration: shared
+  # DORA Pillar 1 — critical or important functions + recovery objectives.
+  # RTO = Recovery Time Objective; RPO = Recovery Point Objective; BIA = Business
+  # Impact Analysis status. Illustrative.
+  critical_functions:
+    - function: Regulatory reporting (Solvency II QRT, IFRS 17 close)
+      nodes: [solvency2, ifrs17]
+      rto: 24h
+      rpo: 4h
+      bia: documented
+    - function: Reserving & capital adequacy
+      nodes: [reserving]
+      rto: 48h
+      rpo: 24h
+      bia: documented
+    - function: Claims decisioning & settlement
+      nodes: [claims, claim-to-confidence]
+      rto: 4h
+      rpo: 1h
+      bia: documented
+    - function: Underwriting & pricing
+      nodes: [underwriting, pricing]
+      rto: 8h
+      rpo: 4h
+      bia: partial
+    - function: Reinsurance accumulation & capital
+      nodes: [reinsurance]
+      rto: 24h
+      rpo: 12h
+      bia: partial
+  # DORA Pillar 2 — thresholds the advise-only classifier uses to PROPOSE a
+  # severity (major | significant | minor). Always human-confirmed; never auto-reported.
+  incident_thresholds:
+    major:       {clients_affected: 5000, downtime_minutes: 120, data_loss: true}
+    significant: {clients_affected: 500,  downtime_minutes: 30,  data_loss: false}
+  # EU AI Act — Atlas holds the agent-layer classification. This records the
+  # ESTATE-level notes + high-risk candidates for a human to confirm. Annex
+  # III(5)(c): life & health pricing / individual risk assessment = high-risk.
+  ai_act_notes:
+    high_risk_candidates: [lifecast]                 # life/health pricing & individual risk assessment
+    limited_risk: [pricing, underwriting, claims]    # transparency (Art 50), not Annex III
+    resilience_testing: roadmap                      # DORA Pillar 3 (TLPT) — declared, not fabricated
+
 nodes:
   # ── Live for the group: standard /api/mcp + Agent Interface + real audit source ──
   - id: reserving
