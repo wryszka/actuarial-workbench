@@ -32,7 +32,7 @@ export const SMALL_PROJECTS: SmallProject[] = [
     tag: 'Finance / Designer + Genie',
     links: [
       { label: 'Run doc', href: 'https://docs.google.com/document/d/12ivRWfHLrkZ--Gs1FIXvwX5BZy_t3vSD35VvTTK3snA/edit' },
-      { label: 'Session agenda', href: 'https://docs.google.com/document/d/1UaLEN6eQARlaGMEbTulVcfGz0go37Woh0w-PmKFdcg4/edit' },
+      { label: 'Session plan', href: 'https://docs.google.com/document/d/1-eOFTkCNKSpsPZN1e6LhtRGL9svQaaHvco8UiH_dPRI/edit' },
       { label: 'Genie', href: `${DEV_HOST}/genie/rooms/01f1aab1c4a61419b71907e4d2618cd5` },
       { label: 'Dashboard', href: `${DEV_HOST}/dashboardsv3/01f1aab47e1e1476995836e3ed6757f1/published` },
       { label: 'Notebooks', href: wsFolder('/Workspace/Shared/finance-analytics-accelerator') },
