@@ -190,6 +190,7 @@ export const DEMO_PAGES: Record<string, DemoPage> = {
     previewImage: '/pricing-preview.png',
     runDocUrl:
       'https://docs.google.com/document/d/1VHVMrbwo1D2Gfl2NKnKJzosBlS-hltcFZ9guvBejUkM/edit',
+    clientVideoUrl: 'https://youtu.be/p9UTKOY7AKc',
   },
 
   'claims-workbench': {

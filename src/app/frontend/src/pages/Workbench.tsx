@@ -12,7 +12,7 @@
  * Tile metadata lives in workbench-tiles.ts so adding a tile is one file.
  */
 import { Link } from 'react-router-dom';
-import { ArrowRight, GraduationCap, Boxes, Compass, ChevronDown } from 'lucide-react';
+import { ArrowRight, GraduationCap, Boxes, Compass, ChevronDown, PlayCircle, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { TILES, type Tile } from '../lib/workbench-tiles';
 import { fetchConfig } from '../lib/config';
@@ -25,6 +25,7 @@ export default function Workbench() {
   const [entity, setEntity] = useState<string>('Bricksurance SE');
   const [tiles, setTiles] = useState<Tile[]>(TILES);
   const [roadmapOpen, setRoadmapOpen] = useState(false);
+  const [introOpen, setIntroOpen] = useState(false);
 
   useEffect(() => {
     fetchConfig()
@@ -53,6 +54,10 @@ export default function Workbench() {
             <p className="text-base text-gray-500 mt-1.5 leading-relaxed max-w-3xl">
               Real insurance business process demos, implemented fully in Databricks.
             </p>
+            <button onClick={() => setIntroOpen(true)}
+              className="mt-2.5 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3.5 py-1.5 text-[13px] font-semibold text-blue-700 hover:bg-blue-100 hover:border-blue-300 transition-colors">
+              <PlayCircle className="w-4 h-4" /> Watch the intro
+            </button>
           </div>
         </div>
         {/* Header cards — kept together so they share the top row with the title */}
@@ -149,6 +154,27 @@ export default function Workbench() {
       </p>
     </div>
     <ContactFooter />
+    {introOpen && (
+      <div onClick={() => setIntroOpen(false)}
+        className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4">
+        <div onClick={(e) => e.stopPropagation()} className="w-full max-w-4xl">
+          <div className="flex items-center justify-between mb-2">
+            <div className="text-white text-sm font-semibold">Bricksurance — introduction</div>
+            <button onClick={() => setIntroOpen(false)} className="text-white/80 hover:text-white inline-flex items-center gap-1 text-[13px]"><X className="w-4 h-4" /> Close</button>
+          </div>
+          <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-black">
+            <iframe className="absolute inset-0 w-full h-full"
+              src="https://www.youtube.com/embed/IGYRUns4Mps"
+              title="Bricksurance introduction"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+              allowFullScreen />
+          </div>
+          <div className="mt-2 text-center">
+            <a href="https://youtu.be/IGYRUns4Mps" target="_blank" rel="noopener noreferrer" className="text-[12px] text-white/70 hover:text-white underline">Open on YouTube ↗</a>
+          </div>
+        </div>
+      </div>
+    )}
     </>
   );
 }
