@@ -27,6 +27,17 @@ export interface SmallProject {
 
 export const SMALL_PROJECTS: SmallProject[] = [
   {
+    title: 'Price Optimisation (gen2)',
+    description: "An honest, teach-it-then-run-it price-optimisation demo in the gen2 pricing workbench. Chapter 1 explains optimisation on one segment (grandma-in-a-BMW) then runs that exact calculation as a Databricks job; Chapter 2 scales to a nine-segment portfolio with a learned+validated demand model, a mixed-integer solver under a sales floor, and a governed approve→release (deterministic recompute + append-only Unity Catalog record); Chapter 3 chooses a plan that holds up across uncertain-future scenarios. The recorded demo. Fully synthetic data.",
+    tag: 'Pricing / Optimisation',
+    links: [
+      { label: 'Open app', href: 'https://pricing-workbench-gen2-7474655676955816.aws.databricksapps.com/optimisation-demo' },
+      { label: 'Recording scripts', href: 'https://docs.google.com/document/d/1cJ9Y2TjwRocLTv4vR1CmwdbsYeZTFIII2Ju2sBDwL8I/edit?tab=t.rodiui7eho2j' },
+      { label: 'Runbook', href: 'https://github.com/wryszka/pricing-workbench-gen2/blob/main/docs/optimisation_demo_runbook.md' },
+      { label: 'GitHub', href: 'https://github.com/wryszka/pricing-workbench-gen2' },
+    ],
+  },
+  {
     title: 'Finance Analytics Accelerator',
     description: "A finance team's whole quote-to-renewal book on one governed platform — 43 real questions answered in plain English (Genie), on a live AI/BI dashboard, built with no code (Lakeflow Designer) and forecast forward (ai_forecast). The desktop-ETL / Alteryx displacement story. Fully synthetic data.",
     tag: 'Finance / Designer + Genie',
