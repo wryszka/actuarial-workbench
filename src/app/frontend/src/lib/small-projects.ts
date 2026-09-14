@@ -43,7 +43,7 @@ export const SMALL_PROJECTS: SmallProject[] = [
     tag: 'Finance / Designer + Genie',
     links: [
       { label: 'Run doc', href: 'https://docs.google.com/document/d/12ivRWfHLrkZ--Gs1FIXvwX5BZy_t3vSD35VvTTK3snA/edit' },
-      { label: 'Session plan', href: 'https://docs.google.com/document/d/1-eOFTkCNKSpsPZN1e6LhtRGL9svQaaHvco8UiH_dPRI/edit' },
+      { label: 'Session plan', href: 'https://docs.google.com/document/d/13tUUsXneQs1rMKv_bUZHk64SrZ8G32mC3K_S7Sry_FA/edit' },
       { label: 'Genie', href: `${DEV_HOST}/genie/rooms/01f1aab1c4a61419b71907e4d2618cd5` },
       { label: 'Dashboard', href: `${DEV_HOST}/dashboardsv3/01f1aab47e1e1476995836e3ed6757f1/published` },
       { label: 'Notebooks', href: wsFolder('/Workspace/Shared/finance-analytics-accelerator') },
@@ -56,8 +56,8 @@ export const SMALL_PROJECTS: SmallProject[] = [
     description: 'Finance & audit workflows off the desktop ETL tool: a monthly cash-flow rec that reads header cells from ~20 bank-rec workbooks and appends two columns to a rolling file (formatted Excel out), and a control sheet that sums ~6–7 category tables back to the whole at 0.00 variance — built no-code on Lakeflow Designer with parity to the penny — plus scheduled automation (pick-the-right-version file staging + fixed-width per-file contra) via Jobs, Autoloader and Unity Catalog audit. Fully synthetic data.',
     tag: 'Finance / Designer',
     links: [
-      { label: 'Run doc', href: 'https://docs.google.com/document/d/1YaM0B16UBL703yw6dedPPIY9off7YSxCW9KgiCQkPvw/edit' },
-      { label: 'Session plan', href: 'https://docs.google.com/document/d/1-eOFTkCNKSpsPZN1e6LhtRGL9svQaaHvco8UiH_dPRI/edit' },
+      { label: 'Run doc', href: 'https://docs.google.com/document/d/13Yt3g9WofWjSAnOW3pabvAPQQwM3CGta6qosffpU-IA/edit' },
+      { label: 'Session plan', href: 'https://docs.google.com/document/d/13tUUsXneQs1rMKv_bUZHk64SrZ8G32mC3K_S7Sry_FA/edit' },
       { label: 'Notebooks', href: wsFolder('/Workspace/Shared/designer-recon-accelerator') },
       { label: 'Data', href: wsSchema('designer_recon_demo') },
       { label: 'Files (Volume)', href: `${DEV_HOST}/explore/data/volumes/${DEV_CATALOG}/designer_recon_demo/recon_landing` },
