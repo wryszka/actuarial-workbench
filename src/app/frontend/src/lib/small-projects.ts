@@ -27,6 +27,19 @@ export interface SmallProject {
 
 export const SMALL_PROJECTS: SmallProject[] = [
   {
+    title: 'From Claim to Confidence',
+    description: "One €2m motor-claim correction traced as a governed decision across reserve → reinsurance → finance → downstream, on real Databricks. A nine-screen app opening on a plain-English Genie question, with the controls enforced live: a data-quality gate that blocks a bad feed, separation-of-duties approval (Unity Catalog denies the app the write), a stale-proposal check, reproduce-to-the-euro evidence, an honest downstream hand-off (no fabricated capital number), and a grounded, bounded Claude agent that refuses prompt injection. The 'AI accelerates the task, the governed platform operationalises the whole decision' — an Anthropic + Databricks story. Fully synthetic data (fictional insurer Bricksurance SE).",
+    tag: 'Reserving / Governance',
+    links: [
+      { label: 'Open app', href: 'https://claim-to-confidence-7474656169654171.aws.databricksapps.com' },
+      { label: 'Operator manual', href: 'https://docs.google.com/document/d/1QguqgNvrQKd53lZEy-Pcst7vJGoNWsWdrD0QHQxheEs/edit' },
+      { label: 'Spec', href: 'https://github.com/wryszka/claim-to-confidence/blob/main/docs/SPEC.md' },
+      { label: 'Genie', href: `${DEV_HOST}/genie/rooms/01f1b0f57ec01b5885ad6f7cf2cd75a4` },
+      { label: 'Data', href: wsSchema('claim_to_confidence') },
+      { label: 'GitHub', href: 'https://github.com/wryszka/claim-to-confidence' },
+    ],
+  },
+  {
     title: 'Price Optimisation (gen2)',
     description: "An honest, teach-it-then-run-it price-optimisation demo in the gen2 pricing workbench. Chapter 1 explains optimisation on one segment (grandma-in-a-BMW) then runs that exact calculation as a Databricks job; Chapter 2 scales to a nine-segment portfolio with a learned+validated demand model, a mixed-integer solver under a sales floor, and a governed approve→release (deterministic recompute + append-only Unity Catalog record); Chapter 3 chooses a plan that holds up across uncertain-future scenarios. The recorded demo. Fully synthetic data.",
     tag: 'Pricing / Optimisation',
