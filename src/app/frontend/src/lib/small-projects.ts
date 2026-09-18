@@ -152,6 +152,16 @@ export const SMALL_PROJECTS: SmallProject[] = [
     ],
   },
   {
+    title: 'Databricks Foundations Workshop',
+    description: "A full-day, hands-on introduction to Databricks for people who have never used it — build a small multi-tenant data product for the fictional company 'Keystone' end to end. Nine tracks: get in & query; ingest (file upload, Auto Loader, MERGE + Change Data Feed); govern across tenants (a Unity Catalog tour, isolation, row-level security & masking, managed-vs-external, time-travel/SCD2, clones, lineage, system tables); a declarative pipeline + scheduled job; Genie + dashboards + AI functions in SQL; Delta Sharing; a Lakebase-backed app; an LLM/MLOps taster; and an optional Snowflake-federation track. Every lab ships as a 'to solve' notebook plus a solution, with a click-by-click beginner runbook. Verified end-to-end on Databricks Free Edition. Fully synthetic data.",
+    tag: 'Enablement',
+    links: [
+      { label: 'Attendee runbook', href: 'https://docs.google.com/document/d/1TnbQasUgN6s1LMBjLM4ITRNuaISAR6ZHcgUnB8ByaYM/edit' },
+      { label: 'Use cases', href: 'https://docs.google.com/document/d/1SHEQdec3DxwWHbeUCWGQzPRU7kH5pjzpwNnsflBhFTg/edit' },
+      { label: 'GitHub', href: 'https://github.com/wryszka/databricks-foundations-workshop' },
+    ],
+  },
+  {
     title: 'Recon demo',
     description: 'SAS-to-Databricks output reconciliation — upload the monthly file, it lands in a UC Volume, a mapping-driven job classifies every field, and the exceptions surface on a cockpit dashboard. Customer-specific; code on request.',
     tag: 'Migration',
