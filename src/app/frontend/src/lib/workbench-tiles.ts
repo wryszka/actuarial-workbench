@@ -103,9 +103,10 @@ export const TILES: Tile[] = [
     slug: 'underwriting-workbench',
     label: 'Underwriting workbench',
     description: 'Submission to bind — triage, appetite, enrichment and quote, AI-assisted.',
-    status: 'in_progress',
+    status: 'live',
     icon: Stamp,
     to: '/demo/underwriting-workbench',
+    accent: 'blue',
     subtitle: 'Commercial lines',
   },
   {
@@ -206,6 +207,15 @@ export const TILES: Tile[] = [
     subtitle: 'ACORD data core',
   },
   {
+    slug: 'exposure-management',
+    label: 'Exposure & Event Response',
+    description: 'When an event is developing — which insured locations are in the footprint, exposure gross and net of treaty by coverholder, and who to tell.',
+    status: 'in_progress',
+    icon: CloudLightning,
+    to: DEFAULT_EXPOSURE_APP_URL,
+    subtitle: 'Bricksurance SE · wildfire, flood & windstorm',
+  },
+  {
     slug: 'customer-lake',
     label: 'CustomerLake',
     description: "Databricks' agentic CDP for insurance — a governed policyholder 360.",
@@ -217,15 +227,6 @@ export const TILES: Tile[] = [
   // ── Roadmap band: candidate workflows, shown as ideas the platform could grow
   // into. Copy is customer- and vendor-facing — additive and cooperative, never
   // positioned against another vendor. Detail lives in roadmap-content.ts.
-  {
-    slug: 'exposure-management',
-    label: 'Exposure & Event Response',
-    description: 'When an event is developing — which insured locations are in the footprint, exposure gross and net of treaty by coverholder, and who to tell.',
-    status: 'in_progress',
-    icon: CloudLightning,
-    to: DEFAULT_EXPOSURE_APP_URL,
-    subtitle: 'Bricksurance SE · wildfire, flood & windstorm',
-  },
   {
     slug: 'delegated-authority',
     label: 'Delegated Authority',
