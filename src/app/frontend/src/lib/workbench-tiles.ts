@@ -62,6 +62,8 @@ export const DEFAULT_RESERVING_APP_URL =
   'https://reserving-workbench-7474656169654171.aws.databricksapps.com';
 export const DEFAULT_DOCUMENT_GATEWAY_APP_URL =
   'https://document-gateway-7474656169654171.aws.databricksapps.com';
+export const DEFAULT_EXPOSURE_APP_URL =
+  'https://exposure-response-workbench-7474656169654171.aws.databricksapps.com';
 
 // Tile `description` is the ONE-LINE hook shown on the card. The full write-up
 // lives on the click-through page (demo-pages.ts blurb, or roadmap-content.ts).
@@ -218,11 +220,11 @@ export const TILES: Tile[] = [
   {
     slug: 'exposure-management',
     label: 'Exposure & Event Response',
-    description: 'A live, cross-line view of exposure — gross, net of treaty and by coverholder — in one place.',
-    status: 'roadmap',
+    description: 'When an event is developing — which insured locations are in the footprint, exposure gross and net of treaty by coverholder, and who to tell.',
+    status: 'in_progress',
     icon: CloudLightning,
-    to: '/roadmap/exposure-management',
-    subtitle: 'Cat, treaty & coverholder in one view',
+    to: DEFAULT_EXPOSURE_APP_URL,
+    subtitle: 'Bricksurance SE · wildfire, flood & windstorm',
   },
   {
     slug: 'delegated-authority',
