@@ -12,11 +12,12 @@
  * Tile metadata lives in workbench-tiles.ts so adding a tile is one file.
  */
 import { Link } from 'react-router-dom';
-import { ArrowRight, GraduationCap, Boxes, Compass, ChevronDown, PlayCircle, X } from 'lucide-react';
+import { ArrowRight, GraduationCap, Boxes, Compass, ChevronDown } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { TILES, type Tile } from '../lib/workbench-tiles';
 import { fetchConfig } from '../lib/config';
 import ContactFooter from '../components/ContactFooter';
+import VideoTile from '../components/VideoTile';
 
 export default function Workbench() {
   // Demo tiles route to in-hub landing pages (/demo/<slug>), which resolve the
@@ -25,7 +26,6 @@ export default function Workbench() {
   const [entity, setEntity] = useState<string>('Bricksurance SE');
   const [tiles, setTiles] = useState<Tile[]>(TILES);
   const [roadmapOpen, setRoadmapOpen] = useState(false);
-  const [introOpen, setIntroOpen] = useState(false);
 
   useEffect(() => {
     fetchConfig()
@@ -44,59 +44,45 @@ export default function Workbench() {
   return (
     <>
     <div className="max-w-6xl mx-auto p-6 space-y-7">
-      <header className="pt-2 flex items-start justify-between gap-4 flex-wrap">
-        <div className="min-w-0 flex-1 basis-72 flex items-center gap-4">
+      <header className="pt-2 flex items-start justify-between gap-6 flex-wrap">
+        <div className="min-w-0 flex-1 basis-80 flex items-start gap-4">
           <img src="/bricksurance-shield.png" alt="Bricksurance"
             className="h-20 w-auto object-contain shrink-0 hidden sm:block" />
           <div className="min-w-0">
             <div className="text-[11px] uppercase tracking-widest text-blue-700 font-bold">Actuarial Workbench</div>
             <h1 className="text-3xl font-bold text-gray-900 tracking-tight mt-1">Bricksurance — insurance on Databricks</h1>
-            <p className="text-base text-gray-500 mt-1.5 leading-relaxed max-w-3xl">
+            <p className="text-base text-gray-500 mt-1.5 leading-relaxed max-w-2xl">
               Real insurance business process demos, implemented fully in Databricks.
             </p>
-            <button onClick={() => setIntroOpen(true)}
-              className="mt-2.5 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3.5 py-1.5 text-[13px] font-semibold text-blue-700 hover:bg-blue-100 hover:border-blue-300 transition-colors">
-              <PlayCircle className="w-4 h-4" /> Watch the intro
-            </button>
+            {/* Academy + Team — moved out of the top-right (now the intro video) into small tiles here */}
+            <div className="mt-3 flex flex-wrap gap-2">
+              <a href="https://docs.google.com/presentation/d/1u6wyShLPEq8a6hcYC3dCr904GwQ6V7NYtJVUCZGFWzE/edit"
+                target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-2.5 rounded-xl border border-emerald-200 bg-white px-3 py-2 hover:border-emerald-300 hover:shadow-sm transition-all">
+                <div className="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center shrink-0">
+                  <GraduationCap className="w-4 h-4 text-emerald-700" />
+                </div>
+                <div className="leading-tight">
+                  <div className="text-[12px] font-bold text-gray-900">Bricksurance Academy</div>
+                  <div className="text-[10px] text-gray-500">Learn insurance with Laurence</div>
+                </div>
+              </a>
+              <Link to="/contact"
+                className="inline-flex items-center gap-2.5 rounded-xl border border-emerald-200 bg-white px-3 py-2 hover:border-emerald-300 hover:shadow-sm transition-all">
+                <img src="/bricksurance-logo.png" alt="Bricksurance" className="w-8 h-8 object-contain shrink-0" />
+                <div className="leading-tight">
+                  <div className="text-[12px] font-bold text-gray-900">Bricksurance Team</div>
+                  <div className="text-[10px] text-gray-500">Questions &amp; office hours</div>
+                </div>
+              </Link>
+            </div>
           </div>
         </div>
-        {/* Header cards — kept together so they share the top row with the title */}
-        <div className="flex gap-3 shrink-0 flex-wrap">
-          <a href="https://docs.google.com/presentation/d/1u6wyShLPEq8a6hcYC3dCr904GwQ6V7NYtJVUCZGFWzE/edit"
-            target="_blank" rel="noopener noreferrer"
-            className="w-56 bg-white border-2 border-emerald-200 rounded-2xl p-3.5 hover:border-emerald-300 hover:shadow-lg hover:shadow-emerald-100 transition-all flex flex-col group">
-            <div className="flex items-center gap-2.5">
-              <div className="w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center shrink-0">
-                <GraduationCap className="w-5 h-5 text-emerald-700" />
-              </div>
-              <div className="min-w-0">
-                <div className="text-[13px] font-bold text-gray-900 leading-tight">Bricksurance Academy</div>
-                <div className="text-[10px] text-gray-500 mt-0.5">Learn insurance with Laurence</div>
-              </div>
-            </div>
-            <div className="mt-2.5 inline-flex items-center gap-1 text-xs font-bold text-emerald-700">
-              Click for details <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-            </div>
-          </a>
-          <div className="w-64 flex flex-col gap-2">
-            <Link to="/contact"
-              className="w-full bg-white border-2 border-emerald-200 rounded-2xl p-3.5 hover:border-emerald-300 hover:shadow-lg hover:shadow-emerald-100 transition-all flex flex-col group">
-              <div className="flex items-center gap-2.5">
-                <img src="/bricksurance-logo.png" alt="Bricksurance"
-                  className="w-10 h-10 object-contain shrink-0" />
-                <div className="min-w-0">
-                  <div className="text-[13px] font-bold text-gray-900 leading-tight">Bricksurance Team</div>
-                  <div className="text-[10px] text-gray-500 mt-0.5">Questions &amp; office hours</div>
-                </div>
-              </div>
-              <p className="text-[11px] text-gray-600 mt-2 leading-snug">
-                Help, demos, first steps — or Friday office hours.
-              </p>
-              <div className="mt-1.5 inline-flex items-center gap-1 text-xs font-bold text-emerald-700">
-                Get in touch <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-              </div>
-            </Link>
-          </div>
+        {/* Intro video — prominent on the right */}
+        <div className="shrink-0 w-full sm:w-[22rem] lg:w-[26rem]">
+          <VideoTile youtubeId="IGYRUns4Mps" poster="/intro-video-poster.jpg"
+            label="Watch the intro" sublabel="Bricksurance — insurance on Databricks"
+            className="aspect-video" />
         </div>
       </header>
 
@@ -154,27 +140,6 @@ export default function Workbench() {
       </p>
     </div>
     <ContactFooter />
-    {introOpen && (
-      <div onClick={() => setIntroOpen(false)}
-        className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4">
-        <div onClick={(e) => e.stopPropagation()} className="w-full max-w-4xl">
-          <div className="flex items-center justify-between mb-2">
-            <div className="text-white text-sm font-semibold">Bricksurance — introduction</div>
-            <button onClick={() => setIntroOpen(false)} className="text-white/80 hover:text-white inline-flex items-center gap-1 text-[13px]"><X className="w-4 h-4" /> Close</button>
-          </div>
-          <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-black">
-            <iframe className="absolute inset-0 w-full h-full"
-              src="https://www.youtube.com/embed/IGYRUns4Mps"
-              title="Bricksurance introduction"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-              allowFullScreen />
-          </div>
-          <div className="mt-2 text-center">
-            <a href="https://youtu.be/IGYRUns4Mps" target="_blank" rel="noopener noreferrer" className="text-[12px] text-white/70 hover:text-white underline">Open on YouTube ↗</a>
-          </div>
-        </div>
-      </div>
-    )}
     </>
   );
 }

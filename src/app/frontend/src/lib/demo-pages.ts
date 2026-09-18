@@ -42,6 +42,7 @@ export interface DemoPage {
   appUrlKey?: keyof HubConfig;   // which /api/config field holds the app URL
   appUrlFallback?: string;       // used if config is unavailable
   previewImage?: string;         // screenshot shown on the Open-demo tile (path in public/)
+  videoPoster?: string;          // when set → new layout: demo | video-poster tile + wide "demo doc" tile below (path in public/)
   runDocUrl?: string;            // "demo run doc" link
   deckUrl?: string;              // extra resource card when set (deck or companion doc)
   deckLabel?: string;            // title of that card (default "First steps deck")
@@ -171,9 +172,10 @@ export const DEMO_PAGES: Record<string, DemoPage> = {
     appUrlKey: 'solvency_app_url',
     appUrlFallback: DEFAULT_SOLVENCY_APP_URL,
     previewImage: '/solvency-2-preview.png',
+    videoPoster: '/solvency-2-video-poster.jpg',
     runDocUrl:
       'https://docs.google.com/document/d/17P21XLBKiCQ4ErpI_PbqkoySns0hfAlR78B4_xaWUgM/edit',
-    clientVideoUrl: 'https://youtu.be/gqVdLiK4TNo',
+    clientVideoUrl: 'https://youtu.be/XTV6M5MYjfs',
     learnInApp: true,
   },
 
@@ -188,6 +190,7 @@ export const DEMO_PAGES: Record<string, DemoPage> = {
     appUrlKey: 'pricing_app_url',
     appUrlFallback: DEFAULT_PRICING_APP_URL,
     previewImage: '/pricing-preview.png',
+    videoPoster: '/pricing-video-poster.jpg',
     runDocUrl:
       'https://docs.google.com/document/d/1VHVMrbwo1D2Gfl2NKnKJzosBlS-hltcFZ9guvBejUkM/edit',
     clientVideoUrl: 'https://youtu.be/p9UTKOY7AKc',

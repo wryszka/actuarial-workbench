@@ -16,6 +16,7 @@ import { TILES } from '../lib/workbench-tiles';
 import { NEXT_STEPS } from '../lib/next-steps';
 import { fetchConfig, type HubConfig } from '../lib/config';
 import ContactFooter from '../components/ContactFooter';
+import VideoTile, { ytId } from '../components/VideoTile';
 
 export default function DemoLanding() {
   const { slug } = useParams<{ slug: string }>();
@@ -57,9 +58,68 @@ export default function DemoLanding() {
         )}
       </header>
 
-      {/* Two-choice layout: some demos offer more than one worked example.
-          The `primary` choice is the flagship — wide and dark; others compact. */}
-      {demo.choices?.length ? (
+      {/* Video-poster layout (pricing, solvency2): big demo square | big video square,
+          then a wide "demo doc" tile below. Scoped to demos that set videoPoster. */}
+      {demo.videoPoster ? (
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-stretch">
+            {appUrl && demo.previewImage ? (
+              <a href={appUrl} target="_blank" rel="noopener noreferrer"
+                className="relative rounded-2xl overflow-hidden bg-gray-900 group min-h-[18rem]">
+                <img src={demo.previewImage} alt={`${demo.title} demo`}
+                  className="absolute inset-0 w-full h-full object-cover object-left-top" />
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-gray-900/10" />
+                <div className="absolute inset-x-0 bottom-0 p-5 text-white flex items-center gap-3">
+                  <div className="w-11 h-11 rounded-xl bg-blue-500/30 backdrop-blur flex items-center justify-center shrink-0">
+                    <Rocket className="w-6 h-6 text-blue-200" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-xl font-bold tracking-tight">Open demo</div>
+                    <div className="text-[12px] text-gray-200">The running app — opens in a new tab</div>
+                  </div>
+                  <ArrowRight className="w-5 h-5 ml-auto shrink-0 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </a>
+            ) : appUrl ? (
+              <a href={appUrl} target="_blank" rel="noopener noreferrer"
+                className="rounded-2xl bg-gray-900 text-white hover:bg-gray-800 transition-colors group p-6 flex flex-col justify-between min-h-[18rem]">
+                <div className="w-14 h-14 rounded-xl bg-blue-500/20 flex items-center justify-center">
+                  <Rocket className="w-7 h-7 text-blue-300" />
+                </div>
+                <div>
+                  <div className="text-2xl font-bold tracking-tight">Open demo</div>
+                  <div className="text-sm text-gray-300 mt-1">The running app — opens in a new tab.</div>
+                  <div className="mt-3 inline-flex items-center gap-1.5 text-sm font-bold text-blue-300">
+                    Launch <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </div>
+              </a>
+            ) : (
+              <div className="rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 p-6 flex items-center justify-center text-sm text-slate-500 min-h-[18rem]">
+                App URL not configured for this workspace.
+              </div>
+            )}
+            <VideoTile youtubeId={ytId(demo.clientVideoUrl)} poster={demo.videoPoster}
+              label="Client-facing walkthrough" sublabel="Polished demo video — click to play"
+              className="min-h-[18rem]" />
+          </div>
+          {demo.runDocUrl && (
+            <a href={demo.runDocUrl} target="_blank" rel="noopener noreferrer"
+              className="flex items-center gap-4 rounded-2xl border border-gray-200 bg-white px-5 py-4 hover:border-blue-300 hover:bg-blue-50/40 transition-colors group">
+              <div className="w-11 h-11 rounded-xl bg-blue-100 flex items-center justify-center shrink-0">
+                <FileText className="w-5 h-5 text-blue-700" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="text-sm font-bold text-gray-900">Demo run doc</div>
+                <div className="text-xs text-gray-500 mt-0.5">Step-by-step guide to running this demo</div>
+              </div>
+              <div className="text-xs font-bold text-blue-700 inline-flex items-center gap-1 shrink-0">
+                Open doc <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </a>
+          )}
+        </div>
+      ) : demo.choices?.length ? (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-stretch">
           {demo.choices.map((c) => <ChoiceCard key={c.title} choice={c} />)}
         </div>
