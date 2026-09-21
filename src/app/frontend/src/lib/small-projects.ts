@@ -69,7 +69,7 @@ export const SMALL_PROJECTS: SmallProject[] = [
     description: 'Finance & audit workflows off the desktop ETL tool: a monthly cash-flow rec that reads header cells from ~20 bank-rec workbooks and appends two columns to a rolling file (formatted Excel out), and a control sheet that sums ~6–7 category tables back to the whole at 0.00 variance — built no-code on Lakeflow Designer with parity to the penny — plus scheduled automation (pick-the-right-version file staging + fixed-width per-file contra) via Jobs, Autoloader and Unity Catalog audit. Fully synthetic data.',
     tag: 'Finance / Designer',
     links: [
-      { label: 'Run doc', href: 'https://docs.google.com/document/d/1j-XXlBb1qKiQ6bEOi1KKiqGWT5knZVxeI4kJKZx76jk/edit' },
+      { label: 'Run doc', href: 'https://docs.google.com/document/d/1G8PnkyNgyQIKY6uVNZqS7TdlQEmwyi0UD8d5CZsxO2w/edit' },
       { label: 'Session plan', href: 'https://docs.google.com/document/d/13tUUsXneQs1rMKv_bUZHk64SrZ8G32mC3K_S7Sry_FA/edit' },
       { label: 'Notebooks', href: wsFolder('/Workspace/Shared/designer-recon-accelerator') },
       { label: 'Data', href: wsSchema('designer_recon_demo') },
