@@ -51,6 +51,18 @@ export const SMALL_PROJECTS: SmallProject[] = [
     ],
   },
   {
+    title: 'Rate Indications',
+    description: "A P&C rate-indication / assumption-setting & review workflow taken onto Databricks step by step — a demo of the journey, not an app tour. The actuary's spreadsheet → the same loss-ratio method lifted unchanged into governed notebooks and tables (the same indicated number reproduced) → versioned assumptions, an append-only audit trail, reproduce-any-number and server-side approval routing → and finally a self-service app. The same General Liability / Germany +6.6% carries through every step. Deterministic method (no ML in the calculation); Claude explains the result via the Foundation Model API; Genie answers questions over the book. European commercial P&C by default, config-driven to other books. Fully synthetic data (fictional insurer Bricksurance SE).",
+    tag: 'Pricing / Actuarial',
+    links: [
+      { label: 'Open app', href: 'https://rate-indications-workbench-7474656169654171.aws.databricksapps.com' },
+      { label: 'Demo journey', href: 'https://docs.google.com/document/d/1dfOj6NlGrvJxneyMlbR8YRID9GwbCkinys1NNrbK5rY/edit' },
+      { label: 'Genie', href: `${DEV_HOST}/genie/rooms/01f1b74bccf71a3599d56e67452bb182` },
+      { label: 'Data', href: wsSchema('rate_indications') },
+      { label: 'GitHub', href: 'https://github.com/wryszka/rate-indications-workbench' },
+    ],
+  },
+  {
     title: 'Finance Analytics Accelerator',
     description: "A finance team's whole quote-to-renewal book on one governed platform — 43 real questions answered in plain English (Genie), on a live AI/BI dashboard, built with no code (Lakeflow Designer) and forecast forward (ai_forecast). The desktop-ETL / Alteryx displacement story. Fully synthetic data.",
     tag: 'Finance / Designer + Genie',

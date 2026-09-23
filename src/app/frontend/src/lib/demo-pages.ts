@@ -18,7 +18,7 @@ import {
   DEFAULT_SOLVENCY_APP_URL, DEFAULT_PRICING_APP_URL, DEFAULT_CLAIMS_APP_URL,
   DEFAULT_REINSURANCE_APP_URL, DEFAULT_LIFECAST_APP_URL,
   DEFAULT_UNDERWRITING_APP_URL, DEFAULT_IFRS17_APP_URL, DEFAULT_RESERVING_APP_URL,
-  DEFAULT_DOCUMENT_GATEWAY_APP_URL, DEFAULT_RATE_INDICATIONS_APP_URL,
+  DEFAULT_DOCUMENT_GATEWAY_APP_URL,
 } from './workbench-tiles';
 
 export interface DemoChoice {
@@ -55,20 +55,6 @@ export interface DemoPage {
 }
 
 export const DEMO_PAGES: Record<string, DemoPage> = {
-  'rate-indications': {
-    slug: 'rate-indications',
-    title: 'Rate Indications & Assumption Setting',
-    subtitle: 'Bricksurance SE',
-    blurb:
-      "The pricing actuary's rate decision, governed end to end: review the current " +
-      'indication, change the assumptions driving it, watch the indicated rate change ' +
-      'recalculate and see exactly why it moved, compare scenarios, record a selected ' +
-      'rate versus the indicated rate, and run a Draft → Submitted → Reviewed → Approved ' +
-      'workflow with a fully reproducible audit trail. European commercial P&C by ' +
-      'default; the workbench is book-agnostic.',
-    appUrlFallback: DEFAULT_RATE_INDICATIONS_APP_URL,
-    learnInApp: true,
-  },
   'bordereaux-ingestion': {
     slug: 'bordereaux-ingestion',
     title: 'Bordereaux Ingestion',

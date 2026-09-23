@@ -16,7 +16,7 @@ import {
   Code2, Table2, HeartPulse, Waypoints, UsersRound,
   Stamp, GraduationCap, ShieldCheck, Building2,
   CloudLightning, ClipboardCheck, Scale, Share2, Landmark,
-  Layers, CalendarClock, Fingerprint, Leaf, Gauge,
+  Layers, CalendarClock, Fingerprint, Leaf,
 } from 'lucide-react';
 
 export type TileStatus = 'live' | 'in_progress' | 'roadmap' | 'contact';
@@ -64,8 +64,6 @@ export const DEFAULT_DOCUMENT_GATEWAY_APP_URL =
   'https://document-gateway-7474656169654171.aws.databricksapps.com';
 export const DEFAULT_EXPOSURE_APP_URL =
   'https://exposure-response-workbench-7474656169654171.aws.databricksapps.com';
-export const DEFAULT_RATE_INDICATIONS_APP_URL =
-  'https://rate-indications-workbench-7474656169654171.aws.databricksapps.com';
 
 // Tile `description` is the ONE-LINE hook shown on the card. The full write-up
 // lives on the click-through page (demo-pages.ts blurb, or roadmap-content.ts).
@@ -100,16 +98,6 @@ export const TILES: Tile[] = [
     accent: 'blue',
     subtitle: 'Commercial motor',
     beta: { label: 'gen2 Beta', to: PRICING_GEN2_APP_URL },
-  },
-  {
-    slug: 'rate-indications',
-    label: 'Rate Indications',
-    description: 'Set the assumptions, watch the indicated rate change move and see why, then govern the selection — assumption-setting to sign-off.',
-    status: 'live',
-    icon: Gauge,
-    to: '/demo/rate-indications',
-    accent: 'blue',
-    subtitle: 'Bricksurance SE · pricing actuary',
   },
   {
     slug: 'underwriting-workbench',
