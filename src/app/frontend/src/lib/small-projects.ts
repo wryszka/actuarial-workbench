@@ -56,7 +56,7 @@ export const SMALL_PROJECTS: SmallProject[] = [
     tag: 'Pricing / Actuarial',
     links: [
       { label: 'Open app', href: 'https://rate-indications-workbench-7474656169654171.aws.databricksapps.com' },
-      { label: 'Demo journey', href: 'https://docs.google.com/document/d/1dfOj6NlGrvJxneyMlbR8YRID9GwbCkinys1NNrbK5rY/edit' },
+      { label: 'Demo run-sheet', href: 'https://docs.google.com/document/d/1-FLCUCeNSbz9MR8AsactXZI53N5KDd4H9wMduy5bOUA/edit' },
       { label: 'Genie', href: `${DEV_HOST}/genie/rooms/01f1b74bccf71a3599d56e67452bb182` },
       { label: 'Data', href: wsSchema('rate_indications') },
       { label: 'GitHub', href: 'https://github.com/wryszka/rate-indications-workbench' },
