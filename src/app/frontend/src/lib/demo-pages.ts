@@ -18,7 +18,7 @@ import {
   DEFAULT_SOLVENCY_APP_URL, DEFAULT_PRICING_APP_URL, DEFAULT_CLAIMS_APP_URL,
   DEFAULT_REINSURANCE_APP_URL, DEFAULT_LIFECAST_APP_URL,
   DEFAULT_UNDERWRITING_APP_URL, DEFAULT_IFRS17_APP_URL, DEFAULT_RESERVING_APP_URL,
-  DEFAULT_DOCUMENT_GATEWAY_APP_URL,
+  DEFAULT_DOCUMENT_GATEWAY_APP_URL, DEFAULT_EXPOSURE_APP_URL,
 } from './workbench-tiles';
 
 export interface DemoChoice {
@@ -246,6 +246,25 @@ export const DEMO_PAGES: Record<string, DemoPage> = {
     appUrlFallback: DEFAULT_UNDERWRITING_APP_URL,
     runDocUrl:
       'https://docs.google.com/document/d/1-J6OfcRAekJUEwmA3kWD3GpBZx7OoNT0LbDLA7j-jRY/edit',
+  },
+
+  'exposure-management': {
+    slug: 'exposure-management',
+    title: 'Exposure & Event Response',
+    subtitle: 'Bricksurance SE · wildfire, flood & windstorm',
+    blurb:
+      'When a catastrophe is developing, which insured homes are in its path — right now? Live hazard ' +
+      'feeds raise an alert the moment an event touches the book; track it as it spreads on a live ' +
+      'map, see the cost gross and net of reinsurance, alert the right people automatically, and ' +
+      'decline new cover inside the active zone. One alert per event, across borders.',
+    appUrlFallback: DEFAULT_EXPOSURE_APP_URL,
+    runDocUrl:
+      'https://docs.google.com/document/d/1B7j0JIiT7kOkWu2KPiEmIJ_zfGX5JiAqhkeMtr468bk/edit',
+    deckUrl:
+      'https://docs.google.com/document/d/1QSJ9J-bG-lnAtM0JZGlYjyN-pBL736xHUfRHEP7EAuQ/edit',
+    deckLabel: 'Demo review',
+    deckSublabel: '8-agent panel review — verdict, fixes and tough questions',
+    learnInApp: true,
   },
 
   'insurance-ontology': {

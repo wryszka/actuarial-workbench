@@ -212,7 +212,7 @@ export const TILES: Tile[] = [
     description: 'When an event is developing — which insured locations are in the footprint, exposure gross and net of treaty by coverholder, and who to tell.',
     status: 'in_progress',
     icon: CloudLightning,
-    to: DEFAULT_EXPOSURE_APP_URL,
+    to: '/demo/exposure-management',   // landing page → app + demo doc + review doc
     subtitle: 'Bricksurance SE · wildfire, flood & windstorm',
   },
   {
