@@ -100,13 +100,15 @@ export const SMALL_PROJECTS: SmallProject[] = [
   },
   {
     title: 'Rate Indications',
-    description: "A P&C rate-indication / assumption-setting & review workflow taken onto Databricks step by step — a demo of the journey, not an app tour. The actuary's spreadsheet → the same loss-ratio method lifted unchanged into governed notebooks and tables (the same indicated number reproduced) → versioned assumptions, an append-only audit trail, reproduce-any-number and server-side approval routing → and finally a self-service app. The same General Liability / Germany +6.6% carries through every step. Deterministic method (no ML in the calculation); Claude explains the result via the Foundation Model API; Genie answers questions over the book. European commercial P&C by default, config-driven to other books. Fully synthetic data (fictional insurer Bricksurance SE).",
+    description: "A P&C rate-indication / assumption-setting & review workflow taken onto Databricks step by step — a demo of the journey, not an app tour. The actuary's spreadsheet → the same loss-ratio method lifted unchanged into governed notebooks and tables (the same indicated number reproduced) → versioned assumptions, an append-only audit trail, reproduce-any-number and server-side approval routing → and finally a self-service app. The same General Liability / Germany +6.6% carries through every step. Plus a spreadsheet round trip for the colleague who lives in Excel: the approved assumptions go out as a sealed workbook to Row Zero (Databricks' spreadsheet), come back with his changes and reasons, every row is checked, and accepted changes are recalculated by the governed engine and routed for approval — he keeps his spreadsheet, the business keeps the record. Deterministic method (no ML in the calculation); Claude explains the result via the Foundation Model API; Genie answers questions over the book. European commercial P&C by default, config-driven to other books. Fully synthetic data (fictional insurer Bricksurance SE).",
     category: 'pricing-reserving',
     kind: 'live-app',
     tag: 'Pricing / Actuarial',
     links: [
       { label: 'Open app', href: 'https://rate-indications-workbench-7474656169654171.aws.databricksapps.com' },
       { label: 'Demo run-sheet', href: 'https://docs.google.com/document/d/1-FLCUCeNSbz9MR8AsactXZI53N5KDd4H9wMduy5bOUA/edit' },
+      { label: 'Spreadsheet review (Row Zero)', href: 'https://rate-indications-workbench-7474656169654171.aws.databricksapps.com/spreadsheet' },
+      { label: 'Run-sheet: Row Zero step', href: 'https://docs.google.com/document/d/1-FLCUCeNSbz9MR8AsactXZI53N5KDd4H9wMduy5bOUA/edit?tab=t.cdrdugphbme9' },
       { label: 'Genie', href: `${DEV_HOST}/genie/rooms/01f1b74bccf71a3599d56e67452bb182` },
       { label: 'Data', href: wsSchema('rate_indications') },
       { label: 'GitHub', href: 'https://github.com/wryszka/rate-indications-workbench' },
