@@ -3,7 +3,7 @@
 .PHONY: help parse seed genie build deploy-dev app-start app-stop dev
 
 help:
-	@echo "  make parse       — parse the raw UKI sheet/plan → data/gtm_seed.json"
+	@echo "  make parse       — parse the raw UKI sheet/plan → $$GTM_DATA_DIR/gtm_seed.json"
 	@echo "  make seed        — create schema + load governed UC tables (dev)"
 	@echo "  make genie       — create the Genie space over the schema (prints space_id)"
 	@echo "  make build       — build the React frontend (frontend/dist)"
@@ -13,6 +13,11 @@ help:
 	@echo "  make dev         — run backend (uvicorn:8000) + frontend (vite) locally"
 
 # ── Data layer (run once / on data change) ─────────────────────────────────
+# Real account data never lives in this (public) repo. GTM_DATA_DIR defaults to the private folder next to the
+# repo checkout if it exists, otherwise to the fictional sample in sample-data/. Override: make parse GTM_DATA_DIR=…
+GTM_DATA_DIR ?= $(if $(wildcard ../../private-data/gtm-cockpit),$(abspath ../../private-data/gtm-cockpit),$(abspath sample-data))
+export GTM_DATA_DIR
+
 parse:
 	python3 scripts/parse_gtm_data.py
 

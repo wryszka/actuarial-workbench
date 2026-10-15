@@ -339,10 +339,10 @@ async def impact():
                    ROUND(SUM(CASE WHEN active_consuming THEN list_365d ELSE 0 END)) AS active_list,
                    ROUND(SUM(list_365d)) AS total_list
             FROM {A}""")
-        # The book has duplicate SFDC records under one name (Aon ×2: $5.11M + $0;
-        # L&G Retail ×2). Aggregate the book BY NAME first so the impact join
+        # The book has duplicate SFDC records under one name (e.g. one record with all the
+        # consumption + one at $0). Aggregate the book BY NAME first so the impact join
         # rolls those up (SUM consumption, MAX flags) instead of matching the $0
-        # record at random. Without this, Aon showed $0 on the impact list.
+        # record at random. Without this, a flagship account showed $0 on the impact list.
         agg_book = f"""
             (SELECT account,
                     SUM(list_365d) AS list_365d,

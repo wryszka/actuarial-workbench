@@ -11,13 +11,16 @@ __pycache__/
 # Databricks bundle state
 .databricks/
 
-# Sensitive GTM data — real account names, consumption, deal stages.
-# The parser/seed scripts are versioned; the data they read/emit is NOT.
-# To rebuild: export the UKI sheet/plan to data/ then `make parse && make seed`.
+# Sensitive GTM data — real account names, consumption, deal stages — lives OUTSIDE the repo in
+# ../../private-data/gtm-cockpit (GTM_DATA_DIR). The parser/seed scripts are versioned; the data is NOT.
+# data/ is still ignored in case an old checkout has it. sample-data/ (fictional) IS versioned.
 data/
+sample-data/gtm_seed.json
+sample-data/genie_space.json
 
-# Impact seed names real customer accounts + engagement/C-level detail — keep
-# local only (evidence lives in the promo deck / evidence pack / kudos, not here).
+# Impact seed names real customer accounts + engagement/C-level detail — lives in the private
+# GTM_DATA_DIR as impact_data.py; never commit it here.
 scripts/impact_data.py
+impact_data.py
 
 *.bak

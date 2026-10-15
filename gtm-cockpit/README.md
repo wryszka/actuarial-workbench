@@ -20,7 +20,7 @@ card above the source Google maps).
 | **EMEA Replicability** | Global lead | Size a proven UKI play across the wider EMEA book (EMEA figures are a documented estimate — see caveat). |
 | **All Accounts** | Everyone | The searchable full book; every row opens an Account 360 drawer. |
 | **Ask (Genie)** | Everyone | Natural-language Q&A over the governed tables; shows the generated SQL + data so answers cite their source. |
-| **Data Quality** | All leads | Duplicate-record dedupe queue (Aviva ×5 etc.) + unassigned-signal list, as tracked items. |
+| **Data Quality** | All leads | Duplicate-record dedupe queue (e.g. one account split across five records) + unassigned-signal list, as tracked items. |
 
 ## Stack
 

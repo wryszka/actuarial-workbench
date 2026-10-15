@@ -38,7 +38,7 @@ export default function HowItWorks() {
           <Rule badge="matching use-case" desc="An active UCO's theme matches the function (a live pricing UCO strengthens the Pricing rec)." />
           <Rule badge="named in the plan" desc="The GTM plan explicitly called this demo for this account." />
         </div>
-        <p className="mt-2 text-gray-500">Example: <em>“Meet the underwriters at Hiscox → lead with Underwriting”</em> — because it fits Lloyd's/London Market, there are active RTS Underwriting Modernisation UCOs, and the plan named it. That's the reasoning shown on the chip; no hidden score.</p>
+        <p className="mt-2 text-gray-500">Example: <em>“Meet the underwriters at a London-market carrier → lead with Underwriting”</em> — because it fits Lloyd's/London Market, there are active underwriting-modernisation UCOs, and the plan named it. That's the reasoning shown on the chip; no hidden score.</p>
       </Section>
 
       <Section title="3 · Function & 'connected' logic">

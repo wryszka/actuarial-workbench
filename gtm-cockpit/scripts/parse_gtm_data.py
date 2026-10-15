@@ -1,7 +1,7 @@
 """Parse the raw UKI GTM sheet + plan into clean, structured records.
 
-Input  : gtm-cockpit/data/uki_sheet_*.csv  (exported from the Google Sheet)
-Output : gtm-cockpit/data/gtm_seed.json    (consumed by seed_uc.py)
+Input  : $GTM_DATA_DIR/uki_sheet_*.csv  (exported from the Google Sheet; kept outside the repo)
+Output : $GTM_DATA_DIR/gtm_seed.json    (consumed by seed_uc.py)
 
 The raw book is human-authored: LIST $ like "$5.11M"/"$545K", a free-text
 "Open opps" blob (name/stage/$ pipe-separated), a "UCOs" blob with [U1..U6]
@@ -10,14 +10,29 @@ stage tags, "SA / SSA" with role markers ([SA(primary)]/[DSA]), and a
 typed fields + derived signal/coverage flags so the app can query it and the
 personas' views (coverage gaps, accelerator queue, demo-fit) compute cleanly.
 
-Deterministic, no network. Run: python3 scripts/parse_gtm_data.py
+Deterministic, no network. Run: make parse  (or GTM_DATA_DIR=<folder> python3 scripts/parse_gtm_data.py)
 """
 import csv
 import json
 import re
 from pathlib import Path
 
-DATA = Path(__file__).resolve().parent.parent / "data"
+import os
+
+def _data_dir() -> Path:
+    """Folder holding the GTM data. Real account data lives OUTSIDE this public repo (set GTM_DATA_DIR, or let
+    `make` point it at the private folder); `sample-data/` holds a small fictional sample for anyone cloning."""
+    d = os.environ.get("GTM_DATA_DIR")
+    if not d:
+        raise SystemExit("Set GTM_DATA_DIR to the folder holding the GTM data (e.g. GTM_DATA_DIR=sample-data for the "
+                         "fictional sample). `make parse|seed|genie` sets it for you.")
+    p = Path(d).expanduser().resolve()
+    if not p.is_dir():
+        raise SystemExit(f"GTM_DATA_DIR={p} does not exist")
+    return p
+
+
+DATA = _data_dir()
 
 # ── Demo → business-process map (from the plan's demo→process table) ──────────
 DEMO_MAP = [
@@ -57,14 +72,8 @@ STAGE_ORDER = ["POC Scoping", "Evaluation", "Proposal", "Validate", "Negotiation
 # Authoritative duplicate-record clusters flagged in the plan (SFDC-verified).
 # Matched by substring against the account name; consumption/UCOs are split
 # across these records so they must be consolidated before allocation math.
-KNOWN_DUPE_KEYS = {
-    "Aviva": ["aviva"],
-    "Legal & General": ["legal & general", "legal and general"],
-    "Direct Line": ["direct line"],
-    "Ardonagh": ["ardonagh"],
-    "Aon": ["aon "],
-    "Standard Life": ["standard life"],
-}
+KNOWN_DUPE_KEYS = (json.loads((DATA / "account_dupe_keys.json").read_text())
+                   if (DATA / "account_dupe_keys.json").exists() else {})
 
 # Persona seats we care about for elevation / reachability.
 SEAT_PATTERNS = {
@@ -276,8 +285,8 @@ def parse_contacts(blob: str) -> dict:
 
 def load_priority_demos() -> dict:
     """Map normalised account-name → priority-tab detail. Keyed on norm_name so
-    the priority tab's short names ('AXA UK') join to the 182-sheet's legal
-    names ('AXA UK PLC')."""
+    the priority tab's short names ('Fabrikam') join to the 182-sheet's legal
+    names ('Fabrikam Insurance plc')."""
     out = {}
     path = DATA / "uki_sheet_Priority_accounts.csv"
     with open(path, newline="") as f:
@@ -295,7 +304,7 @@ def load_priority_demos() -> dict:
 
 
 def norm_name(name: str) -> str:
-    """Loose normalisation to group duplicate SFDC records (Aviva ×5 etc.)."""
+    """Loose normalisation to group duplicate SFDC records (one account split across several records)."""
     n = name.lower()
     n = re.sub(r"\b(plc|ltd|limited|llc|group|holdings|services|uk|insurance|"
                r"company|corporation|se|inc|llp|the)\b", "", n)
@@ -382,9 +391,9 @@ def main():
             active = has_signal and not ae_unassigned
 
             # UK-driven = the account is run by a UK/Ireland-based AE team, even
-            # if the group HQ is elsewhere (e.g. Allianz/LV=/AXA UK are UK-driven
-            # despite DE/FR parents). Canada Life = AMER-driven, Athora =
-            # NL-driven → NOT UK-driven. UKI-team roles + the UK-based EMEA
+            # if the group HQ is elsewhere (e.g. a UK subsidiary of a foreign group is UK-driven
+            # despite DE/FR parents). Accounts run from the Americas or continental Europe
+            # → NOT UK-driven. UKI-team roles + the UK-based EMEA
             # insurance/regulated/banking/PBS/public-sector desks count; AMER /
             # APJ / France / Benelux / Africa desks do not.
             role_l = ae_role.lower()
@@ -459,7 +468,7 @@ def main():
 
     # Duplicate-record clusters. Use the plan's authoritative key list (SFDC-
     # verified) matched by substring across ALL account names, so records whose
-    # legal names diverge (e.g. "Aviva", "Aviva plc", "Aviva Insurance") still
+    # legal names diverge (e.g. "Fabrikam", "Fabrikam plc", "Fabrikam Insurance") still
     # group. Fall back to fuzzy norm_name groups for anything not in the list.
     all_names = [a["account"] for a in accounts]
     dupes = []

@@ -50,7 +50,7 @@ b.set_instructions(
     "opp_type Renewal vs 'New use case', a stage, and amount USD. `6_demo_fit` "
     "maps each account to the recommended Databricks workbench demo. "
     "`7_duplicates` lists duplicate SFDC records that must be consolidated before "
-    "trusting consumption totals (e.g. Aviva has 5 records). When asked about "
+    "trusting consumption totals (one account can be split across several records). When asked about "
     "'the biggest accounts' rank by list_365d. When asked about coverage gaps "
     "filter coverage_gap = true."
 )
@@ -84,7 +84,9 @@ b.add_example_sql(
 b.validate()
 serialized = b.to_json()
 
-out = Path(__file__).resolve().parent.parent / "data" / "genie_space.json"
+import os as _os
+_gtm = _os.environ.get("GTM_DATA_DIR")
+out = (Path(_gtm).expanduser().resolve() if _gtm else Path(__file__).resolve().parent.parent / "sample-data") / "genie_space.json"
 out.write_text(serialized)
 print(f"Serialized space written → {out} ({len(serialized)} bytes)")
 

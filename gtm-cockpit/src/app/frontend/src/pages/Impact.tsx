@@ -125,15 +125,14 @@ export default function Impact({ cfg }: { cfg: AppConfig | null }) {
 
       <Disclaimer>
         <strong>Scope + how to read this.</strong> This is the <strong>UK-driven</strong> book — accounts run by UK/Ireland-based
-        AE teams even where the group is HQ'd abroad (so Allianz UK, LV=, AXA UK count; <strong>Canada Life</strong> (AMER-driven)
-        and <strong>Athora</strong> (Netherlands-driven) are excluded). HSBC is included though outside the formal insurance patch —
-        it's UK-driven, Asia-Life work (Global CTO). “Engaged” = material, evidenced work (built / demoed / enabled), from the
+        AE teams even where the group is HQ'd abroad (a UK subsidiary of a foreign group counts; accounts driven from the
+        Americas or continental Europe are excluded). A UK-driven account outside the formal insurance patch can still count. “Engaged” = material, evidenced work (built / demoed / enabled), from the
         promo deck, L7 evidence pack, kudos log and a calendar/email/Slack scan. Meeting counts are approximate calendar
         intensity (~15-month window); “—” means not scanned, not zero. Consumption is LIST $ (a proxy, not billed revenue).
-        Wider EMEA/APAC wins ({owner} also works Munich Re, Tryg, Vaudoise, Linea Directa, VIG, AIA…) are deliberately out of
+        Wider EMEA/APAC work by {owner} is deliberately out of
         this UK-driven view. This tab is the deck's evidence base — every claim traces to a source. <strong>On the LIST figures:</strong>
-        they're summed across an account's duplicate SFDC records (so Aon's split records roll up to one number); a “$0” means the
-        book records no consumption under that name yet (e.g. Aviva's spend is fragmented across variant records), not that the
+        they're summed across an account's duplicate SFDC records (so an account's split records roll up to one number); a “$0” means the
+        book records no consumption under that name yet (e.g. the spend is fragmented across variant records), not that the
         engagement wasn't real — meetings + C-level are the truer signal here.
       </Disclaimer>
 

@@ -1,6 +1,6 @@
 """Seed the governed Unity Catalog tables for the GTM Cockpit.
 
-Reads gtm-cockpit/data/gtm_seed.json (produced by parse_gtm_data.py) and
+Reads $GTM_DATA_DIR/gtm_seed.json (produced by parse_gtm_data.py; kept outside the repo) and
 materialises the schema + numbered Delta tables via the SQL warehouse
 (Statement Execution API through the Databricks SDK). Idempotent: drops and
 recreates the read tables each run; creates the writeback tables only if
@@ -28,7 +28,20 @@ from pathlib import Path
 from databricks.sdk import WorkspaceClient
 from databricks.sdk.service.sql import StatementState
 
-DATA = Path(__file__).resolve().parent.parent / "data"
+def _data_dir() -> Path:
+    """Folder holding the GTM data. Real account data lives OUTSIDE this public repo (set GTM_DATA_DIR, or let
+    `make` point it at the private folder); `sample-data/` holds a small fictional sample for anyone cloning."""
+    d = os.environ.get("GTM_DATA_DIR")
+    if not d:
+        raise SystemExit("Set GTM_DATA_DIR to the folder holding the GTM data (e.g. GTM_DATA_DIR=sample-data for the "
+                         "fictional sample). `make parse|seed|genie` sets it for you.")
+    p = Path(d).expanduser().resolve()
+    if not p.is_dir():
+        raise SystemExit(f"GTM_DATA_DIR={p} does not exist")
+    return p
+
+
+DATA = _data_dir()
 CATALOG = os.getenv("CATALOG", "lr_dev_aws_us_catalog")
 SCHEMA = os.getenv("SCHEMA", "gtm_cockpit")
 WAREHOUSE = os.getenv("WAREHOUSE", "a3b61648ea4809e3")
@@ -219,15 +232,15 @@ def main():
     insert_batch("10_recommendations", ["account", "workbench", "reasons", "score"], reco_rows)
 
     # ── 11_impact ─────────────────────────────────────────────────────────────
-    # impact_data.py names real customer accounts + engagement detail, so it's
-    # kept local-only (gitignored). If absent (fresh clone), the table is still
+    # impact_data.py names real customer accounts + engagement detail, so it lives
+    # in the private GTM_DATA_DIR, never in the repo. If absent (fresh clone), the table is still
     # created empty so the app's Impact view degrades gracefully.
     run("DROP TABLE IF EXISTS `11_impact`")
     run("""CREATE TABLE `11_impact` (
         account STRING, helped BOOLEAN, meetings INT, clevel BOOLEAN,
         clevel_detail STRING, keywords STRING, what STRING, note STRING, source STRING
     ) USING DELTA COMMENT 'Impact footprint — accounts materially helped, meeting counts, C-level engagement, keywords. Evidence-based (promo deck / evidence pack / kudos / calendar-email-slack). Local-only seed.'""")
-    impact_path = Path(__file__).resolve().parent / "impact_data.py"
+    impact_path = DATA / "impact_data.py"
     if impact_path.exists():
         import importlib.util
         spec = importlib.util.spec_from_file_location("impact_data", impact_path)

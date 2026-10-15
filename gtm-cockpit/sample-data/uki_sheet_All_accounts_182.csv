@@ -1,0 +1,7 @@
+Rank,Account,Sub-industry,Country,Segment,Tier,AE,AE role,SA / SSA,LIST 365d,LIST 90d,Open opps,UCOs (U1–U6),Key contacts
+1,Fabrikam Insurance plc,P&C,United Kingdom,-,-,Alex Morgan,AE - EMEA - Insurance,Sam Patel [SA(primary)],$2.40M,$0.61M,"Fabrikam_Renewal_1_31_2028 (Validate, $3,200,000) | Fabrikam pricing platform (POC Scoping, $150,000)",Pricing model governance [U3] | Claims triage agent [U2],Jordan Lee — Chief Actuary; Priya Shah — Head of Pricing
+2,Fabrikam Insurance,P&C,United Kingdom,-,-,Alex Morgan,AE - EMEA - Insurance,Sam Patel [SA(primary)],$0.35M,$0.08M,"Fabrikam data core (Evaluation, $90,000)",Reserving workbench [U2],Chris Doyle — CIO
+3,Northwind Mutual,Life,United Kingdom,-,-,Robin Ellis,AE - EMEA - Insurance,Kim Novak [SA(primary)],$1.10M,$0.27M,"Northwind actuarial modernisation (Proposal, $480,000)",Liability model migration [U3],Taylor Brooks — Chief Actuary
+4,Contoso Re,Reinsurance,United Kingdom,-,-,Robin Ellis,AE - EMEA - Insurance,Kim Novak [SA(primary)],$0.72M,$0.19M,"Contoso cat analytics (Validate, $260,000)",Treaty accumulation [U2],Morgan Hale — Head of Exposure Management
+5,Tailspin Specialty,Lloyd's / London Market,United Kingdom,-,-,Jamie Quinn,AE - EMEA - Insurance,Sam Patel [SA(primary)],$0.48M,$0.11M,"Tailspin submission triage (POC Scoping, $120,000)",Underwriting submission extraction [U1],Casey Ward — Chief Underwriting Officer
+6,Woodgrove Brokers,Broker,United Kingdom,-,-,Jamie Quinn,AE - EMEA - Insurance,Kim Novak [SA(primary)],$0.00M,$0.00M,,,Drew Fox — Head of Data
