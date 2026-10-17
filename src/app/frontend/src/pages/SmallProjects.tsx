@@ -82,6 +82,9 @@ function ProjectCard({ project }: { project: SmallProject }) {
           <span className="text-[11px] text-gray-400">· {project.tag}</span>
         )}
       </div>
+      {project.author && (
+        <p className="text-[11px] text-gray-500 mt-0.5">by <span className="font-semibold text-gray-700">{project.author}</span></p>
+      )}
       <p className="text-[12px] text-gray-500 leading-snug mt-1 flex-1">{project.description}</p>
       <div className="flex flex-wrap gap-1.5 mt-2.5">
         {project.links.map((l, i) => (

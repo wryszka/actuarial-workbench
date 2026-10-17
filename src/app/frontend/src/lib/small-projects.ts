@@ -66,6 +66,7 @@ export interface SmallProject {
   category: SmallProjectCategory;
   kind: SmallProjectKind;
   tag?: string;                // optional fine-grained sub-label (secondary)
+  author?: string;             // optional — credit when built by someone other than the hub owner
   links: SmallProjectLink[];
 }
 
@@ -112,6 +113,19 @@ export const SMALL_PROJECTS: SmallProject[] = [
       { label: 'Genie', href: `${DEV_HOST}/genie/rooms/01f1b74bccf71a3599d56e67452bb182` },
       { label: 'Data', href: wsSchema('rate_indications') },
       { label: 'GitHub', href: 'https://github.com/wryszka/rate-indications-workbench' },
+    ],
+  },
+  {
+    title: 'Life & Pension Actuarial Workbench',
+    description: "A quarter in a life & pension actuary's life, end to end on Databricks: a policy-admin experience extract lands, is quality-checked (bad rows quarantined, not dropped) and approved by a human; it feeds an experience mart; mortality, disability and lapse assumptions are re-estimated (statsmodels GLMs, lifelines Cox models, LightGBM as challenger) and tracked in MLflow; thousands of segment GLMs plus bootstrap run in parallel with Spark (Ray alternative); a four-eyes approval promotes the challenger to champion in Unity Catalog, which automatically re-projects best-estimate liabilities and runs nested stochastic and Solvency II-shaped stresses. Append-only audit, reproducibility and a Genie space over the book. Integrates with existing actuarial engines rather than replacing them. Fully synthetic data.",
+    category: 'pricing-reserving',
+    kind: 'live-app',
+    tag: 'Life & Pension',
+    author: 'Jeroen Meulemans',
+    links: [
+      { label: 'Open app', href: 'https://pfa-actuarial-workbench-7474647052103807.aws.databricksapps.com/' },
+      { label: 'Demo run doc', href: 'https://docs.google.com/document/d/1ynPxoF3E6qL4RJ3SvN-TCBNLfmzsGgdRxrPDOMX57WA/edit' },
+      { label: 'GitHub', href: 'https://github.com/firstgear/life-pension-actuarial-workflow' },
     ],
   },
   {
