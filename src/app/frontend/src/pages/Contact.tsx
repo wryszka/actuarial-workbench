@@ -45,7 +45,7 @@ const TEAM: TeamMember[] = [
   { name: 'Adam Beales', title: 'Strategic Account Executive', email: 'adam.beales@databricks.com', photo: '/adam-beales.png', tag: 'AE tester' },
   { name: 'Suman Misra', title: 'Senior Solutions Architect', email: 'suman.misra@databricks.com', photo: '/suman-misra.png' },
   { name: 'Noah Schellenberg', title: 'Solutions Architect', email: 'noah.schellenberg@databricks.com', photo: '/noah-schellenberg.png' },
-  { name: 'Jeroen Meulemans', title: 'Solutions Architect', email: 'jeroen.meulemans@databricks.com', photo: '/jeroen-meulemans.png', tag: 'Life & Pension' },
+  { name: 'Jeroen Meulemans', title: 'Senior Solutions Architect', email: 'jeroen.meulemans@databricks.com', photo: '/jeroen-meulemans.png', tag: 'Life & Pension' },
   { name: 'Philipp Tiefenbacher', title: 'Solutions Architect', email: 'philipp.tiefenbacher@databricks.com', photo: '/philipp-tiefenbacher.png', tag: 'Agent Governance' },
 ];
 
